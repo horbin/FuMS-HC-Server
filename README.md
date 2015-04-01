@@ -1,14 +1,18 @@
 #Fulcrum Mission System (FuMS)
 v1.5a
 + Fix to Crazed-Clones - now properly attack players
-+ Fix to AI RocketLaunchers are not properly removed upon AI death.
++ Fix to AI RocketLaunchers they are now properly removed upon AI death.
 + Corrected language for error message received when attempting to read a Theme's Soldier or Loot files and they are not present.
 + Fix to 'invalid' HC disconnects detected by server during initial HC connection.
     (was accomplished by waiting for the 'gender' of the HC to be defined before allowing the server to watch for the disconnect)
  - thanks to SpiRe for the pointer-
  - Note: This is a 'test fix'. I am having issues duplicating this error on my test server..so further input may be needed if this does not resolve the issue!
   
-
+######TO IMPROVE PERFORMANCE DISABLE SERVER SIDE FUMS######
+#####Only do this if you are using a headless client#######
+set line 15 of \FuMS\init.sqf   FuMS_ServerFuMSEnable=false;
+By default serverside FuMS is enable with SEM, Small, Aquatic and MadScience Theme.
+###########################################################
 
 
 v1.5
