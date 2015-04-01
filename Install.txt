@@ -1,0 +1,112 @@
+HC Setup:
+#Assumes you are using the BIS Arma3 server installation default install. If you installed your Arma3 server to a different folder, adjust instructions as necessary.
+1) add to C:\Games\ArmaA3\SC\config.cfg
+ 
+localClient[]={127.0.0.1};
+headlessClients[] = {"127.0.0.1"};
+battleyeLicense=1;
+
+Note: If your HC is on a different virtual or physical machine from the server, add the HC's IP addr to both the local and headless client lists!
+
+2) modify mission.sqm file.
+ a. Locate:
+      class Groups
+      {
+        items = 100;
+        class Item0
+        {
+
+ b. Change the contents of 'class Item0' to the following:
+ 	class Item0
+	{
+            side="LOGIC";
+            class Vehicles
+            {
+                items=1;
+                class Item0
+                {
+                    position[]={10720.502,12.714643,11356.243};
+                    id=100;
+                    side="LOGIC";
+                    vehicle="HeadlessClient_F";
+                    player="PLAY CDG";
+                    init="this enableSimulation false; this allowDamage false";
+                    leader=1;
+                    skill=0.60000002;
+                    text="HC_HAL";
+                };
+            };
+	};
+
+Note: HC_HAL will be used as the HC's name in game. This is the name you will be able to use to 'kick' the HC if needed.
+Note: Placing the HC in the 1st slot will disable the 'slots' view on the left of the Lobby. Players in game will still show in the right panel of the lobby.  If you want the 'slots' to show up, the above code can be placed at 'class item100'. Just make sure to also set 'items=101'.
+
+3) Make a copy of C:\Games\Arma3\arma3server.exe and rename it to HCserver.exe
+
+4) Start your HC with the following:
+C:\Games\Arma3\HCserver.exe -client -connect=127.0.0.1 -mod="@Epoch;" -nosound
+
+Note: HC does not require a restart with the server, nor a restart upon updating mission files.
+
+FuMS Installation:
+#Assumes you have your headless client up and running
+1) place the 'HC' folder and all its subfolders into your mpmissions mission folder. (ie your Mission pbo)
+2) Modify your 'init.sqf'
+             [] execVM "HC\Init.sqf";  
+
+3)Update your BattlEye filters form the included BattlEye_Filters.txt
+
+4) Modify your 'descriptions.ext':
+
+If RscTitles is already defined in your descriptions.ext, then just add the code between the //************  comments to the appropriate 'class' code.
+
+class RscTitles
+{
+//************************
+    class radioChatterBar {
+        idd = -1;
+        onLoad = "uiNamespace setVariable ['radioChatterBar', _this select 0]";
+        onUnload = "uiNamespace setVariable ['radoiChatterBar', objNull]";
+        onDestroy = "uiNamespace setVariable ['radioChatterBar', objNull]";
+        fadein = 0;
+        fadeout = 10;
+        duration = 10e10;
+        movingEnable = 0;
+        controlsBackground[] = {};
+        objects[] = {};
+        class controls {
+            class statusBarText {
+                idc = 1010;
+                x = safezoneX;
+                y = safezoneY; // upper left hand corner
+                //x = safezoneX + safezoneW - 1.5;
+                //y = safezoneY + safezoneH - 0.4; //H
+                w = 1; 
+                h = 0.3;  //hopefully makes it 10 lines tall
+                shadow = 2;
+                colorBackground[] = { 1, 0.3, 0, 0.0 };  // uncomment and increase 4th number to have a 	background
+                font = "PuristaSemibold";
+                size = 0.03;
+                type = 13;// CT_TYPES = CT_STRUCTURED_TEXT
+                style = 1;
+                text="Loading server info...";
+                class Attributes {
+                    align="left";
+                    color = "#FFFFFF"; //"#00FF09";BrightGreen   //#FF8700
+                };
+            };
+        };
+    };
+//***********************************
+};
+
+
+class CfgSounds
+{
+	#include "HC\Zombies\infectedsounds.hpp"
+};
+
+
+
+5) Place FuMS.pbo located in github/FuMS_HC/ServerPBO into your SERVER's @EpochHive\Addons folder.
+All mission file configuration is done from this .pbo.  You can use a tool such as PBO manager to open the pbo in the addons folder, modify files, then rebuild the pbo.

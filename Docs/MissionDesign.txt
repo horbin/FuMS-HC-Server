@@ -1,0 +1,93 @@
+Organization:
+./FuMS/Themes/BaseLoot.sqf - contains global data arrays for most equipment, and many containers
+./FuMS/Themes/BaseSoldier.sqf - contains global data arrays for use in building AI for your missions
+./FuMS/Themes/BaseServer.sqf - contains data that calibrates FuMS to your specific MAP, and defines what 'Themes' your server will run.
+
+Theme folder consists of the following: (see 'Test' theme for examples).
+A theme is a collection of missions that run on a common 'control loop'. 
+./Test/LootData.sqf - defines types of rewards available for this theme.
+./Test/SoldierData.sqf - defines the type and gear of the AI for this theme.
+./Test/ThemeData.sqf - defines info common to all missions in this theme, as well as the missions that should be used under the theme.
+./Test/Reinforements.sqf - a pass through mission that defines the AI and vehicles to be created if an AI in this theme calls for help.
+./Test/TestMission01.sqf - basic test mission that demonstrats some of the functionality of FuMS.
+./Test/Help_Ground, Helo, Vehicle.sqf - these 3 files are examples 'reinforcement' files.
+./Test/NukeDevice.sqf - example of a phased mission. Under TestMission01, when a player gets near the center of the encounter, this mission is launched.
+
+
+---After opening the FuMS.pbo---
+Adding new Themes and mission sets is very simple if the following steps are followed:
+1) Create a new folder in the /FuMS/Themes folder.
+	Make sure there are no special characters or spaces in the folder name.
+2) Copy the files in \Encounters\Test to this new folder.
+3) In your new folder, edit the following files:
+
+ThemeData.sqf
+  -Follow instructions in this file.
+  -Add the mission name for each mission you want as part of the Theme rotation.
+  -In the Mission list section, putting a '0' will enable the mission to appear at a random location.
+If there are no points listed in the 'Encounter Locations' section, then the generic BIS_fnc_findSafelocation function
+will be used to find a location for the encounter.
+  -Configure the theme's Radio Chatter behaviour.
+  -Customize language, syntax used by AI
+  -Do not Reorder, remove, or add options here!
+  NOTE: Keywords used in the text lines will be filled with dynamic information as follows:
+	<DIST> = the distance between the group and the mission center
+	<DIR> = cardinal, subcardinal direction the group is from mission center
+	<MSNNAME>= the name of this mission.
+	<#ALIVE>= the number of units remaining in the group.
+	<#DEAD>= how many units from the group have died.
+	<STATUS>= will respond with "OPS NORMAL" if the group is not in combat. Otherwise group will indicate they are engaged.
+
+SoldierData.sqf
+  - Review this file. Add and modify to match with your Theme's intentions.
+  - You need some mad scientists, some super snipers, or mad bombers, just add them here.
+  - Recommendation is to cut and paste the indicated 'sniper' block and modify it. Adding to the bottom of the file can cause problems if you are not familiar with arrays.
+  - You can refer to \HC\Encounters\GlobalConfig for many pre-defined arrays to aid in gear selection and randomization.
+  - Numbers next to an item represent the percentage chance this piece of gear will be on the soldier.
+[Vest_Tactical, .8]  implies the solidier has an 80% chance of having a random Tactical Vest.
+  - For inventory items the follow on numbers represent minimum and maximum quantities.
+    [[Food_Canned, .5], [1,3]]  implies the soldier has an 50% chancie of having 1-3 random canned food items.
+  - Suppressors are automatically attached based upon proper type.
+  - Radios can only be channel 1-9. Setting this value to 0 implies NO RADIO.
+  - Group leaders will always be equipped with a radio of the proper channel that you set up in the ThemeData.sqf.
+  - DiverOverWater to true will give the soldier a swimsuit and rebreather if they spawn over water.
+  - Unlimited ammoe true - ai will never run out of ammo.
+  - Soldiers will utilize smokes and grenades when conditions are appropriate, based upon the ARMA combat engine.
+
+LootData.sqf
+  - Review this file. Add and modify to match your Theme's intentions.
+  - Again, refer to the \HC\Encounters\GlobalConfig files for already defined item arrays.
+  - Placing an array name in a position will generate a random item from that list.
+  - Loot Option Title is the name used to reference the loot set when setting up your missions (see below).
+  - The box type is the default container to be created for the loot.
+  - Any loot set can also be placed into vehicles!
+
+// Overall Setup Done, now to build out a mission:
+Rename TestMission01.sqf to a name of your choosing...do not use spaces in the file name.
+Open this file and modify.
+-In the message section, do not add or delete lines.
+-Loot section - placing "RANDOM" in the loot set name, will generate a RANDOM loot set to be used from your LootData file for this theme.
+- ##ALL locations are X,Y offsets from your encounter center.
+- When building out convoy's make sure you place driver-less vehicles at the bottom of the list.
+- At the end of the vehicle line, "None" can be replaced with a Loot set name from LootData.sqf
+-----------------------
+-Triggers
+- Placing conflicting logic here can result in abnormal behaviour.
+- Note: When a Phase is launched, the logic for this mission is 'suspended' until the phased mission completes.
+-  Mission clean up is handed back from phase child to parent.  So if your mission launches a phase, and it completes, the current mission will manage any remaining AI and objects, until it completes!
+
+Ok, now we have a functioning mission within the new Theme.
+Final step!
+
+4) Open /FuMS/Themes/BaseServer.sqf
+ - Add your theme name to the list of active Themes.
+
+All done. Rebuild your .pbo and go check it out!
+
+NOTE: You can specify no-spawn zones and other map specific details in the BaseServer.sqf file.
+These settings are ONLY used by BIS_fnc_findsafePos.
+
+If you port missions or themes that contain 'fixed' locations, you will need to verify those locations on any new maps.
+
+
+

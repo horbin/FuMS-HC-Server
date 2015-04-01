@@ -1,0 +1,70 @@
+Last updated 1/27/15
+
+This file contains details on the various FuMS 'Triggers' that can be defined within each mission. FuMS triggers should not be confused with ARMA3 triggers. Though FuMS does use some ARMA3 triggers, many of the triggers within FuMS behave differently than a standard ARMA3 trigger.
+
+Every mission has 5 states in which 'triggers' can be defined:
+WIN, LOSE, Phase01, Phase02, Phase03.
+In order for a state to be considered 'complete', all triggers defined in that state must return 'true'. Once all triggers in a state return true, the applicable mission result occurs.
+
+Phase01, 02, and 03 when complete will launch a follow on mission as defined within the 'parent' mission file.  While the child mission executes, all triggers of the 'parent' mission are suspended.
+
+Special case: 
+["NO TRIGGERS"] - only define in the NO TRIGGERS area!!!
+If this is defined in the area after Phase03 in the mission file, all triggers, win/lose conditions are ignored.  When the mission containing the ["NO TRIGGERS"] is executed it will simply spawn the objects defined within its mission file.  Use of the ["NO TRIGGERS"] option allows for creation of additional AI, loot, and buildings for a mission, without suspending the triggers of the 'parent' mission.
+
+["Reinforce",chance,"<fileName>"] - only define in the WIN state!!
+If this is defined in the WIN state, then when a unit in this mission calls for help, there is a 'chance' percent that the Theme's base operations will respond with reinforcements.  If base ops does send in reinforcements it will occur through the execution of the mission file named <fileName>.  <fileName> is a .sqf file and needs to be in the Theme's folder. The default reinforcement file included is Reinforcements.sqf.
+Note: The reinforcement file does not require the use of the ["NO TRIGGERS"] option, but if it is desired to not suspend the parent triggers, ensure that NO TRIGGERS is commented out of the reinforecment mission.
+Note: Reinforce trigger is not considered in the WIN conditions of the WIN state.
+
+["LowUnitCount", side, numAI, radius, offset]
+["HighUnitCount", side, numAI, radius, ofset]
+["ProxPlayer",offset, range, numPlayers]
+["Detected", group#, vehicle#]
+["BodyCount", numAI] 
+["Timer", seconds]
+["AllDeadorGone"]
+["Reinforce", chance, "mission"] <-- only use in Win State trigger area!
+
+Defined Trigges
+["LowUnitCount", side, numAI, radius, offset]
+-side: "EAST","WEST","GUER","CIV","LOGIC","ANY"
+-numAI: number of AI of type 'side' below which make the trigger TRUE.
+-radius: distance the trigger searches when counting AI
+-offset: centroid of the trigger. Supports 2D offset, or 3D map absolute positions.
+Behaviour:  When the number of units on a 'side' drop below 'numAI' within 'radius' of 'offset' the trigger registers TRUE.
+
+["HighUnitCount", side, numAI, radius, ofset]
+Behaviour: When the number of units on a 'side' exceeds 'numAI' within 'radius' of 'offset' the trigger registers TRUE.
+
+["ProxPlayer",offset, range, numPlayers]
+-offset: centroid of the trigger. Supports 2D offset, or 3D map absolute positions.
+-range: range from 'offset' the count is counducted.
+-numPlayers:  the number of 'players' the number of players to count.
+Behaviour: When at least 'numPlayers' are detected within 'range' of 'offset' the trigger registers TRUE.
+
+["Detected", group#, vehicle#]
+-group# : group that is performing the 'detection' check. 1st group is indexed at 0.
+-vehicle#: vehicle driver that is performing the 'detection' check. 1st driver is indexed at 0.
+Behaviour: If the indicated group or vehicle is actively detecting a player the trigger will register TRUE.
+A value of -1 will turn off the check for that type. 
+A value of 99 will run the check for all of that type.
+Ex: ["Detected", -1, 99] will run the check for all vehicles, and no groups.
+Ex: ["Detected", 2 , 3] will run the check for the 3rd group in the mission file, and the 4th vehicle crated.
+Note: Unoccupied vehicles count in this check if you are trying to determine a vehicle number in a 2nd convoy group.
+Note: AI spawned via reinforcements or phase changes will not register this trigger.
+
+["BodyCount", numAI] 
+-numAI: number of AI, reguardless of side that are killed by players during mission execution.
+Behaviour: If the number of AI killed during mission execution exceeds 'numAI' the trigger will register TRUE.
+Note: AI from 'reinforcements' and phased missions will count towards this total.
+Note: AI killed by player vehicles will not count.
+
+["Timer", seconds]
+-seconds: time in seconds
+Behaviour: After 'seconds' of time elapse from mission start the trigger will register TRUE.
+
+["AllDeadorGone"]
+Behaviour:  true when all ai associated with a mission and its phase missions have been killed or have despawned.
+This check is done MAP wide, so may be more useful in detecting mission state on some large area mission.
+

@@ -1,0 +1,7 @@
+scripts.txt
+7 "BIS_fnc_" !"this call bis_fnc_initVirtualUnit;"
+7 exec !"HC\Encounters\FuMsnInit.sqf" !"HC\Init.sqf" !"initVirtualUnit" !"HC\Encounters\AI_Logic\AI_Killed.sqf"
+7 removeAllWeapons !"_victim"
+7 assignItem !="victim"
+7 allowDamage !"_unit allowdamage false;" !"this enableSimulation false; this allowDamage false"
+7 allUnits !"(_radio != \"EpochRadioALL\")"

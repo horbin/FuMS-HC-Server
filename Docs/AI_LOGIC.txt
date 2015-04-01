@@ -1,0 +1,105 @@
+Last updated 1/27/15.
+
+This file contains details details on the AI patrol behaviours available in FuMS.  Parameters and syntax listed are what is proper for use within mission files, when building or modifying a mission. The options shown in this file do not describe the actual script's paramaters. Refer to the specific .sqf script for those details. This document is available as a quick reference for mission editors and designers.
+
+Logic inherrient to all AI created by FuMS.
+*AI_Killed: RadioChat message on death. AI killed by vehicles or other AI have all their gear destroyed.
+*AI_Evac: If unit is within the call radius ~200m's of a unit conducting an XFILL operation, the unit will proceed to the XFILL'ing vehicle and board it (stopping all other 'patrol behaviours').  At this point the unit will remain in the vehicle until the vehicle reaches its destination. At this point the unit will despawn.  If the vehicle is disabled, or its driver killed, the unit will continue on foot to the vehicle's destination and then despawn.
+*DriverLogic: If a unit in a driver seat detects its vehicle's position does not change by more than 2m for more than 150 seconds, the vehicle will be deleted, under the assumption it is stuck. If the vehicle conducting an "XFILL" this behaviour is suspended while other units approach and board.
+  
+["BUILDINGS",   [spawnloc], [actionloc], [range] ]
+["EXPLORE   ",  [spawnloc], [actionloc], [radius]]
+["BOXPATROL",   [spawnloc], [actionloc], [radius]]
+["CONVOY",      [spawnloc], [actionloc], [speed, FlagRTB, FlagRoads, FlagDespawn, convoyType]]
+["SENTRY",      [spawnloc], [actionloc], [radius]]
+["PARADROP",    [spawnloc], [actionloc], [speed, altitude, FlagRTB, FlagSmokes]]
+["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
+["ZOMBIE", [spawnloc], [actionloc],[]]
+
+**All loc's can be defined via 3D map specific coordinates, 2D offsets, or a town name (ie "Starvos")
+
+
+"EXPLORE"
+syntax: ["AREAPATROL",[spawnloc], [actionloc], [radius]]
+-spawnloc: offset or specific map location group will spawn.
+-actionloc: offset or specific map location at which group will begin their patrol.
+-radius: size of the area, in meters, for the group to patrol.
+Behaviour: 12 evenly spaced waypoints are generated at a 'radius' to 'actionloc'.  These waypoints are then randomized and the group set to start patrolling these waypoints. Group will recycle to the 1st waypoint when the 12th waypoint is reached.
+
+"BOXPATROL"
+syntax: ["BOXPATROL", [spawnloc], [actionloc], [radius]]
+-spawnloc: offset or specific map location group will spawn
+-actionloc: offset or specific map location at which unit will begin their building search
+-radius: size of the area, in meters, for the group to patrol.
+Behaviour: 4 waypoints are built at the corners of a square with a diagnol of 2*'radius'. The group will proceed to the eastern most waypiont then continue in a counterclockwise pattern.
+
+"BUILDINGS":
+syntax: ["BUILDINGS", [spawnloc], [actionloc], [range]]
+-spawnloc: offset or specific map location group will spawn.
+-actionloc: offset or specific map location at which group will begin their patrol.
+-range: range from 'actionloc' that the group will look for buildings to search.
+Behaviour: Units within the group will wait until they are on foot. At this piont they will proceed to 'actionloc'. Upon arrival, all buildings inside of 'range' radius will be identified. A random search of these buildings will begin, and continue until 'duration' time passes. When a unit gets to a building, it will inspect all locations within the building before continuing onto another random building on its list. At this point, the group will continue onto its active waypoint (if any).
+Note: There is a tendancy for units to get 'stuck' on certain structures. A routine has been added to try and identify when a unit is stuck and teleport it to a nearby road segment.
+If no buildings are found within 'range'unit will continue to its current active waypoint (if any).
+
+"CONVOY"
+syntax: ["CONVOY",    [spawnloc], [actionloc], [speed, FlagRTB, FlagRoads, FlagDespawn, convoyType]]
+-spawnloc: offset or specific map location group will spawn
+-actionloc: offset or specific map location at which unit will perform its drop-off or evacuation.
+-speed: "NORMAL", "FULL", or "LIMITED" - limited and normal will provide better 'convoy' effects
+-FlagRTB: true=group will return to 'spawnloc' upon completing its action at 'actionloc'.
+          false=group will drop off its cargo, then begin a boxpatrol pattern around their drop off location.
+-FlagRoads: true=group's vehicles will spawn on a road, and drivers will attempt to use roads to get too 'actionloc'
+-FlagDespawn: true=group, its vehicles, and its occupants will despawn upon returning to 'spawnloc'
+-convoyType: "XFILL"= see below
+Behaviour: group will move from spawnloc to actionloc. At 'actionloc', if convoyType is "XFILL" an evacuation call will be made to all units within 200 meters of 'actionloc'. All units, up to the capacity of the group's vehicles will proceed to and board the vehicles. When loading is complete, vehicles will return to 'spawnloc'.
+If convoyType is "INSERT", then at 'actionloc', vehicles will disembark all units in their cargo.
+
+"SENTRY"
+syntax: ["SENTRY",    [spawnloc], [actionloc], [radius]]
+-spawnloc: offset or specific map location group will spawn
+-actionloc: offset or specific map location at which unit will take up its guard position.
+-radius: distance from 'actionloc' that the group searchs for available buildings.
+Behaviour: Group will proceed to 'actionloc'. Upon arrival, group will search 'radius' for available buildings. Individual units in the group will then enter the buildings and climb to the highest points in the buildings and take up a "COMBAT" ready position.
+
+"PARADROP"
+syntax: ["PARADROP",  [spawnloc], [actionloc], [speed, altitude, FlagRTB, FlagSmokes]]
+-spawnloc: offset or specific map location group will spawn
+-actionloc: offset or specific map location at which group (of pilots) will drop off their cargo (paratroopers)
+-speed: "NORMAL", "FULL" or "LIMITED"
+-altitude: in meters pilots will fly their vehicles
+-FlagRTB: true= group of pilots will return to spawn location after paradrop. false=group of pilots will loiter in drop area
+-FlagSmokes: true=paratroopers will drop smoke when approaching the ground.
+Behaviour: Group assigned will fly to actionloc and release all AI in their vehicle as 'cargo'.  AI released will execute a halo type paradrop script. Driver's vehicle will spawn airborne.
+
+
+"PATROLROUTE"
+syntax:["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyheight]
+-spawnloc: offset or specific map location group will spawn
+-actionloc: offset or specific map location at which behaviour will start.
+     For RTB flag, this will define the AI's 'base' location.
+-behaviour: "CARELESS", "SAFE", "AWARE", "COMBAT", "STEALTH" - impacts AI's tendency to follow roads, and use lights.
+-speed: "NORMAL", "FULL" or "LIMITED"
+-[locations] : array of 2d locations, 3d locations, OR town names. 
+-FlagRTB: true= group of pilots will cycle through all locations
+-FlagRoads: true= group will attempt to use roads to get to the locations
+-FlagDespawn: true= group will despawn upon reaching final location.
+              false= group will repeast route.
+-flyheight: if 'air' vehicle, altitude to fly the route.
+Behaviour: group will patrol the locations specified, designed for longer distance, fixed location type patrols.  If vehicle 
+is of type 'air' it will spawn airborne.
+
+"ZOMBIE"
+syntax: ["ZOMBIE", [spawnloc], [actionloc],[]]
+-spawnloc: offset or specific map location group will spawn
+-actionloc: offset or specific map location at which behaviour will start.
+-options array must be blank!
+Behaviour: FSM AI logic disabled, AI will wonder randomly, responding to gun fire, and visible players withing 75m's of the AI. AI will attempt to approach player and attach them with its hands.
+
+
+
+Custom Variables:
+FuMS_AILOGIC [patrolType, msnCenter, spawnLoc, patrolLoc, patrolpatternoptions]
+FuMS_XFILL [themeIndex, side, "xfillstatus"]
+FuMS_MSNTAG [theme, mission]
+
