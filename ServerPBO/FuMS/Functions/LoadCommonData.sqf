@@ -120,6 +120,7 @@ FuMS_AdminControlsEnabled = (FuMS_ServerData select 0) select 2;
 publicVariable "FuMS_AdminControlsEnabled";
 
 FuMS_FPSMinimum = (FuMS_ServerData select 0 ) select 3;
+FuMS_ServerFuMSEnable = (FuMS_ServerData select 0) select 0;
 FuMS_FPSVariance = .3; // max 30% fps drop acceptable
 FuMS_VehicleZeroAmmo = (FuMS_ServerData select 6) select 5;
 
