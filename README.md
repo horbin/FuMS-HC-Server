@@ -1,4 +1,5 @@
 #Fulcrum Mission System (FuMS)
+(like the mod? please feel free to donate.  http://conroh.com/fums/
 v1.5b
 - Fixed bug that resulted in repeated mission spawning when FuMS Admin Controls where disabled.
 - Fixed bug with that was not properly disabling FuMS Admin Tools when set to false.
