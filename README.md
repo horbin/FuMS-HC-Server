@@ -1,4 +1,52 @@
 #Fulcrum Mission System (FuMS)
+v1.5b
+- Fixed bug that resulted in repeated mission spawning when FuMS Admin Controls where disabled.
+- Fixed bug with that was not properly disabling FuMS Admin Tools when set to false.
+ -- ensure your HC folder in mission.pbo is updated!
+- Fixed bug that was causing paratroopers to sometimes despawn upon landing.
+- Fixed bug with smoking loot boxes not following configured settings.
+
+- Added code to prevent server side HC initialization from hanging if the HC can not be assigned a gender.
+  This will correct issues where the server would not perform object cleanuup for an HC that connects to the server
+  with no identity.
+  
++ New AI Logic:
+["TRACKROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
+Identical syntax and behavior is the same as "PatrolRoute", but when this logic is associated with a group in the mission file a
+symbol appropriate to the group's vehicle will mark the group's movement on the map. (updates every 3 seconds based off
+the leader's position).
+ - See the Test/LandPatrol  and HeloPatrols/ missions for example usage.
+ - See Docs folder on GitHub for details.
+
++ Water/Land boundary checking:
+Missions using random locations as spawn points will now check for similar type territory within their encounter radius.
+As an example a "LAND" mission with an encounter radius of 150m will ensure land is present within its radius in all directions.
+To take advantage of this new check, place the parameter "WATER" or "LAND" after the encounter radius in the mission file.
+Additionally, the mission MUST be trying to use a 'random' location. (See TestMission01.sqf for details)
+Example from BikeGang test mission:
+[
+"BikeGang", // Mission Title NOSPACES!
+300, // encounter radius
+"LAND" // location requirement: LAND, WATER, NONE
+    // this parameter is optional, but if a value is present it MUST be one of the three above values.
+], 
+When spawning, FuMS will check 100m, 200m and 300m N/E/S/W for land. If water found on any check a new random position
+will be selected. A maximum of 15 attempts are made before settling on a position.
+Note: PlotPole/Player proximity is still honored for both water and land missions.
+
++ Mission Overlap checking:
+Missions using random locations as spawn points will now check for other missions within their radius before spawning.
+
++ Automatic world identification.
+BaseServer.sqf no longer requires information about the world map. Admin's ensure you update your BaseServer.sqf.
+See \FuMS\HC\Util\GetWorldInfo.sqf for list of currently supported maps.
+Feedback needed to populate other maps' Exclusion Areas (ie spawn locations)
+
++ FuMS Server side 'theme spawning enable flag' moved to BaseServer.sqf, default is false (OFF)
+
+
+
+
 v1.5a
 + Fix to Crazed-Clones - now properly attack players
 + Fix to AI RocketLaunchers they are now properly removed upon AI death.
