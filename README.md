@@ -18,19 +18,20 @@ the leader's position).
  - See the Test/LandPatrol  and HeloPatrols/ missions for example usage.
  - See Docs folder on GitHub for details.
 
-+ Water/Land boundary checking:
++ Smart Mission spawning:
 Missions using random locations as spawn points will now check for similar type territory within their encounter radius.
 As an example a "LAND" mission with an encounter radius of 150m will ensure land is present within its radius in all directions.
 To take advantage of this new check, place the parameter "WATER" or "LAND" after the encounter radius in the mission file.
 Additionally, the mission MUST be trying to use a 'random' location. (See TestMission01.sqf for details)
 Example from BikeGang test mission:
-[
-"BikeGang", // Mission Title NOSPACES!
-300, // encounter radius
-"LAND" // location requirement: LAND, WATER, NONE
-    // this parameter is optional, but if a value is present it MUST be one of the three above values.
-], 
-When spawning, FuMS will check 100m, 200m and 300m N/E/S/W for land. If water found on any check a new random position
+
+	[
+	"BikeGang", // Mission Title NOSPACES!
+	300, // encounter radius
+	"LAND" // location requirement: LAND, WATER, NONE
+    	// this parameter is optional, but if a value is present it MUST be one of the three above values.
+	], 
+- When spawning, FuMS will check 100m, 200m and 300m N/E/S/W for land. If water found on any check a new random position
 will be selected. A maximum of 15 attempts are made before settling on a position.
 Note: PlotPole/Player proximity is still honored for both water and land missions.
 
