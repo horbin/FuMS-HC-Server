@@ -30,6 +30,7 @@ FuMS_BaseListofMissions = [];
 
 FuMS_ActiveThemesHC = []; // scalar value of what HC the theme should run on...
 FuMS_ActiveThemes = []; // array list of ["theme", configoption] pairs
+FuMS_ActiveMissions = []; // [index, "mission:Theme"] combo. to track running missions.
 
 _themeListData = FuMS_ServerData select 3;
 {
@@ -40,7 +41,8 @@ diag_log format ["##LoadCommonData: ActiveThemes: %1",FuMS_ActiveThemes];
 diag_log format ["##LoadCommonData: ActiveThemesHC: %1",FuMS_ActiveThemesHC];
 
 FuMS_AIONLYVehicles = (FuMS_ServerData select 6) select 4;
-FuMS_ActiveMissions = []; // [index, "mission:Theme"] combo. to track running missions.
+
+
 // load the theme options, loot, and soldier configuration data for each Theme found in BaseServer.sqf
 _themeNumber = 0;
 _abort = false;
@@ -113,6 +115,10 @@ FuMS_BaseSOLDIERDATA = +FuMS_SOLDIERDATA;
 //diag_log format ["##FuMsnInit: #setpos:%2 GlobalSoldierData: %1",FuMS_SOLDIERDATA select _themeNumber, _themeNumber];
 
 FuMS_GlobalDataIndex = _themeNumber;	
+FuMS_AdminControlsEnabled = (FuMS_ServerData select 0) select 2;
+
+publicVariable "FuMS_AdminControlsEnabled";
+
 FuMS_FPSMinimum = (FuMS_ServerData select 0 ) select 3;
 FuMS_FPSVariance = .3; // max 30% fps drop acceptable
 FuMS_VehicleZeroAmmo = (FuMS_ServerData select 6) select 5;
@@ -122,4 +128,9 @@ waitUntil {ScriptDone _hold};
 //diag_log format ["##FuMsnInit: AdminData:%1", FuMS_Users];
 //publicVariable "FuMS_Users";
 //publicVariable "FuMS_ActiveMissions";
+diag_log format ["##LoadCommonData Complete ##"];
+
+
+
+
 

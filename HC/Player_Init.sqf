@@ -44,17 +44,20 @@ FuMS_RadioMsgQue = [];
     _rscLayer cutFadeOut 20;					   
 };  
 
-//Admin Controls Menu!   
-waitUntil{!isNull (uiNameSpace getVariable ["EPOCH_loadingScreen", displayNull])};
-waitUntil{isNull (uiNameSpace getVariable "EPOCH_loadingScreen")};
-sleep 10; // something odd with Khalili or no player name, but valid 'player' function return. Pause to allow final initialization.
-while { isNil "FuMS_PlayerAuthenticated"} do
-{
-	FuMS_GetPlayerIndex = player;
-publicVariableServer "FuMS_GetPlayerIndex";
-	diag_log format ["##PlayerInit: %1 waiting for authentication.", FuMS_GetPlayerIndex];
-	sleep 3;
+//Admin Controls Menu! 
+waitUntil {!isNil "FuMS_AdminControlsEnabled"};
+if (FuMS_AdminControlsEnabled) then
+{  
+	waitUntil{!isNull (uiNameSpace getVariable ["EPOCH_loadingScreen", displayNull])};
+	waitUntil{isNull (uiNameSpace getVariable "EPOCH_loadingScreen")};
+	sleep 10; // something odd with Khalili or no player name, but valid 'player' function return. Pause to allow final initialization.
+	while { isNil "FuMS_PlayerAuthenticated"} do
+	{
+		FuMS_GetPlayerIndex = player;
+	publicVariableServer "FuMS_GetPlayerIndex";
+		diag_log format ["##PlayerInit: %1 waiting for authentication.", FuMS_GetPlayerIndex];
+		sleep 3;
+	};	
+	if (!isNil "FuMS_fnc_Menu_StartMenu") then {[player] spawn compile FuMS_fnc_Menu_StartMenu;};
+	diag_log format ["##PlayerInit: FuMS Admin Menu = %1",(!isNil "FuMS_fnc_Menu_StartMenu")];
 };
-if (!isNil "FuMS_fnc_Menu_StartMenu") then {[player] spawn compile FuMS_fnc_Menu_StartMenu;};
-diag_log format ["##PlayerInit: FuMS Admin Menu = %1",(!isNil "FuMS_fnc_Menu_StartMenu")];
-

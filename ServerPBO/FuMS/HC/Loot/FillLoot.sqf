@@ -51,9 +51,9 @@ if (_lootOption != "NONE") then
         if (_typeLoot == _lootOption) then  // Found lootOption in the list of LOOTDATA!
         {
             // check boxtype for "RANDOM" if so select from the global random options in BasicLoot.sqf       
-            diag_log format ["## FillLoot: _typeLoot:%1, _lootOption:%2 _boxtype:%3",_typeLoot, _lootOption, _boxtype];
+          //  diag_log format ["## FillLoot: _typeLoot:%1, _lootOption:%2 _boxtype:%3",_typeLoot, _lootOption, _boxtype];
             if (_boxtype == "RANDOM" or _boxtype=="Random") then { _boxtype = call FuMS_fnc_HC_Loot_GetBox;};
-            diag_log format ["## FillLoot: _typeLoot:%1, _lootOption:%2 _boxtype:%3",_typeLoot, _lootOption, _boxtype];
+            //diag_log format ["## FillLoot: _typeLoot:%1, _lootOption:%2 _boxtype:%3",_typeLoot, _lootOption, _boxtype];
             _found = true;
             _weapons = _x select 1;
             _magazines = _x select 2;
@@ -73,7 +73,7 @@ if (_lootOption != "NONE") then
                          // FuMS_SmokeProximity = _dat select 1;
                          // FuMS_SmokeColors = _dat select 2;
                          //FuMS_SmokeDuration = _dat select 3;
-                    diag_log format ["##FillLoot: SmokeBox Proximity:%1 Dur:%2 Colors:%3",FuMS_SmokeProximity, FuMS_SmokeDuration, FuMS_SmokeColors];
+                    diag_log format ["##FillLoot: SmokeBox Proximity:%1 Dur:%2 minutes Colors:%3",FuMS_SmokeProximity, FuMS_SmokeDuration, FuMS_SmokeColors];
                     [_box] spawn
                     {
                         private ["_box","_smoke01","_smokeStopTIme","_count","_smokeOn","_players","_color"];
@@ -82,10 +82,10 @@ if (_lootOption != "NONE") then
                         _smokeOn = false;
                         while {!isNil "_box"} do
                         {
-                            if (FuMS_SmokeProximity !=0) then {_smokeOn=true;FuMS_SmokeProximity=2000;_smokeStopTime = time+60*FuMS_SmokeDuration;};
+                            //if (FuMS_SmokeProximity ==0) then {_smokeOn=true;FuMS_SmokeProximity=2000;_smokeStopTime = time+60*FuMS_SmokeDuration;};
                             while {!_smokeOn} do
                             {
-                                _players = _box nearEntities ["Man",FuMS_Proximity];
+                                _players = _box nearEntities ["Man",FuMS_SmokeProximity];
                                 if (count _players > 0) then
                                 {
                                     _smokeOn = true;

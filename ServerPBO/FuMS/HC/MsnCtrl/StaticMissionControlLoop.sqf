@@ -48,7 +48,7 @@ else
  //   diag_log format ["#######5 ThemeData at _nextIndex: %1",FuMS_THEMEDATA select _nextIndex];
     
     _themeData = (FuMS_THEMEDATA select _nextIndex);
-    diag_log format ["##6 _themeData:%1",_themeData];
+   // diag_log format ["##6 _themeData:%1",_themeData];
     _options = _themeData select 0;
     _originalOption = _options select 1;
     if (_originalOption == 5) then { _options set [2, (60*60*6)];};//if option 5, set respawn to 6 hours!
@@ -72,4 +72,5 @@ else
    // diag_log format ["*********************************************************************"];
     sleep 5;
 }foreach _listOfMissions;
+
 

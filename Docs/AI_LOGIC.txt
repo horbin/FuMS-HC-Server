@@ -15,6 +15,7 @@ Logic inherrient to all AI created by FuMS.
 ["PARADROP",    [spawnloc], [actionloc], [speed, altitude, FlagRTB, FlagSmokes]]
 ["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
 ["ZOMBIE", [spawnloc], [actionloc],[]]
+["TRACKROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
 
 **All loc's can be defined via 3D map specific coordinates, 2D offsets, or a town name (ie "Starvos")
 
@@ -96,6 +97,9 @@ syntax: ["ZOMBIE", [spawnloc], [actionloc],[]]
 -options array must be blank!
 Behaviour: FSM AI logic disabled, AI will wonder randomly, responding to gun fire, and visible players withing 75m's of the AI. AI will attempt to approach player and attach them with its hands.
 
+"TRACKROUTE"
+syntax:["TRACKROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
+- identical behavior to "PATROLROUTE", with addition of a symbol, appropriate to the AI's vehicle being continously displayed at the AI's location.
 
 
 Custom Variables:

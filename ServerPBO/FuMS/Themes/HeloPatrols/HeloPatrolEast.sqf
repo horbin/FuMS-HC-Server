@@ -147,12 +147,12 @@
     ],
     [  
     // Pilots                                                          # and type  |         Patrol     |    spawn   | dest  | 'Patrol' options   
-       [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["PatrolRoute",[0,0],[0,0],["COMBAT","NORMAL",["Molos", "Sofia","Paros","Chalkeia","Panagia","Selakano"],true,false,true,100   ]]]
+       [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["TrackRoute",[0,0],[0,0],["COMBAT","NORMAL",["Molos", "Sofia","Paros","Chalkeia","Panagia","Selakano"],true,false,true,100   ]]]
   ],
   [   
      // Troops : These are distributed across all aircraft in the division. These lines are identical to the lines in the group section.
      //  Troop behaviour and side options                    # and type of Troops     Patrol logic |  spawn     |dest |'Patrol' options
-    [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["PatrolRoute",[0,0],[0,0],["COMBAT","NORMAL",["Molos", "Sofia","Paros","Chalkeia","Panagia","Selakano"],true,false,true,100   ]]]
+    [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[3,"Rifleman"]],["PatrolRoute",[0,0],[0,0],["COMBAT","NORMAL",["Molos", "Sofia","Paros","Chalkeia","Panagia","Selakano"],true,false,true,100   ]]]
  //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1800],[50,0],[50]]],
   //  [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[0,-1700],[-50,0],[50]]]
    // 'dest' for troops is where they will go to perform their 'Patrol Logic' once they get on deck

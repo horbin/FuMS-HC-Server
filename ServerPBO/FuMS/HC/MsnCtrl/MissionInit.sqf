@@ -38,6 +38,9 @@ if ( _missionNameOverride != "") then
 }
 else { _curMission = _missionArea select 0;};
 _encounterSize = _missionArea select 1;
+
+FuMS_MissionTerritory = FuMS_MissionTerritory + [[_eCenter, _encounterSize, format ["%1%2",_missionTheme,_curMission]]];
+
 _mkr1 = format ["%3_%1_%2_1",_missionTheme select 0, _curMission, _eCenter,FuMS_HC_SlotNumber];
 _mkr2 = format ["%3_%1_%2_2",_missionTheme select 0, _curMission ,_eCenter,FuMS_HC_SlotNumber];
 createMarker [_mkr1, [0,0]];
@@ -84,6 +87,7 @@ _boxes = [_lootConfig, _eCenter, _msnStatus,_themeIndex, _boxes] call FuMS_fnc_H
 [_markers, _notifications, _msnStatus, _mkr1, _mkr2,_eCenter, _missionNameOverride] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnNotifications;
 // **********************************************************************
 // Common Mission clean up
+FuMS_MissionTerritory = FuMS_MissionTerritory - [_eCenter, _encounterSize, format ["%1%2",_missionTheme,_curMission]];
 // For boxes: look to have a seperate timer, spawn a process to wait that timer period then delete them!
 diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
 {

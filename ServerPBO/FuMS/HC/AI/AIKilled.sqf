@@ -8,8 +8,8 @@ private ["_victim","_killer","_droppedLauncher","_isRPG"];
 _victim = _this select 0;
 _killer = _this select 1;
 
-diag_log format ["##AI_Killed: PriWeapon:%1", primaryweapon _victim];
-diag_log format ["##AI_Killed: All Weapons:%1", weapons _victim];
+//diag_log format ["##AI_Killed:%2 PriWeapon:%1", primaryweapon _victim,_victim];
+//diag_log format ["##AI_Killed:%2 All Weapons:%1", weapons _victim,_victim];
 
 _victim RemoveMagazineGlobal "RPG32_HE_F";
 _victim RemoveMagazineGlobal "RPG32_F";
@@ -98,7 +98,7 @@ if (isPlayer _killer and (_killer == vehicle _killer)) then
         _themeIndex = _var select 0;
         FuMS_BodyCount set [_themeIndex, ((FuMS_BodyCount select _themeIndex) + 1)];
       //  diag_log format ["##AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
-       // diag_log format ["##AI_Killed: Player side = %1  Victim Side:%2", side _killer,  side _victim];
+        diag_log format ["##AI_Killed: Player side = %1  Victim Side:%2", side _killer,  side _victim];
     };    
     if (side _victim == civilian) then
     { 

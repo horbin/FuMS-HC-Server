@@ -22,7 +22,7 @@ _missionSelection = _themeOptions select 1;
 _respawnDelay = _themeOptions select 2;
 //diag_log format ["##ControlLoop: %1 Missions Initializing##", _missionTheme];
 // Look for keyword locations. If found, add them to the provided list of _encounterLocations
-diag_log format ["##ControlLoop: _missionTheme:%1  ActiveThemes:%2",_missionTheme, FuMS_ActiveThemes];
+//diag_log format ["##ControlLoop: _missionTheme:%1  ActiveThemes:%2",_missionTheme, FuMS_ActiveThemes];
 
 _activeThemeIndex = FuMS_ActiveThemes find _missionTheme; // returns a ["theme", index] pair
 //diag_log format ["##ControlLoop: _activeThemeIndex =====%1",_activeThemeIndex];
@@ -97,7 +97,7 @@ _encounterLocations = _encounterLocations + _locationAdditions;
 _trackList = _missionList;
 
 //Initialize Radio Chatter and other THEME related global variables!
-private ["_data","_options"];
+private ["_data","_options","_abort"];
 _data = (FuMS_THEMEDATA select _themeIndex)select 3;
 //Theme Data elements : 0= config options, 1=AI messages, 2=base messages
 //  diag_log format ["##BaseOps: Themedata select 3: _data:%1",_data];
@@ -117,6 +117,7 @@ FuMS_radioChatInitialized set [_themeIndex, true];
 
 FuMS_BodyCount set [_themeIndex, 0];
 
+_abort=false;
 while {true} do
 {
     private ["_msnDoneList"];
@@ -135,7 +136,7 @@ while {true} do
 			};
 		};
     };
-    
+
     // SELECT A MISSION.
  //  diag_log format ["##ControlLoop: OrderOption:%2 _missionList:%1",_missionList, _missionSelection];
 	//  perform call of the mission chosen
@@ -177,101 +178,75 @@ while {true} do
         };
     };    
     
-    if (_missionSelection == 4) then
+    if (_missionSelection == 4 or _missionSelection ==5) then
     {
         _activeMission = _trackList;
         diag_log format ["##ControlLoop: Calling StaticMissionControlLoop with mission List:%1",_activeMission];
         [_activeMission,_themeIndex,_missionTheme] call FuMS_fnc_HC_MsnCtrl_StaticMissionControlLoop;
-        if (FuMS_AdminControlsEnabled) then
-        {
-            private ["_onOff"];
-            //FuMS_AdminThemeOn set[ _themeIndex,false];
-            _onOff = missionNameSpace getVariable format["FuMS_AdminThemeOn%1",FuMS_ThemeControlID];
-            _onOff set [_themeIndex, false];
-            missionNameSpace setVariable [format["FuMS_AdminThemeOn%1",FuMS_ThemeControlID],_onOff];
-            // tell other admins of status change.
-            FuMS_AdminUpdateData = [FuMS_ThemeControlID, "AdminThemeOn", _onOff];
-            publicVariableServer "FuMS_AdminUpdateData";
-            //  staticcontrol loop will launch each mission on its own loop. So this theme loop can be shutdown.                                    
-        };
+        
+        // loop has done its work and launched all the missions, so shut it down if Admin Controls are OFF
+        if (!FuMS_AdminControlsEnabled) exitWith{diag_log format ["##controlLoop: Admin Controls OFF"];_abort=true};
+        
+        // Admin Controls are enabled so turn this Theme to 'off'
+        private ["_onOff"];
+        //FuMS_AdminThemeOn set[ _themeIndex,false];
+        _onOff = missionNameSpace getVariable format["FuMS_AdminThemeOn%1",FuMS_ThemeControlID];
+        _onOff set [_themeIndex, false];
+        missionNameSpace setVariable [format["FuMS_AdminThemeOn%1",FuMS_ThemeControlID],_onOff];
+        // tell other admins of status change.
+        FuMS_AdminUpdateData = [FuMS_ThemeControlID, "AdminThemeOn", _onOff];
+        publicVariableServer "FuMS_AdminUpdateData";             
     }
     else
     {
-        private ["_result"];
-   //     diag_log format ["##ControlLoop: _activeMission:%1",_activeMission];   
+        private ["_result","_dataFromServer","_missionFileName"];
+       // diag_log format ["##ControlLoop: _activeMission:%1",_activeMission];   
         {   
             // Get location for the mission
-            private ["_missionFileName","_dataFromServer"];
+            // 1st check if the mission is a ["missionName",[location]] pair           
+            _pos = 0;
             _missionNameOverride = "";
-  //          diag_log format ["##ControlLoop: _encounterLocations:%1",_encounterLocations];
-            if (count _encounterLocations ==0 ) then // Theme location list is empty so generate a global location!
-            {
-                private ["_minRange","_waterMode","_terrainGradient","_shoreMode"];
-                //generate random safe location
-                _minRange = 0;
-                _waterMode = 0;// 0=not in water, 1=either, 2=in water
-                _terrainGradient = 2;  //10 is mountainous, 4 is pretty damn hilly too.
-                _shoreMode = 0; // 0= either, 1=on shore	  
-                
-                private ["_attempts","_folksHome","_playerList","_plotPoleList"];
-                _attempts = 15;
-                while {_attempts > 0} do
-                {    
-                    // uncomment to force 'random' encounters to cluster for testing!
-                   // FuMS_MapCenter = [23525, 19325];
-                   // FuMS_MapRange = 200;
-                    _pos = [FuMS_MapCenter, _minRange, FuMS_MapRange, _minRange, _waterMode, _terrainGradient, 
-                    _shoreMode, FuMS_BlackList, FuMS_Defaultpos] call BIS_fnc_findSafePos;                
-                    _plotPoleList = nearestObjects [_pos, ["PlotPole_EPOCH"], 200];
-                    if (count _plotPoleList != 0 ) then // find a plot pole, check for players at home or base raiding.
-                    {
-                        diag_log format ["##ControlLoop: Plotpoles located:%1",_plotPoleList];
-                        _folksHome = false;
-                        {
-                            _playerList = _x nearEntities ["Man",200];
-                            diag_log format ["##ControlLoop: Players located:%1",_playerList];   
-                            if (count _playerList > 0) exitwith {_folksHome = true;}; // plot pole, but no players home!
-                        }foreach _plotPoleList;
-                        if (!_folksHome) then {_attempts=-1;};//no one home, position is good!
-                    }
-                    else {_attempts=-1;}; // no plot poles, so position is good.                
-                };
-                if (_attempts == 0) then
-                {
-                     diag_log format ["##ControlLoop: Unable to find good position for %1/%2, spawning near players: %3!!", _missionTheme, _activeMission, _playerList];
-                };
-
-                
-                                   
-    //            diag_log format ["##ControlLoop: BiS_fnc_findSafePos = %1",_pos];
-            }else
-            {
-                private ["_location"];
-                _location = _encounterLocations select (floor random count _encounterLocations);
-                // If the location has a specific name, use it. Otherwise use mission name!
-                
-                if (TypeName (_location select 1) == "STRING") then
-                {
-                    // found a [pos,"LocationName"] combo (a village, town, city, or custom defined item in 'Locations' list)
-                    _pos = _location select 0;
-                    _missionNameOverride = _location select 1;
-                }else
-                {
-                    _pos = _location;
-                };
-            };
-            _missionFileName = _x select 0;
             _result = [_pos, _x, _missionNameOverride] call FuMS_fnc_HC_MsnCtrl_Util_SetSpecialNameandLocation;
             _pos = _result select 0;
             _missionNameOverride = _result select 1;
-            if (_spawnedByAdmin) then
-			{			
-				if (count FuMS_AdminSPAWNLOC > 1) then {_pos = FuMS_AdminSPAWNLOC;};
-			};
-            _dataFromServer = [_themeIndex,_missionFileName] call FuMS_fnc_HC_MsnCtrl_Util_PullData;
-            //data no longer from server, but PullData functionallity changed!
-            if (count _dataFromServer > 0) then
+            _missionFileName = _result select 2;
+             _dataFromServer = [_themeIndex,_missionFileName] call FuMS_fnc_HC_MsnCtrl_Util_PullData;
+        
+            if ( !(count _dataFromServer > 0) ) exitWith
+            { diag_log format ["##ControlLoop: Theme: %1 : HC:%3 skipped mission %2 check your Server .rpt file.",_missionTheme, _missionFileName, FuMS_ThemeControlID];};    
+        
+            // if _pos not set to an array, than this mission is NOT a missionName/location pair, but just a mission name needing a location.
+            //diag_log format ["##ControlLoop: _pos:%1 _missionFileName:%2",_pos, _missionFileName];
+            if (TypeName _pos == "SCALAR") then
             {
+                // encounter does not have a STATIC spawn point, so find one!                                                      
+                //diag_log format ["##ControlLoop: _dataFromServer:%1 _missionFileName",_dataFromServer, _missionFileName];                            
+                if (count _encounterLocations ==0 ) then // Theme location list is empty so generate a global location!
+                {
+                    _pos = [_dataFromServer, _themeIndex, _missionFileName] call FuMS_fnc_HC_MsnCtrl_Util_GetSafeMissionSpawnPos;                                   
+                }else
+                {
+                    private ["_location"];
+                    _location = _encounterLocations select (floor random count _encounterLocations);
+                    // If the location has a specific name, use it. Otherwise use mission name!                    
+                    if (TypeName (_location select 1) == "STRING") then
+                    {
+                        // found a [pos,"LocationName"] combo (a village, town, city, or custom defined item in 'Locations' list)
+                        _pos = _location select 0;
+                        _missionNameOverride = _location select 1;
+                    }else
+                    {
+                        _pos = _location;
+                    };
+                };     
+            };
+            if (_spawnedByAdmin) then
+            {			
+                if (count FuMS_AdminSPAWNLOC > 1) then {_pos = FuMS_AdminSPAWNLOC;};
+			};
+           // _dataFromServer = [_themeIndex,_missionFileName] call FuMS_fnc_HC_MsnCtrl_Util_PullData;
+            //data no longer from server, but PullData functionallity changed!
+      
                 //diag_log format ["##ControlLoop: Misssion Data from Server :%1",_dataFromServer];
                // _msnDone = [_dataFromServer, [_pos, _missionTheme, _themeIndex, 0, _missionNameOverride]] execVM "HC\Encounters\LogicBomb\MissionInit.sqf";                                     
 				_msnDone = [_dataFromServer, [_pos, _missionTheme, _themeIndex, 0, _missionNameOverride]] spawn FuMS_fnc_HC_MsnCtrl_MissionInit;
@@ -283,10 +258,7 @@ while {true} do
                 // setting _phaseID = 0 implies this mission is a 'root parent' (it has no parents itself!)
                 // _msnDone =[[_pos, _missionTheme, _themeIndex, 0, _missionNameOverride]] execVM _activeMissionFile;
                 _msnDoneList = _msnDoneList + [_msnDone];
-            }else
-            {
-                diag_log format ["##ControlLoop: Theme: %1 : HC:%3 skipped mission %2 check your Server .rpt file.",_missionTheme, _missionFileName, FuMS_ThemeControlID];
-            };
+         
         }foreach _activeMission; 
         // wait for ALL missions started to complete, before restarting all missions that where started, or selecting a new one.
         {
@@ -294,6 +266,7 @@ while {true} do
         }foreach _msnDoneList; 
         sleep _respawnDelay;
     };    
+    if (_abort) exitWith{    diag_log format ["##ControlLoop: Theme:%1 loop terminated after multi-mission spawn of single loops due to Admin Controls being disabled."];};
 };
     
     

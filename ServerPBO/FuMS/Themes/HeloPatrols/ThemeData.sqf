@@ -13,7 +13,7 @@ _themeData =
         60, // Respawn delay in seconds
 		true, // Use global loot data
 		true, // Use global soldier data
-		false // Autostart
+		true // Autostart
     ],
     [  //***** Mission List *****
     // List of Missions. Value of '0' indicates random location ##NOT [0] ###, otherwise location indicated used for the encounter.
@@ -47,7 +47,7 @@ _themeData =
     ],
 	[ //***** Radio Chatter *****
 		[ // AI Radio Chatter configuration
-             "ALL", // radio channel used by AI - "ALL"= messages heard w/o radio (other options 0-9)
+             5, // radio channel used by AI - "ALL"= messages heard w/o radio (other options 0-9)
     //0=Quartz, 1=Garnet, 2=Citrine, 3=Amethyst, 4=Topaz, 5=Sapphire, 6=Onyx, 7=Emerald, 8=Ruby, 9=Jade
 			false, // silent Check-in =true: AI squads will NOT check-in with BaseOps when they spawn.
 			true, // AI death messages enabled.

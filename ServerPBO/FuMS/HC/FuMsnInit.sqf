@@ -15,6 +15,7 @@ if !(hasInterface) then
         FuMS_LOOTDATA = FuMS_BaseLOOTDATA;
        FuMS_SOLDIERDATA = FuMS_BaseSOLDIERDATA;
         FuMS_ListofMissions = FuMS_BaseListofMissions;
+        FuMS_ThemeControlID = FuMS_HCThemeControlID;
        // FuMS_BaseTHEMEDATA = [];
        // FuMS_BaseLOOTDATA = [];
        // FuMS_BaseSOLDIERDATA = [];
@@ -35,12 +36,13 @@ if !(hasInterface) then
         _serverOptions = FuMS_ServerData select 0;
         // Change these to match your specific map!!!
         //Altis specific
-        FuMS_MapCenter = _serverOptions select 0;
-        FuMS_MapRange = _serverOptions select 1;
-        FuMS_AdminControlsEnabled = _serverOptions select 2;
+        [] call FuMS_fnc_HC_Util_GetWorldInfo;
+        //FuMS_MapCenter = _serverOptions select 0;
+        //FuMS_MapRange = _serverOptions select 1;
+        //FuMS_AdminControlsEnabled = _serverOptions select 2; <-- no set and passed as PV in LoadCommonData.
         // areas to not spawn encounters, if location being randomly generated.
-        FuMS_BlackList = FuMS_ServerData select 1;
-        FuMS_Defaultpos = FuMS_ServerData select 2;
+        //FuMS_BlackList = FuMS_ServerData select 1;
+       // FuMS_Defaultpos = FuMS_ServerData select 2;
         FuMS_ActiveThemes = FuMS_ServerData select 3; // array of theme names. Used to locate the theme's mission folder.
         // Configure RadioChatter module  See /Basic/ThemeData.sqf for details for more options!
         _radchat = FuMS_ServerData select 4;
@@ -162,10 +164,11 @@ if !(hasInterface) then
     FuMS_PhaseMsn = []; //Array
     FuMS_BodyCount = []; //Array containing number of AI killed under the current running mission. 
     //Phased missions contribute to the parent mission's total and are not calculated separately.    
-    //Initialize ALL data before starting Theme Control Loops to permit global data to be fully initialized.    
-    //FuMS_OkToGetData = true; //semephore to lock down data requests to server from multiple control loops.
-       FuMS_ActiveMissions = [];
+    //Initialize ALL data before starting Theme Control Loops to permit global data to be fully initialized.      
+       FuMS_ActiveMissions = []; // used by Admin Tools for tracking/killing missions
        // inits globavariables with suffix equal to this HC's ownerID - these used in DataCleanup.
+       FuMS_MissionTerritory = []; // used in deconfliction of spawn locations to prevent random loc spawn missions from dropping ontop of current missions.
+       //  ["position",eCenter,radius,"mission:Theme"]
        [] call FuMS_fnc_HC_Util_HC_InitHCVariables;    
        
        //Tell HeartMonitor to start watching, HC done loading/initing and ready to start theme control loops!

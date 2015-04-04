@@ -6,43 +6,33 @@
 FuMS_ServerData =
 [
     [ // Map Definition and FuMS configuration
-        [15440, 15342, 0],    // Map Center
-        17000,                 // Map Range in meters
+       false, // Enable FuMS missions to run on the main server.
+           // NOTE: setting to 'true' may drasticly impact server performance.
+       "testpath",                 // MySQL support testing
 		true,				//Enable AdminControls! See Docs\AdminControls.txt
          15   //minimum Server FPS. Below this FPS FuMS will not load new missions. 
     ],
     [  // Exclusion Areas
-        // Areas to be excluded from Global Random generation of mission spawn points
-        // Points listed are for the upper left and lower right corners of a box.
-        [[13000,15000,0],[14000,14000,0]],	// Middle spawn near Stavros
-        [[05900,17100,0],[06400,16600,0]], // West spawn
-        [[18200,14500,0],[18800,14100,0]],   // East spawn
-        [[23400,18200,0],[23900,17700,0]]   //Cloning Lab
+    // See \FuMS\HC\Util\GetWorldInfo.sqf if you need to make changes
     ],
     [ // Default Areas
-        // default positions to use if locations being randomly generated
-        // These positions will be used if a random safe location is not found.
-        // Note: The below locations are for use by BIS_fnc_findSafePos !!!
-		
-        //  If you have specific locations you want to use for your mission set, place those
-        //  locations in the specific themedata.sqf.
-        
-        
+    // See \FuMS\HC\Util\GetWorldInfo.sqf if you need to make changes
     ],
     [
         // ActiveThemes
-        // A folder matching the names below needs to exist in the ..\Encounters folder.
+        // A folder matching the names below needs to exist in the ..\Themes folder.
         // use this block to easily turn off/on your various mission sets.
         // -1 = all HC's.  0= Server only,  1=1st HC to connect, 2=2nd, etc.
         //  Note: Server option not currenty operational.
         // ["StressTest",-1],
         ["Test",1],
         ["HeloPatrols",1],
+        //["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1],["SEM",1]
         ["SEM",1],
         ["TownRaid",1],
-        ["Small",-1],
-        ["Aquatic",-1],
-        ["MadScience",-1]
+       ["Small",-1],
+       ["Aquatic",-1],
+       ["MadScience",-1]
     ],
     [  // Event and AI Radio messsage behavior
         true, // EnableRadioChatterSystem: turns on the system, allowing below options to function

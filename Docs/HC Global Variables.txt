@@ -58,10 +58,16 @@ FuMS_MSNTAG [theme, mission]
 FuMS_PERSIST	bool	set on buildings created by FuMS.
 HCTEMP	string	vehicles, set to "PLAYER" 1st time a player gets into vehicle.
 
+FuMS_RunningMissionList	list of currently running missions in following format
+	[ "[position]", HCID running on, _eCenter, _radius]
+
 FuMS_ListofHCs	array of numbers that contain the _hcID's for each HC connected.
 
+FuMS_MissionTerritory []	used to deconflict mission spawning [eCenter,radius,"mission:Theme"]
+
+
 FuMS Admin Controls
-*FuMS_AdminCoontrolsEnabled	bool
+*FuMS_AdminControlsEnabled	bool
 *public broadcasted:
 FuMS_AdminUsers[] 
 *FuMS_ActiveThemes[]  - defined above, string array list of active themes. Active theme is defined as a theme specified
@@ -72,8 +78,11 @@ ServerDtaa.sqf if a format error is found in one of a theme's files!
   that is defined in for the mission in the ThemeData.sqf.
 *FuMS_AdminThemeOn[] - turns theme loop on, if it was off.
 
-*FuMS_ActiveMissions - list of missions currently running
+*FuMS_ActiveMissions - list of missions currently running on the HC.
    [index, "mission:Theme"]   setting "mission:Theme" to "KILL" will terminate the mission.
+   modified in LogicBomb.sqf - ONLY used for Admin Menu.
+   
+   
 *FuMS_ListofMissions[] - list of all FuMS missions.
    [themeIndex] [missionIndex]  goes to array that is ["MissionName","MissionCode"]
 FuMS_Anchor = object a player currently has set as his anchor. all missions spawned by this player will occur at the 'anchor's location.
@@ -102,7 +111,7 @@ FuMS_AdminUpdateData - set and called by HC to push data from server to Admins
 FuMS_AdminThemeOnServer :Admin->Server  ServerName, ThemeName
 FuMS_AdminThemeOn   : 
 FuMS_AdminMenuOpen	PVEH to server to request updated variables when menu is opened - set to 'player' on pass to server.
-FuMS_AdminActiveMissionList
+FuMS_AdminActiveMissionList	
 FuMS_AdminActiveThemes
 FuMS_AdminThemeOn
 FuMS_AdminThemeSpawnLoc
