@@ -26,10 +26,15 @@ Additionally, the mission MUST be trying to use a 'random' location. (See TestMi
 Example from BikeGang test mission:
 
 	[
+	
 	"BikeGang", // Mission Title NOSPACES!
+	
 	300, // encounter radius
+	
 	"LAND" // location requirement: LAND, WATER, NONE
+	
     	// this parameter is optional, but if a value is present it MUST be one of the three above values.
+    	
 	], 
 - When spawning, FuMS will check 100m, 200m and 300m N/E/S/W for land. If water found on any check a new random position
 will be selected. A maximum of 15 attempts are made before settling on a position.
