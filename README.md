@@ -1,5 +1,9 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
+v1.5c
+ - revert to pre 1.4 HC connection coding. Old heart beat monitor restored.
+ - Should fix issues with HC timeouts.
+
 v1.5b
 - Fixed bug that resulted in repeated mission spawning when FuMS Admin Controls where disabled.
 - Fixed bug with that was not properly disabling FuMS Admin Tools when set to false.
