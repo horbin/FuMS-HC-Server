@@ -23,14 +23,32 @@ _lootData =
 //******** CloneHunter Loot****************************
  [
 // Loot Option title, and box to be used.  Use of array names is permitted. 
-  ["CloneHunter", "box_nato_ammoveh_f"],
+  ["LOOTBOX", "box_nato_ammoveh_f"],
   [// All weapons and quantity 
-      ["LMG_Mk200_F", 2],
-      ["arifle_MXM_Black_F", 2]
+      [RifleSniper762, 2],
+      [RifleSniper127, 2],
+	  [RifleSniper408, 2],
+	  [RifleSniper65, 2],
+	  [RifleLMG762, 2],
+	  [RifleLMG65, 2],
+	  [RifleLMG556, 2],
+	  [Rifle65Lnchr, 2],
+	  [Rifle556Lnchr, 2],
+	  [RifleAssault762, 2],
+	  [RifleAssault556, 2]
   ],
   [// All magazines and quantity
-      ["30Rnd_65x39_caseless_mag_Tracer", 4],
-      ["200Rnd_65x39_cased_Box_Tracer", 4]
+      [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo762, 4],
+	  [Ammo127, 4],[Ammo127, 4],[Ammo127, 4],[Ammo127, 4],[Ammo127, 4],[Ammo127, 4],[Ammo127, 4],[Ammo127, 4],	  [Ammo127, 4],
+	  [Ammo65, 4],[Ammo65, 4],[Ammo65, 4],[Ammo65, 4],[Ammo65, 4],[Ammo65, 4],[Ammo65, 4],[Ammo65, 4],[Ammo65, 4],
+	  [Ammo556, 4],[Ammo556, 4],[Ammo556, 4],[Ammo556, 4],[Ammo556, 4],[Ammo556, 4],[Ammo556, 4],[Ammo556, 4]
   ],
   [// All items and quantity
       ["NVG_EPOCH", 2],
@@ -39,10 +57,15 @@ _lootData =
       ["ItemKiloHemp", 3],
       ["meatballs_epoch", 2],
       ["HeatPack", 3],
-      ["ItemSodaOrangeSherbet", 2] 
+      ["ItemSodaOrangeSherbet", 2] ,
+	  [BuildingComponents, 5],[BuildingComponents, 5],[BuildingComponents, 5],[BuildingComponents, 5],[BuildingComponents, 5],[BuildingComponents, 5],
+	  [BuildingKits, 5],[BuildingKits, 5],[BuildingKits, 5],[BuildingKits, 5],[BuildingKits, 5],[BuildingKits, 5],
+	  [CraftingComponents, 5],[CraftingComponents, 5],[CraftingComponents, 5],[CraftingComponents, 5],[CraftingComponents, 5],[CraftingComponents, 5],
+	  [Grenades_ALL, 2],[Grenades_ALL, 2],[Grenades_ALL, 2],[Grenades_ALL, 2],[Grenades_ALL, 2],[Grenades_ALL, 2]
   ],
-  [// All backpacks and quantity
-    [Backpacks_ALL, 1]
+  [
+      // All backpacks and quantity
+    [Backpacks_ALL, 2],[Backpacks_ALL, 2],[Backpacks_ALL, 2],[Backpacks_ALL, 2],[Backpacks_ALL, 2]
   ]
  ],//********** Loot**********************
 //**********************************************************************************************************

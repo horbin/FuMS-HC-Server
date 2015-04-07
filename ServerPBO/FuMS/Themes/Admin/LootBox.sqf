@@ -1,49 +1,53 @@
-//BikeGang.sqf
+//LootBox.sqf
 // Horbin
-// 1/20/15
-// Be cautious when editing data.
+// 1/11/15
+// Based upon drsubo Mission Scripts
 
 [
-["LandPatrol", 300], // Mission Title NOSPACES!, and encounter radius
-["Land Patrol","mil_dot","ELLIPSE","ColorYellow","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
+["LootBox", 200], // Mission Title NOSPACES!, and encounter radius
+["LootBox","mil_objective","ELLIPSE","ColorRed","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
+   // type is "mil_objective"
 [  
     [// NOTIFICATION Messages and Map display Control.
-	true, "ALL", 0, // Notify players via Radio Message, radio channel, range from encounter center (0=unlimited.
-    true, // Notify players via global message
-    true,// Show encounter area on the map
-    30,    // Win delay: Time in seconds after a WIN before mission cleanup is performed
-    10       // Lose delay: Time in seconds after a lose before mission cleanup is performed
+	false, "ALL",0, // Notify players via Radio Message, radio channel, range from encounter center (0=unlimited.
+    false, // Notify players via global message
+    false,// Show encounter area on the map
+    0,    // Win delay: Time in seconds after a WIN before mission cleanup is performed
+    0       // Lose delay: Time in seconds after a lose before mission cleanup is performed
           //NOTE: the above delay must occur before the mission is considered 'complete' by the mission manager control loop.
     ],
-    // Spawn Mission Message 
-    ["",  // title line
-     "", // title line, do not remove these!
-     "A convoy of clone hunters have entered the area." //description/radio message.
-	],  
-    // Mission Success Message
-    ["Mission Success",
-     "",
-     "The convoy is destroyed!"
-	], 
-    // Mission Failure Message
-    ["Mission Failure!",
+    // Spawn Mission Message
+["Mission",
     "",
-    "The convoy has escaped!"
-	] 
+    ""
 ],
-[  //  Loot Config:  Refer to LootData.sqf for specifics
-["None" , [0,0] ], //[static loot, offset location] - spawns with the mission
-   // static loot will also spawn if 'NO TRIGGERS' is enabled.
-["None" , [0,0] ], // Win loot, offset location - spawns after mission success
+    
+    // Mission Success Message
+["Mission Success",
+    "",
+    ""
+],
+  
+    // Mission Failure Message
+["Mission Failure!",
+    "",
+    ""
+] 
+],
+[  //  Loot Config:  Refer to LootData.sqf for specifcs
+["LOOTBOX" , [0,0] ], //[static loot, offset location] - spawns with the mission
+["None" , [5,5] ], // Win loot, offset location - spawns after mission success
 ["None" , [0,0] ]  // Failure loot, offset location - spawns on mission failure
 ],
 [//BUILDINGS: persist = 0: building deleted at event completion, 1= building remains until server reset.
-  
+   
 ],
 [ // AI GROUPS. Only options marked 'Def:' implemented.
- //  [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"],[2,"Hunter"]  ],   ["BoxPatrol",[0,75],[0,0],[0]   ]],
- //   [["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"]                                         ],   ["Sentry",[-20,10],[0,0],[70] ]],
- //  [["RESISTANCE","COMBAT","RED","LINE"],   [  [2,"Hunter"]                                              ],   ["Guard",[6,6],[0,0],[30]     ]]
+//   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"],[2,"Hunter"]  ],   ["BoxPatrol",[0,75],[0,0],[0]   ]],
+//    [["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"]                                         ],   ["Guard",[-20,10],[0,0],[70] ]],
+//[["EAST","COMBAT","RED","LINE"],   [  [3,"Sniper"]           ],     ["BoxPatrol",[50,250],[0,0],[150]     ]]
+//[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"],[1,"LMG"] ],   ["Explore",[6,6],[0,0],[150]     ]],
+//[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"]           ],   ["BoxPatrol",[-6,-6],[0,0],[0]     ]]
 ],
 //Example: PatrolBehavior: ["BoxPatrol", [100,0], [0,0],0 ]  
 // AI will spawn 100m east of encounter center, a 4 point patrol will be set up at 80% encounter radius. AI will move to this and start patrolling.
@@ -64,32 +68,7 @@
 
 // Vehicles
 [
-     [  // Convoy #1                     
-    [         // Vehicle                     Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-           [  "C_Offroad_01_EPOCH"          ,[-500,-500],[1 ,"Rifleman"],        "Random"      ], 
-           [  "C_Offroad_01_EPOCH"          ,[-500,-550],[1 ,"Rifleman"],     "Random"      ], 
-           [  "C_Offroad_01_EPOCH"          ,[-500,-575],[1 ,"Rifleman"],     "Random"      ]
-		//   [  "C_Quadbike_01_EPOCH"          ,[-50,-600],[1,"Rifleman"],     "None"      ], 
-		 //  [  "C_Quadbike_01_EPOCH"          ,[-50,-600],[1,"Rifleman"],     "None"      ], 
-         //  [  "C_Quadbike_01_EPOCH"          ,[-50,-600],[ 1, "Rifleman"],     "Truck01"]   
-                 // If driver-less vehicles are desired, place them at the bottom of the list. 
-				 // Troops WILL be placed into 'driver-less' vehicles if the other vehicles are full!!!
-      ],
-      [  
-          // "Convoy": spawn at -500,-500, drop off cargo at -50,-50, then return to base. (ie 'Convoy' logic behaviour)
-           // Drivers                                                          # and type  |         Patrol     |    spawn   | dest       | 'Patrol' options
-          [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["TrackRoute",[-500,-500],[0,0],["SAFE","NORMAL",["Zaros","Panochori"],true,true,false,0]   ]]
-         // proceed to 0,-15, drop off troops, then return to spawn location and despawn!
-      ],
-      // Troops : These are distributed across all vehicles in this convoy.                                                         
-     [      //  Troop behaviour and side options                        # and type of Troops                               Patrol logic |  spawn     |dest |'Patrol' options
-         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3,"Sniper"],[2,"Rifleman"]  ],   ["BoxPatrol",[-500,-500],["Zaros"],[100]   ]]
-        // [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"] ],   ["BoxPatrol",[-70,-600],[50,0],[50]   ]],
-        // [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[3,"Rifleman"]  ],   ["BoxPatrol",[-70,-600],[-50,0],[50]   ]]
-            // 'dest' for troops is where they will go to perform their 'Patrol Logic' once the disembark the convoy IF their vehicle's driver group is using the 'Convoy' patrol logic.
-            // otherwise troops will remain in vehicle unless it is engaged. Once vehicle destroyed, Troops will move onto their 'Patrol Logic'.
-     ]
-   ]  
+                 
 ],
 // Triggers and Event control.
 //  There are 3 general states for a mission. Win, Lose, or Phase Change.
@@ -103,21 +82,16 @@
 // index 0:win, 1:lose, 2:phase1, 3:phase2, 4:phase3, 5:ignore triggers
 [ // NOTE: side RESISTANCE for groups == side GUER for Triggers.
     [    //WIN Triggers and Controls
-     // ["LowUnitCount", "GUER", 3, 0, [0,0]] // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
-      // ["ProxPlayer", [0,0], 50, 1], // 1 player is within 100 meters of encounter center.
-	//   ["Reinforce", 25, "Random"], // %chance when requested, Mission to run
-	//   ["Timer", 600] // 10minutes must pass prior to being able to complete the mission (to allow bikes to get there!!!
-	["BodyCount", 9] // when at least 10 AI are killed by players
-	   // Note Reinforce trigger will not impact win/loss logic.
+ //     ["LowUnitCount", "GUER", 0, 0, [0,0]], // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
+ //     ["ProxPlayer", [0,0], 20, 1], // 1 player is within 20 meters of encounter center.
+//	  ["Reinforce", 100, "Random"] // %chance when requested, Mission to run
     ],
     [    //LOSE Triggers and Controls
 //      ["HighUnitCount", "GUER",10,40,[0,0]] // 10 enemies get within 40m's of encounter center
-           //["Timer",180]  // mission ends after 3 minutes if not completed
     ],   
     [    //Phase01 Triggers and Controls
-//        ["Timer", 180]  // Mission Ends in 180 seconds
 //      ["Detected",0,0]    //Launch mission if any group or vehicle detects a player
-      //   ["ProxPlayer", [0,0], 100, 1] // 1 player is within 100 meters of encounter center.
+//        ["TIMER", 1500]   // Encounter fails after 1500 seconds (25 minutes)
     ],
     [    //Phase02 Triggers and Controls
     
@@ -128,7 +102,7 @@
     [    // NO TRIGGERS: Uncomment the line below to simply have this mission execute. Mission triggers from a mission that
           // launched this mission will continue to be observed.
     // Uncommenting this line will ignore all triggers defined above, and mission will pass neither a WIN or LOSE result.
-    //   ["NO TRIGGERS"]
+       ["NO TRIGGERS"]
     ]
 ],
 /*Trigger and Control options
@@ -141,9 +115,6 @@ Def: ["Detected", groups, vehicles]; TRUE when player is detected by encounter A
          numbers that will conduct the detection. A value of zero will permit all groups. A value of -1 will be none.
           ["Detected",0,2]  This would trigger if any 'AI group' or vehicle group #2 detect a player.
 		  ["Detected",-1, 1] This would trigger only if vehicle group #1 detects a player
-Def: ["Reinforce", chance, "MsnName"]: Sets up reinforcement logic in the event AI calls for help via RadioChatter
-      This trigger has no impact on 'win' conditions. If reinforcement ability is desired, ensure this trigger
-	  is included in the mission, as well as any 'phased' missions.
 
 // EH Controls
 5 ["KillGroup",grp#]: triggers when specified group's AI are all killed.  grp# taken from the above array of groups, starting with '1'
@@ -165,11 +136,9 @@ Def: ["Reinforce", chance, "MsnName"]: Sets up reinforcement logic in the event 
 // The below specified missions will be precompiled into the specified 'calls' when this script runs.
 // The file needs to be located in the same folder as this mission launching them.
 [
-   // "NukeDevice",  //Phase01
-   // "TestPhase2", //Phase02
-   // "TestPhase3" //Phase03
+//    "TestPhase1",  //Phase01
+//    "TestPhase2", //Phase02
+//    "TestPhase3" //Phase03
 ]
-
-
 
 ];

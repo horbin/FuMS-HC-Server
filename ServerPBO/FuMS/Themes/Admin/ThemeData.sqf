@@ -14,7 +14,7 @@ _themeData =
 			 // Using option 4 will permit mission to run and re-spawn based upon the respawn delay below.
 			 //  option 5 will let the mission only spawn once per 6 hours (ie server reset)
         60000, // Respawn delay in seconds
-		true, // use Global Loot Data (GlobalLootData.sqf)
+		false, // use Global Loot Data (GlobalLootData.sqf)
 		true,  // use Global Soldier Data file (GlobalSoldierData.sqf)
 		false // ThemeAutoStart: Setting this to 'false' will prevent normal start-up of the Theme! See \Docs\AdminControls.txt
        
@@ -25,7 +25,8 @@ _themeData =
        
 		
 		 ["Help_Helo"],
-		["NukeDevice"]
+		["NukeDevice"],
+		["LootBox"]
 		// ["MazeTest2",[23300,17800]],
 		// ["MazeTest2",[15500,20000]]
 		//["TestParse"]

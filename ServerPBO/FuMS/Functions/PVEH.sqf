@@ -128,18 +128,6 @@ FuMS_RadioChatter_Server =
     [_this select 1] spawn FuMS_RadioChatter_Server;
 };
 
-//onPlayerConnected{diag_log format ["##PVEH : player connected  _id:%1, _uid:%2, _name:%3",_id, _uid,_name];};
-addMissionEventHandler ["HandleDisconnect",
-{
-    _unit = _this  select 0;
-    _id = _this select 1;
-    _uid = _this select 2;
-    _name = _this select 3;
-    diag_log format ["##PVEH MissionEvent:HandleDisconnect: _unit:%1 _id:%2 _uid:%3 _name:%4",_unit,_id,_uid,_name];
-    false
-}];
-//onPlayerDisconnected{diag_log format ["##PVEH : player disconnected _id:%1, _uid:%2, _name:%3",_id, _uid,_name];};
-
 
 FuMS_HeartMonitor = compile preprocessFileLineNumbers "\FuMS\Functions\HeartMonitor.sqf";
 

@@ -12,7 +12,7 @@ FuMS_HC_DataCleanup	= compile preprocessFileLineNumbers "\FuMS\Functions\HC_Data
 private ["_hcID","_handle","_owner"];
 _owner = _this select 0;
 _hcID = owner _owner;
-diag_log format ["##Server-HC Heart Monitor Slot #%1 operational for %2", _hcID, _owner];
+diag_log format ["<FuMS> HeartMonitor: Server-HC Heart Monitor Slot #%1 operational for %2", _hcID, _owner];
 
 _handle = [_owner ] execVM "\FuMS\Functions\InitHeadlessClient.sqf";
 waitUntil {ScriptDone _handle};
@@ -22,6 +22,74 @@ _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it 
 
 [_owner] spawn
 {
+    private ["_prefix","_hcID","_pulse","_status","_owner","_start","_dead"];
+    _prefix = "FuMS_HC_isAlive";
+    _owner = _this select 0;
+    _hcID = owner _owner;
+    _owner = format ["%1",_owner]; // convert it to text, so when it goes dead, we still know its name!    
+    _pulse = format ["%1%2",_prefix, _hcID];
+    _dead = false;
+
+    missionNamespace setVariable [_pulse, false];  // set false to start.
+    // now wait for the 1st heartbeat. This one is sent AFTER the HC finishes all of its initializations!
+    waituntil
+    {
+        uiSleep 2;
+        diag_log format ["<FuMS> HeartMonitor: Waiting for HC:%1 initialization to finalize with signature %2",_owner, _pulse];
+        _status = missionNamespace getVariable _pulse;
+        _status
+    };
+    
+    while {!_dead} do
+    {     
+      //  waitUntil {!isNil "HC_isAlive00"};
+        missionNamespace setVariable [_pulse, false];
+        uiSleep 2;
+        //Wait for 2secs, if value still FALSE, listen for a 2nd heartbeat.  
+        _status = missionNamespace getVariable _pulse;
+        if (!_status) then // listening for 2nd heart beat
+        {
+            diag_log format ["<FuMS> HeartMonitor: %1: 1st Heart beat missed!!%2",_owner,_pulse];    
+            uiSleep 2;
+            //Wait 2secs, if value still FALSE, listen for a 3rd heart beat.
+            _status = missionNamespace getVariable _pulse;
+            if (!_status) then //listening for the 3rd heart beat.
+            {
+                diag_log format ["<FuMS> HeartMonitor:%1: 2nd Heart beat missed!!%2",_owner,_pulse];       
+                uiSleep 2;       
+                _status = missionNamespace getVariable _pulse;   
+                if (!_status) exitWith // HC_HAL is confirmed disconnected.                            
+                {
+                    _start = time;
+                    diag_log format ["<FuMS> HeartMonitor:%1: Disconnect detected. Cleaning up the Mess!!!!%2",_owner,_pulse];  
+                    // Cleanup AI Groups
+                    FuMS_ServerIsClean = false;
+                    [_hcID] call FuMS_HC_DataCleanup;                   
+                    diag_log format ["<FuMS> HeartMonitor: HC:%1: Complete in %3 secs!%2",_owner,_pulse, time-_start];  
+                    missionNamespace setVariable [_pulse, nil];
+                    FuMS_ServerIsClean = true;       
+                    _dead = true;
+                };
+                // End of cleanup
+            };
+            // End of 3rd heartbeat
+        };
+        // End of 2nd heartbeat
+    };
+    //End of 1st heartbeat
+    diag_log format ["<FuMS> HeartMonitor: Has ended for %1:%2",_owner,_pulse];
+};
+
+
+
+
+
+
+
+
+/*
+[_owner] spawn
+{
     private ["_prefix","_hcID","_pulse","_owner","_start", "_ownerName"];
     _prefix = "FuMS_HC_isAlive";
     _owner = _this select 0;
@@ -29,7 +97,7 @@ _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it 
    _ownerName = format ["%1",_owner]; // convert it to text, so when it goes dead, we still know its name!    
     _pulse = format ["%1%2",_prefix, _hcID];
  //   _isInited = format ["%1%2_init"];  
-    _genderExpireTime = time+180;
+    _genderExpireTime = time+180;    
     waitUntil
     {
         diag_log format ["##HeartMonitor: Waiting on Gender for %1",_owner];
@@ -52,5 +120,5 @@ _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it 
     FuMS_ServerIsClean = true;       
     diag_log format ["##HeartMonitor: Has ended for %1:%2",_ownerName,_pulse];
 };
-
+*/
 

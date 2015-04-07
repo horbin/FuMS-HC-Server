@@ -7,7 +7,7 @@ if !(hasInterface) then
 {   
     private ["_serverOptions","_themeNumber","_radchat","_i","_abort","_msg","_dat","_dat2"];  
 	
-    diag_log format ["##FuMsnInit: Script Transfer complete: FuMS Initializing!"];    
+    diag_log format ["<FuMS> FuMsnInit: Script Transfer complete: FuMS Initializing!"];    
     //ASSERT BaseServer, BaseLoot, and BaseSoldier data now on HC  
     if (!isServer) then
     {
@@ -20,8 +20,8 @@ if !(hasInterface) then
        // FuMS_BaseLOOTDATA = [];
        // FuMS_BaseSOLDIERDATA = [];
        // FuMS_BaseListofMissions = [];
-        diag_log format ["##FuMsnInit: ThemeData: %1",FuMS_THEMEDATA];
-        diag_log format ["##FuMsnInit: ListofMissions: %1", FuMS_ListofMissions];
+        diag_log format ["<FuMS> FuMsnInit: ThemeData: %1",FuMS_THEMEDATA];
+        diag_log format ["<FuMS> FuMsnInit: ListofMissions: %1", FuMS_ListofMissions];
     };
     //ASSERT ServerData, THEMEDATA, LOOTDATA,SOLDIERDATA fully initialized at this point!   
        
@@ -81,7 +81,7 @@ if !(hasInterface) then
         if([] call FuMS_fnc_HC_Val_ValidateMissionData) exitWith {_abort=true;};
         if (true) exitWith{};
     };
-    if (_abort) exitWith {diag_log format ["###FuMsnInit ############FuMS OFFLINE####################"];};
+    if (_abort) exitWith {diag_log format ["<FuMS> FuMsnInit ############FuMS OFFLINE####################"];};
     
     //FuMS_GlobalDataIndex = (count FuMS_ActiveThemes);
     if (FuMS_AdminControlsEnabled) then
@@ -115,18 +115,18 @@ if !(hasInterface) then
             FuMS_AdminUpdateData = [FuMS_ThemeControlID, "AdminThemeSpawnLoc",_spawnLoc];
             publicVariableServer "FuMS_AdminUpdateData";                 
         };
-        diag_log format ["##FuMsnInit: Admin On: %1",FuMS_AdminControlsEnabled];        
+        diag_log format ["<FuMS> FuMsnInit: Admin On: %1",FuMS_AdminControlsEnabled];        
        // diag_log format ["##FuMsnInit: Theme is on: %1",FuMS_AdminThemeOn];
         //diag_log format ["##FuMsnInit: Theme spawn locs: %1",FuMS_AdminThemeSpawnLoc];
     };
     
-    diag_log format ["##FuMsnInit: ServerData:%1",FuMS_ServerData];
-    diag_log format ["##FuMsnInit: Indx:%2:GlobalLootData %1", FuMS_LOOTDATA select FuMS_GlobalDataIndex, FuMS_GlobalDataIndex];
-    diag_log format ["##FuMsnInit: Indx:%2:GlobalSoldierData %1", FuMS_SOLDIERDATA select FuMS_GlobalDataIndex,FuMS_GlobalDataIndex];
-    diag_log format ["##FuMsnInit: #%2:ActiveThemes: %1",FuMS_ActiveThemes, count FuMS_ActiveThemes];          
-    diag_log format ["##FuMsnInit: #%2:THEMEDATA:%1",FuMS_THEMEDATA, count FuMS_THEMEDATA]; 
-    diag_log format ["##FuMsnInit: #%2:LOOTDATA:%1", FuMS_LOOTDATA, count FuMS_LOOTDATA];
-    diag_log format ["##FuMsnInit: #%2:SOLDIERDATA:%1", FuMS_SOLDIERDATA, count FuMS_SOLDIERDATA];
+    diag_log format ["<FuMS> FuMsnInit: ServerData:%1",FuMS_ServerData];
+    diag_log format ["<FuMS> FuMsnInit: Indx:%2:GlobalLootData %1", FuMS_LOOTDATA select FuMS_GlobalDataIndex, FuMS_GlobalDataIndex];
+    diag_log format ["<FuMS> FuMsnInit: Indx:%2:GlobalSoldierData %1", FuMS_SOLDIERDATA select FuMS_GlobalDataIndex,FuMS_GlobalDataIndex];
+    diag_log format ["<FuMS> FuMsnInit: #%2:ActiveThemes: %1",FuMS_ActiveThemes, count FuMS_ActiveThemes];          
+    diag_log format ["<FuMS> FuMsnInit: #%2:THEMEDATA:%1",FuMS_THEMEDATA, count FuMS_THEMEDATA]; 
+    diag_log format ["<FuMS> FuMsnInit: #%2:LOOTDATA:%1", FuMS_LOOTDATA, count FuMS_LOOTDATA];
+    diag_log format ["<FuMS> FuMsnInit: #%2:SOLDIERDATA:%1", FuMS_SOLDIERDATA, count FuMS_SOLDIERDATA];
             
     // Identify major civilized areas on the map.
     FuMS_VillageList = nearestLocations [FuMS_MapCenter, ["NameVillage"], 30000];
@@ -169,15 +169,7 @@ if !(hasInterface) then
        // inits globavariables with suffix equal to this HC's ownerID - these used in DataCleanup.
        FuMS_MissionTerritory = []; // used in deconfliction of spawn locations to prevent random loc spawn missions from dropping ontop of current missions.
        //  ["position",eCenter,radius,"mission:Theme"]
-       [] call FuMS_fnc_HC_Util_HC_InitHCVariables;    
-       
-       //Tell HeartMonitor to start watching, HC done loading/initing and ready to start theme control loops!
-       diag_log format ["##HC_INIT:  Heart Beat Re-Started for %1. using slot# %2.", player, FuMS_HC_SlotNumber];
-       private ["_prefix","_var"];
-       _prefix = "FuMS_HC_isAlive";
-       _var = format ["%1%2_init",_prefix, FuMS_HC_SlotNumber];
-       missionNamespace setVariable [_var, true];
-       if (!isServer) then {publicVariableServer _var; };
+       [] call FuMS_fnc_HC_Util_HC_InitHCVariables;                 
          
     // Start AI RadioChatter Operations Center. Done before control loops to permit error checking on RadioChatter data.    
        [] spawn FuMS_fnc_HC_AI_RC_BaseOps;
@@ -185,13 +177,13 @@ if !(hasInterface) then
        if (FuMS_SoldierVCOM_Driving) then
        {
            [] execVM "HC\VCOM_Driving\init.sqf";
-           diag_log format ["Genesis92x VCOM_Driving V1.01 Initialized."];
+           diag_log format ["<FuMS> Genesis92x VCOM_Driving V1.01 Initialized."];
        };   
        
        FuMS_RoamingZombieGroup = createGroup east;
        FuMS_RoamingZombieGroup setCombatMode "CARELESS";
        FuMS_RoamingZombieGroup setSpeedMode "LIMITED";
-       diag_log format ["##Zombies/init.sqf Zombie Groups initialized!"];
+       diag_log format ["<FuMS> Zombies/init.sqf Zombie Groups initialized!"];
        FuMS_AttackingZombieGroup = createGroup east;
        FuMS_AttackingZombieGroup setCombatMode "CARELESS";
        FuMS_AttackingZombieGroup setSpeedMode "FULL";
@@ -201,7 +193,29 @@ if !(hasInterface) then
       // _hold = spawn FuMS_fnc_HC_Zombies_Init;
       // waitUntil {ScriptDone _hold};
        // end custom addons
-       sleep 3;        
+       //sleep 3;    
+        //Tell HeartMonitor to start watching, HC done loading/initing and ready to start theme control loops!
+       diag_log format ["<FuMS> FuMsnInit:  Heart Beat Started for %1. using slot# %2.", player, FuMS_HC_SlotNumber];
+       private ["_prefix","_var"];
+       _prefix = "FuMS_HC_isAlive";
+       _var = format ["%1%2",_prefix, FuMS_HC_SlotNumber];
+       missionNamespace setVariable [_var, true];
+       if (!isServer) then
+       {
+           [_var] spawn
+           {
+               _var = _this select 0;
+               while {true} do
+               {
+                   uisleep 2;
+                 //  diag_log format ["<FuMS> FuMsnInit: Heart Beat Pulse: %1",_var];
+                   publicVariableServer _var; 
+               };
+           };       
+       };
+     
+       
+       
        _themeNumber = 0;
        {
            private ["_themeData","_fault"];
@@ -214,7 +228,7 @@ if !(hasInterface) then
 		  [_x, _themeNumber] spawn FuMS_fnc_HC_MsnCtrl_ControlLoop;
         //    diag_log format ["*********************************************************************"];
          //   diag_log format ["*********************************************************************"];
-            diag_log format ["##FUMSN Init: Fulcrum Mission System control loops starting for %1.", _x];    
+            diag_log format ["<FuMS> FUMSN Init: Fulcrum Mission System control loops starting for %1.", _x];    
          //   diag_log format ["*********************************************************************"];
          //   diag_log format ["*********************************************************************"];
             sleep 5; //pause for 5 secs to permit this control loop to init, and launch its 1st mission.                        
