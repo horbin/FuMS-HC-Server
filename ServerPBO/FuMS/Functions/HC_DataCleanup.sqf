@@ -117,4 +117,5 @@ if (!isNil "_var") then
     diag_log format ["HCCLEANUP Triggers: %1 deleted from %2", count _var,_varName];  
 };
 
-
+ FuMS_ServerIsClean = true;
+publicVariable "FuMS_ServerIsClean";

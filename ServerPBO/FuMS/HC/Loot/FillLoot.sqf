@@ -66,7 +66,7 @@ if (_lootOption != "NONE") then
                 {
                     _pos = [_pos, 0, 30, 1,0, 8,0,[],[]] call BIS_fnc_findSafePos; // 1m clear, terraingradient 8 pretty hilly
                 }; //else leave the 3d solution because person making the mission knows what they are doing!
-    //           diag_log format ["##FillLoot : Creating %1 at %2",_boxtype, _pos];
+               diag_log format ["##FillLoot : Creating %1 at %2",_boxtype, _pos];
                 _box = createVehicle [_boxtype, _pos,[],0,"NONE"];
                 if (FuMS_LootSmoke ) then
                 { 

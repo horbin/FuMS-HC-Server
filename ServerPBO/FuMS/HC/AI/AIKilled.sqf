@@ -11,9 +11,54 @@ _killer = _this select 1;
 //diag_log format ["##AI_Killed:%2 PriWeapon:%1", primaryweapon _victim,_victim];
 //diag_log format ["##AI_Killed:%2 All Weapons:%1", weapons _victim,_victim];
 
-_victim RemoveMagazineGlobal "RPG32_HE_F";
-_victim RemoveMagazineGlobal "RPG32_F";
-_victim RemoveWeaponGlobal "launch_RPG32_F";
+//_victim RemoveMagazineGlobal "RPG32_HE_F";
+//_victim RemoveMagazineGlobal "RPG32_F";
+//_victim RemoveWeaponGlobal "launch_RPG32_F";
+//    [], //Uniforms
+//            [], // Vests
+//            [], // Backpacks.
+//            [], // Helmets
+//            ["launch_RPG32_F"], // Weapons
+//            ["RPG32_HE_F","RPG32_F"], // Magazines
+//            [] // Items
+diag_log format ["<FuMS> AIKilled: Victim:%1  SoldierOnly Items:%2",_victim, FuMS_SoldierOnlyItems];
+
+for [{_i=0},{_i < count FuMS_SoldierOnlyItems},{_i=_i+1}]do
+{
+    _itemList = FuMS_SoldierOnlyItems select _i;
+    if (count _itemList > 0) then
+    {
+        {
+            switch (_i) do
+            {
+                case 0:
+                {
+                    if (_x == uniform _victim) then {RemoveUniform _victim;};
+                };
+                case 1:
+                {
+                    if (_x == vest _victim) then { RemoveVest _victim;};
+                };
+                case 2:
+                {
+                    if (_x == backpack _victim) then {RemoveBackpack _victim;};
+                };
+                case 3:
+                {
+                    if (_x == headgear _victim) then {RemoveHeadGear _victim;};
+                };
+                case 4:
+                {
+                    if (_x == primaryweapon _victim) then {_victim removeweapon _x;};
+                    if (_x == secondaryweapon _victim) then {_victim removeweapon _x;};
+                };
+                case 5: {_victim removemagazine _x;};
+                case 6: {_victim unlinkitem _x; _victim removeItem _x;};                
+            };
+        }foreach _itemList;
+    };
+};
+
 // perform a check within 2m's of the AI for any "Launcher_RPG32_F" and delete them also
 // code implemented to address issue of AI dropping the rocket launcher before this EH triggers!!!
 //diag_log format ["##AI_Killed: Neareast Objects within 5m :%1",nearestObjects [_victim,[],5]];
@@ -28,7 +73,10 @@ _victim RemoveWeaponGlobal "launch_RPG32_F";
                 //deleteVehicle _x;                
                 _isRPG = getWeaponCargo _x;
                // diag_log format ["##AI_Killed: Trying to delete RPG from %1 which contains %2",_x, _isRPG];
-                if ( ((_isRPG select 0) select 0) == "launch_RPG32_F") then { clearWeaponCargo _x;};
+                {
+                    //if ( ((_isRPG select 0) select 0) == "launch_RPG32_F") then { clearWeaponCargo _x;};
+                    if ( ((_isRPG select 0) select 0) == _x) then { clearWeaponCargo _x;};
+                }foreach FuMS_SoldierOnlyItems;
             };
         }foreach _droppedLauncher; // should only be one!
     };
@@ -97,7 +145,7 @@ if (isPlayer _killer and (_killer == vehicle _killer)) then
         private ["_themeIndex"];
         _themeIndex = _var select 0;
         FuMS_BodyCount set [_themeIndex, ((FuMS_BodyCount select _themeIndex) + 1)];
-      //  diag_log format ["##AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
+        diag_log format ["##AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
         diag_log format ["##AI_Killed: Player side = %1  Victim Side:%2", side _killer,  side _victim];
     };    
     if (side _victim == civilian) then

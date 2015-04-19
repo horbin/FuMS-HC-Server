@@ -11,7 +11,9 @@ FuMS_RegisterVehicle_Server =
 
 "FuMS_RegisterVehicle" addPublicVariableEventHandler
 {
-    [_this select 1] spawn FuMS_RegisterVehicle_Server;
+    //[_this select 1] spawn FuMS_RegisterVehicle_Server;
+    _vehObj = _this select 1;
+    _vehObj call EPOCH_server_setVToken;
 };
 
 "FuMS_DataValidation" addPublicVariableEventHandler
@@ -130,22 +132,34 @@ FuMS_RadioChatter_Server =
 
 
 FuMS_HeartMonitor = compile preprocessFileLineNumbers "\FuMS\Functions\HeartMonitor.sqf";
+FuMS_InitToken = true;
+"FuMS_GetInitToken" addPublicVariableEventHandler
+{
+    if (FuMS_ServerisClean) then
+    {
+        FuMS_ServerisClean = false;
+       // publicVariable "FuMS_ServerisClean";
+        _headlessClient = _this select 1;
+        _hcID = owner _headlessClient;
+        diag_log format ["<FuMS> GetInitToken PVEH: player:%1 owner id:%2 holds Init Token",_headlessClient, _hcID];    
+        _hcID publicVariableClient "FuMS_InitToken";        
+    };
+};
 
 // invoked by an HC when it connects.
 "FuMS_GetHCIndex" addPublicVariableEventHandler
 {
-    if (!FuMS_ServerIsClean) exitWith {diag_log format ["##PVEH: Server Dirty! HC connections temporarily denied!"];};
-    FuMS_ServerIsClean = false;
     _headlessClient = _this select 1; // set to 'player' object by HC before sending.
-    _hcID = owner _headlessClient;
-    diag_log format ["##GetHCIndex PVEH: player:%1 owner id:%2",_headlessClient, _hcID];
+    _hcID = owner _headlessClient;    
+ //   if (isNil "_hcID") exitWith {diag_log format ["<FuMS> PVEH: Detected HC connection prior to HC completing initialization. No owner ID available. Waiting...."];};
     _prefix = "FuMS_HC_isAlive";
     _var = format ["%1%2",_prefix, _hcID]; 
+    diag_log format ["<FuMS> GetHCIndex PVEH: player:%1 owner id:%2",_headlessClient, _hcID];    
+        
     missionNamespace setVariable [_var, true];
     FuMS_HC_SlotNumber = _hcID; // used to broadcast _hcID back to the HC for variable suffix'ing.
     _hcID publicVariableClient "FuMS_HC_SlotNumber";
-    [_headlessClient] spawn FuMS_HeartMonitor;  
-    FuMS_ServerIsClean = true;
+    [_headlessClient] spawn FuMS_HeartMonitor;      
 };
 
 FuMS_ZombieNoise_Server =

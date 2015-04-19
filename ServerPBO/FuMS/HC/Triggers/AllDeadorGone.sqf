@@ -24,7 +24,7 @@ if (count _dataarray == 1) then
 		_var = _x getVariable "FuMS_XFILL";
 		if (!isNil "_var") then
 		{
-           // diag_log format ["##AllDeadorGone: Unit: %2 _var:%1",_var,_x];
+          //  diag_log format ["<FuMS> AllDeadorGone: ThemeIndex: %3 Unit: %2 _var:%1",_var,_x,_themeIndex];
 			if (_var select 0 == _themeIndex) then {_result = 0;};
 		}
 	}foreach _list

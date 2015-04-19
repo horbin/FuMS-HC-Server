@@ -8,7 +8,7 @@ _themeData =
 [
     [  // *******Options*********
         "HeloPatrols", // Needs to match the folder name!
-        1,  //Mission Selection: 1=Random, 2=In order, 3=Random:once only until all missions run
+        5,  //Mission Selection: 1=Random, 2=In order, 3=Random:once only until all missions run
              // 4=Static: All missions in 'Mission List' will be created at server start!
         60, // Respawn delay in seconds
 		true, // Use global loot data
@@ -23,10 +23,11 @@ _themeData =
     //    ["BikeGang"],  // will spawn at any of the locations defined below!
 	      //["TestMission01","Charkia"] // mission will only spawn in the town of Charkia
          // ["CloneArmy",[8440, 25120]]
-		 ["HeloPatrolNorth",[02500,21000]], // patrol will spawn near Oreokastro before starting patrol.
-		 ["HeloPatrolEast",[27000,23900]],   // can change these city names to specific map locs or other city names
-		 ["HeloPatrolSouth",[21000,06000]],// if it is desired for helos to, say come from 1 specific location.
-		 ["HeloPatrolWest",[04000,10000]]
+	//	 ["HeloPatrolNorth",[02500,21000]], // patrol will spawn near Oreokastro before starting patrol.
+		 ["HeloPatrolEast"] ,  // can change these city names to specific map locs or other city names
+          ["HeloPatrolEast"]
+	//	 ["HeloPatrolSouth",[21000,06000]],// if it is desired for helos to, say come from 1 specific location.
+	//	 ["HeloPatrolWest",[04000,10000]]
 		 
     ],
     [   //***** Locations *****
@@ -40,7 +41,7 @@ _themeData =
 		// Ex: ["Charkia"], ["Neochori"]
 		
 		//["Villages"],["Cities"],["Capitals"];  //Encounter will only spawn in urban areas!
-		["Villages"],["Cities"],["Capitals"],[[10715,10175],"AREA51"],[10010,10010],["Charkia"]  
+	//	["Villages"],["Cities"],["Capitals"],[[10715,10175],"AREA51"],[10010,10010],["Charkia"]  
 		//Encounter will spawn in all urban areas as well the other points provided.
          // Note these points are NOT offsets, but points specific to ALTIS !!
         

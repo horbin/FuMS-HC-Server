@@ -164,11 +164,16 @@ if (!_abort) then
             _var = (_drivers select _i) getVariable "FuMS_AILOGIC";
             _var set [2,getPos (_vehicles select _i)];
             (_drivers select _i) setVariable ["FuMS_AILOGIC",_var,false];
+            
+            // move new 'VehStuck' code to actual AI creation.
+            // new code monintors for 'driver' status then starts proper 'stuck' portions
+            /*
             if (! ( (_vehicles select _i) isKindOf "Air") ) then
 			{
 				//[_drivers select _i] execVM "HC\Encounters\AI_Logic\VehStuck.sqf";
 				[_drivers select _i] spawn FuMS_fnc_HC_AI_Logic_VehStuck;
 			};
+            */
         };              
         // create and load up the CREW!	
         for [{_i=0},{_i < count _vehCrew},{_i=_i+1}] do
@@ -189,7 +194,8 @@ if (!_abort) then
                     {
                         if ( count _turretsArray > 0 ) then  // a turret is avail!
                         {    
-                            private ["_type","_crew"];
+                            private ["_type","_crew","_boarded"];
+                            _boarded=true;
                             _type = _crewData select 1;					
                             _crew = [group _leader,_type, getPos _crewVeh, _themeIndex] call FuMS_fnc_HC_AI_SpawnSoldier;                   
                             _crew setVariable ["FuMS_AILOGIC", _leader getVariable "FuMS_AILOGIC", false];
@@ -199,12 +205,13 @@ if (!_abort) then
                             //radio chatter only required for group leaders, so only requires init inside SpawnGroup                                                                
                             //_crew assignAsGunner _veh;
                             //_crew moveInTurret [_veh, (_turretsArray select 0)];
-                            _crew moveInAny (_crewVeh);
+                            _boarded = _crew moveInAny (_crewVeh);
+                            if (!_boarded) then { deleteVehicle _crew;};
                             _turretsArray = _turretsArray - [_turretsArray select 0];
                         }else
                         {
                             //no turrents left for the crew!
-                            diag_log format ["##SpawnVehicle: NON-FATAL ERROR: Index:%1/%2 excess crew defined for %3. Vehicle is Full!",_themeIndex,_missionName,_crewVeh];			
+                            diag_log format ["##SpawnVehicle: NON-FATAL ERROR: Index:%1/%2 excess crew defined for %3. Vehicle is Full!",_themeIndex,_missionName,_crewVeh];	                           
                         };                   
                     };
                 };

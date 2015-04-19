@@ -10,7 +10,7 @@ _themeData =
         "Small",   // Needs to match the folder name!
         3,  //Mission Selection: 1=Random, 2=In order, 3=Random, once only until all missions run
         60, // Respawn delay in seconds
-		false,  // Global Loot Data
+		true,  // Global Loot Data
 		false,  // Global Soldier Data
 		true   // AutoStart
     ],

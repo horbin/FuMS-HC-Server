@@ -1,4 +1,4 @@
-Last updated 1/27/15
+Last updated 4/11/15
 
 This file contains details on the various FuMS 'Triggers' that can be defined within each mission. FuMS triggers should not be confused with ARMA3 triggers. Though FuMS does use some ARMA3 triggers, many of the triggers within FuMS behave differently than a standard ARMA3 trigger.
 
@@ -56,7 +56,7 @@ Note: AI spawned via reinforcements or phase changes will not register this trig
 
 ["BodyCount", numAI] 
 -numAI: number of AI, reguardless of side that are killed by players during mission execution.
-Behaviour: If the number of AI killed during mission execution exceeds 'numAI' the trigger will register TRUE.
+Behaviour: If the number of AI killed during mission execution exceeds 'numAI' [or is equal] the trigger will register TRUE.
 Note: AI from 'reinforcements' and phased missions will count towards this total.
 Note: AI killed by player vehicles will not count.
 

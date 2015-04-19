@@ -43,6 +43,7 @@ FuMS_SoldierMagCount_Rifle = 0;
 FuMS_SoldierMagCount_Pistol = 0;
 FuMS_SoldierVCOM_Driving = false; 
 FuMS_SoldierSkillsOverride	ARRAY	of 8 SCALAR
+FuMS_SoldierOnlyItems	ARRAY of strings, each an item that will be deleted when the AI dies.
 // Loot Defaults
 FuMS_LootBoxTime = 5;
 FuMS_LootSmoke = false;

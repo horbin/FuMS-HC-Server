@@ -221,6 +221,8 @@ _typeFound = false;
                 _unit setSkill [ (_types select _i), (FuMS_SoldierSkillsOverride select _i)];
             };
         };
+        // Set FuMS specific AI Logic
+        [_unit] spawn FuMS_fnc_HC_AI_Logic_VehStuck;
     };   
 }foreach _soldierData;
 if (!_typeFound) then

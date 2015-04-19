@@ -4,7 +4,7 @@
 // Be cautious when editing data.
 
 [
-["LandPatrol", 300], // Mission Title NOSPACES!, and encounter radius
+["LandPatrol", 300, "LAND"], // Mission Title NOSPACES!, and encounter radius
 ["Land Patrol","mil_dot","ELLIPSE","ColorYellow","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
 [  
     [// NOTIFICATION Messages and Map display Control.
@@ -67,9 +67,10 @@
 [
      [  // Convoy #1                     
     [         // Vehicle                     Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-           [  "C_Offroad_01_EPOCH"          ,[-200,-200],[1 ,"Rifleman"],        "Random"      ], 
-           [  "C_Offroad_01_EPOCH"          ,[-200,-250],[1 ,"Rifleman"],     "Random"      ], 
-           [  "C_Offroad_01_EPOCH"          ,[-200,-275],[1 ,"Rifleman"],     "Random"      ]
+           [  "C_Offroad_01_EPOCH"          ,[0,0],[1 ,"Rifleman"],        "Random"      ], 
+           //[  "C_Offroad_01_EPOCH"          ,[0,50],[1 ,"Rifleman"],     "Random"      ], 
+		   [  "B_G_Offroad_01_armed_F"          ,[0,50],[1 ,"Rifleman"],     "Random"      ], 
+           [  "C_Offroad_01_EPOCH"          ,[0,75],[1 ,"Rifleman"],     "Random"      ]
 		//   [  "C_Quadbike_01_EPOCH"          ,[-50,-600],[1,"Rifleman"],     "None"      ], 
 		 //  [  "C_Quadbike_01_EPOCH"          ,[-50,-600],[1,"Rifleman"],     "None"      ], 
          //  [  "C_Quadbike_01_EPOCH"          ,[-50,-600],[ 1, "Rifleman"],     "Truck01"]   
@@ -79,12 +80,12 @@
       [  
           // "Convoy": spawn at -500,-500, drop off cargo at -50,-50, then return to base. (ie 'Convoy' logic behaviour)
            // Drivers                                                          # and type  |         Patrol     |    spawn   | dest       | 'Patrol' options
-          [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["TrackRoute",[-200,-200],[0,0],["SAFE","NORMAL",["Zaros","Panochori"],true,true,false,0]   ]]
+          [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["TrackRoute",[0,0],[0,0],["SAFE","LIMITED",["Villages","Villages"],true,true,false,0]   ]]
          // proceed to 0,-15, drop off troops, then return to spawn location and despawn!
       ],
       // Troops : These are distributed across all vehicles in this convoy.                                                         
      [      //  Troop behaviour and side options                        # and type of Troops                               Patrol logic |  spawn     |dest |'Patrol' options
-         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3,"Sniper"],[2,"Rifleman"]  ],   ["BoxPatrol",[-200,-200],["Zaros"],[100]   ]]
+         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3,"Sniper"],[2,"Rifleman"]  ],   ["BoxPatrol",[0,0],[0,0],[100]   ]]
         // [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"] ],   ["BoxPatrol",[-70,-600],[50,0],[50]   ]],
         // [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[3,"Rifleman"]  ],   ["BoxPatrol",[-70,-600],[-50,0],[50]   ]]
             // 'dest' for troops is where they will go to perform their 'Patrol Logic' once the disembark the convoy IF their vehicle's driver group is using the 'Convoy' patrol logic.

@@ -11,20 +11,28 @@ _shortName = [_owner] call FuMS_GetShortName;
 diag_log format ["##FuMsnInit: Global variables being handed off too HC %2 id:%1",_hc, _owner];
 _hc publicVariableClient "FuMS_FPSMinimum";
 waitUntil {  diag_fps > FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_ServerData";
 waitUntil {  diag_fps> FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_ActiveThemes";	
 waitUntil {  diag_fps> FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_ActiveThemesHC";	    
 waitUntil { diag_fps > FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_BaseTHEMEDATA";
 waitUntil { diag_fps > FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_BaseLOOTDATA";
 waitUntil {  diag_fps > FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_BaseSOLDIERDATA";
 waitUntil {  diag_fps > FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_GlobalDataIndex";
 waitUntil {  diag_fps > FuMS_FPSMinimum};
+sleep 2;
 _hc publicVariableClient "FuMS_BaseListofMissions";// Array of ["Name", "string of preprocessed code"] at each theme index.
 { 
     waitUntil {  diag_fps > FuMS_FPSMinimum};
@@ -47,6 +55,7 @@ private ["_start","_startFPS","_curFps"];
         _codeString = missionNamespace getVariable _x;
         diag_log format ["##InitHeadlessClient: FPS:%3 ---transmitting %1 to HC:%2    :",_x,_hc, _curFPS];
         _hc PublicVariableClient _x;
+        sleep .5;
     }foreach FuMS_HC_ScriptList;
     _hc PublicVariableClient  "FuMS_HC_ScriptList";
     

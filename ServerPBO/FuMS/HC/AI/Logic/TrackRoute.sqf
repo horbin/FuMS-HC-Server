@@ -125,7 +125,9 @@ sleep 10;
  {
      _wp SetWaypointType "CYCLE"; 
  };
- 
+
+ /*
+ // This is set up in SpawnVehicle for each driver.
 // spawn stuck code.  
  if (   ! (( vehicle (leader _group) ) isKindOf "Air") ) then
  {
@@ -138,7 +140,7 @@ sleep 10;
          };
      }foreach units _group;
  };
-
+*/
 if (false) then
  {
      diag_log format ["Debug:PatrolRoute: Waypoint watch loop started for %2",_group];

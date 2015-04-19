@@ -31,7 +31,7 @@ while {true} do
     if ( _dat3 != (_theme select 0)) exitWith {_abort = true; _msg = format ["%1 Theme name mismatch! Theme name in BaseServerData:%2, found %3 in the actual THEMEDATA. Values MUST MATCH!",_sec, _theme select 0, _dat3];}; 
     _dat3 = _dat2 select 1;
     if (TypeName _dat3 != "SCALAR") exitWith {_abort = true;_msg = format ["%1 Mission selection option needs to be a number betweeen 1 and 4, found %2",_sec, _dat3];};
-    if (_dat3 > 4 or _dat3 <0) exitWith {_abort = true;_msg = format ["%1 Mission selection option needs to be a number betweeen 1 and 4, found %2",_sec, _dat3];};
+    if (_dat3 > 5 or _dat3 <0) exitWith {_abort = true;_msg = format ["%1 Mission selection option needs to be a number betweeen 1 and 5, found %2",_sec, _dat3];};
     _dat3 = _dat2 select 2;
     if (TypeName _dat3 != "SCALAR") exitWith {_abort = true;_msg = format ["%1 Respawn delay needs to be a number a number, found %2",_sec, _dat3];};
     _dat3 = _dat2 select 3;

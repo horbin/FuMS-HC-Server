@@ -60,6 +60,7 @@ if !(hasInterface) then
         FuMS_SoldierMagCount_Pistol = _dat select 1;
         FuMS_SoldierVCOM_Driving = _dat select 2;  
         FuMS_SoldierSkillsOverride = _dat select 3;
+        FuMS_SoldierOnlyItems = _dat select 4;
         // Loot Defaults
         _dat = FuMS_ServerData select 6;
         FuMS_LootBoxTime = _dat select 0;
@@ -213,8 +214,12 @@ if !(hasInterface) then
                };
            };       
        };
-     
-       
+  
+       if (!isServer) then
+       {
+           player forceAddUniform "U_C_Driver_1_white"; 
+           player addHeadgear "H_RacingHelmet_1_white_F";   
+       };
        
        _themeNumber = 0;
        {

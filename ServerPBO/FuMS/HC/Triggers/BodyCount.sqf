@@ -10,6 +10,6 @@ if (count _data == 2) then
 {
     _numAI = _data select 0;
     _themeIndex = _data select 1;
-    if (FuMS_BodyCount select _themeIndex > _numAI) then { _result = 1;};
+    if (FuMS_BodyCount select _themeIndex > (_numAI-1)) then { _result = 1;};
 };
 _result

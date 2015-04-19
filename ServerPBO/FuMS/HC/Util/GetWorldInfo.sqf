@@ -18,6 +18,8 @@
 //  locations in the specific themedata.sqf.
 
 private ["_worldname"];
+FuMS_BlackList = [];
+FuMS_DefaultPos = [];
 _worldname = (toLower worldName);
 	{
 		if ( _worldname isEqualTo (_x select 0) ) exitWith 
@@ -58,7 +60,21 @@ _worldname = (toLower worldName);
             ]
         ],
         ["caribou",[3938.9722, 4195.7417],3500],
-        ["chernarus",[7652.9634, 7870.8076],5500],
+        [
+            "chernarus",
+            [6968.658203,8345.914063,0],  //  Map Center
+            6000,  //Map size
+            [
+                //Exclusion Areas
+                [[4069.52,4024.24,0],[5069.52,5024.24,0]],  //South West
+                [[11577.8,4621.92,0],[12577.8,5621.92,0]], //South East
+                [[10188.6,8928.98,0],[11188.6,9928.98,0]], //North East
+                [[990.27,1523.47,0],[1090.27,2523.47,0]]  //Clone Lab
+            ],
+            [
+                //Default Areas
+            ]
+        ],                        
         ["fallujah",[5139.8008, 4092.6797],4000],
         ["fdf_isle1_a",[10771.362, 8389.2568],2750],
         ["isladuala",[4945.3438, 4919.6616],4000],
@@ -76,6 +92,21 @@ _worldname = (toLower worldName);
         ["trinity",[7183.8403, 7067.4727],5300],
         ["utes",[3519.8037, 3703.0649],1000],
         ["zargabad",[3917.6201, 3800.0376],2000],
+        [
+            "Bornholm",
+			[10088.2,9045.73,0],  //Map Center
+			13500, //Map size
+			[
+				//Exclusion Areas
+				[[4144.52,9255.61,0],[3144.52,8255.61,0]],  //West Spawn Area
+				[[11466.9,12192.4,0.],[12466.9,13192.4,0]],  //East Spawn Area
+				[[3537.25,15053.3,0],[3537.25,16053.3,0]],  //North Spawn
+				[[13313.2,6376.4,0],[14313.2,7376.4,0]] //Clone Lab
+			],
+			[
+				//Default Areas
+			]
+		],
         [_worldname,getArray(configFile >> "CfgWorlds" >> worldName >> "centerPosition"),7000]
     ];
 

@@ -16,7 +16,7 @@ diag_log format ["<FuMS> HeartMonitor: Server-HC Heart Monitor Slot #%1 operatio
 
 _handle = [_owner ] execVM "\FuMS\Functions\InitHeadlessClient.sqf";
 waitUntil {ScriptDone _handle};
-FuMS_ServerIsClean = true;
+FuMS_ServerIsClean = false;
 FuMS_ServerInitData = true;
 _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it will start FuMS control loops.
 
@@ -29,7 +29,11 @@ _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it 
     _owner = format ["%1",_owner]; // convert it to text, so when it goes dead, we still know its name!    
     _pulse = format ["%1%2",_prefix, _hcID];
     _dead = false;
-
+    if (_hcID == 0) exitWith
+    {
+        FuMS_ServerIsClean = true;
+        diag_log format ["<FuMS> HeartMonitor: Server ID 0 detected as source heartbeat, not valid. exiting heartbeat monitor for id:0"];
+    };
     missionNamespace setVariable [_pulse, false];  // set false to start.
     // now wait for the 1st heartbeat. This one is sent AFTER the HC finishes all of its initializations!
     waituntil
@@ -40,23 +44,25 @@ _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it 
         _status
     };
     
+    FuMS_ServerIsClean = true;   
+    // HC should be complete with loading and init, so free server up to receive other HC connections.
     while {!_dead} do
-    {     
+    {                    
       //  waitUntil {!isNil "HC_isAlive00"};
         missionNamespace setVariable [_pulse, false];
-        uiSleep 2;
+        uiSleep 4;
         //Wait for 2secs, if value still FALSE, listen for a 2nd heartbeat.  
         _status = missionNamespace getVariable _pulse;
         if (!_status) then // listening for 2nd heart beat
         {
             diag_log format ["<FuMS> HeartMonitor: %1: 1st Heart beat missed!!%2",_owner,_pulse];    
-            uiSleep 2;
+            uiSleep 4;           
             //Wait 2secs, if value still FALSE, listen for a 3rd heart beat.
             _status = missionNamespace getVariable _pulse;
             if (!_status) then //listening for the 3rd heart beat.
             {
                 diag_log format ["<FuMS> HeartMonitor:%1: 2nd Heart beat missed!!%2",_owner,_pulse];       
-                uiSleep 2;       
+                uiSleep 4;       
                 _status = missionNamespace getVariable _pulse;   
                 if (!_status) exitWith // HC_HAL is confirmed disconnected.                            
                 {
@@ -64,10 +70,10 @@ _hcID publicVariableClient "FuMS_ServerInitData";    // once received by HC, it 
                     diag_log format ["<FuMS> HeartMonitor:%1: Disconnect detected. Cleaning up the Mess!!!!%2",_owner,_pulse];  
                     // Cleanup AI Groups
                     FuMS_ServerIsClean = false;
+                    publicVariable "FuMS_ServerIsClean";
                     [_hcID] call FuMS_HC_DataCleanup;                   
                     diag_log format ["<FuMS> HeartMonitor: HC:%1: Complete in %3 secs!%2",_owner,_pulse, time-_start];  
-                    missionNamespace setVariable [_pulse, nil];
-                    FuMS_ServerIsClean = true;       
+                    missionNamespace setVariable [_pulse, nil];                    
                     _dead = true;
                 };
                 // End of cleanup

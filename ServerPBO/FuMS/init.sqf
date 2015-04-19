@@ -60,6 +60,7 @@ if (FuMS_ServerFuMSEnable) then
     [] call FuMS_fnc_HC_FuMSNInit;
 };
 FuMS_ServerIsClean = true;
+publicVariable "FuMS_ServerIsClean";
 diag_log format ["##\FuMS\Init.sqf:  Server side FuMS initialized and operational."];
 FuMS_Server_Operational = true;
 publicVariable "FuMS_Server_Operational";

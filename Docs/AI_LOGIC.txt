@@ -82,6 +82,8 @@ syntax:["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], 
 -behaviour: "CARELESS", "SAFE", "AWARE", "COMBAT", "STEALTH" - impacts AI's tendency to follow roads, and use lights.
 -speed: "NORMAL", "FULL" or "LIMITED"
 -[locations] : array of 2d locations, 3d locations, OR town names. 
+       Keywords "Villages","Cities","Capitals" may also be used, in which case a random location of that type will be selected.
+       (ie ["Villages","Villages"] would select two random villages to patrol between)
 -FlagRTB: true= group of pilots will cycle through all locations
 -FlagRoads: true= group will attempt to use roads to get to the locations
 -FlagDespawn: true= group will despawn upon reaching final location.
