@@ -5,17 +5,17 @@ v.15d
 + Updated TrackPatrol and RoutePatrol to more effectively utilize 'named' locations.
  This update permits use of keywords 'Villages','Cities', and 'Capitals'.  See \Docs folder for specifics on AI logic.
 
-# Fixed bug with TrackRoute that was causing 'track icons' to appear at position [0,0] on some maps. 
++ Fixed bug with TrackRoute that was causing 'track icons' to appear at position [0,0] on some maps. 
  
-# Vehicle stuck code enhanced. 
++ Vehicle stuck code enhanced. 
 AI vehicles now will 'teleport' to the nearest road in the event they become entangled on terrain.
 AI controlled vehicles will also no longer decide they are stuck because they are waiting on their group leader's vehicle.
 AI will now wait patiently for the group leader's vehicle to move, then proceed on mission. Change should lend to
 a more reliable persistence in vehicle traffic, especially when multiple vehicles are under a single AI group's control.
 
-# AI Controlled vehicles will no longer run out of fuel, but will always leave a vehicle with 1/4 a tank.
++ AI Controlled vehicles will no longer run out of fuel, but will always leave a vehicle with 1/4 a tank.
 
-# Modified "Tracked" AI so that their map symbol changes dynamically as they change vehicle types (Truck, Car, Air, Ship, Walking)
++ Modified "Tracked" AI so that their map symbol changes dynamically as they change vehicle types (Truck, Car, Air, Ship, Walking)
 
 + HC disconnect code optimized, once again......
 
