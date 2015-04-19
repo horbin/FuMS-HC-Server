@@ -1,5 +1,37 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
+
+v.15d
++ Updated TrackPatrol and RoutePatrol to more effectively utilize 'named' locations.
+ This update permits use of keywords 'Villages','Cities', and 'Capitals'.  See \Docs folder for specifics on AI logic.
+
+# Fixed bug with TrackRoute that was causing 'track icons' to appear at position [0,0] on some maps. 
+ 
+# Vehicle stuck code enhanced. 
+AI vehicles now will 'teleport' to the nearest road in the event they become entangled on terrain.
+AI controlled vehicles will also no longer decide they are stuck because they are waiting on their group leader's vehicle.
+AI will now wait patiently for the group leader's vehicle to move, then proceed on mission. Change should lend to
+a more reliable persistence in vehicle traffic, especially when multiple vehicles are under a single AI group's control.
+
+# AI Controlled vehicles will no longer run out of fuel, but will always leave a vehicle with 1/4 a tank.
+
+# Modified "Tracked" AI so that their map symbol changes dynamically as they change vehicle types (Truck, Car, Air, Ship, Walking)
+
++ HC disconnect code optimized, once again......
+
++ Added Convoy Theme. (all map compatible)
+  Based upon capability already in FuMS and AI map tracking icons, this theme has been added.
+  FuMS will create and maintain two convoys of 3 pickup trucks.  Each truck has 4 AI. Loot located in the trucks
+  Convoy spawns at a random location on the map, then proceeds to two randomly selected villages. 
+  1 vehicle is a 'Technical'. This vehicle, "B_G_Offroad_01_armed_F" is also added to the exclusions list in BaseServer.sqf to limit player use.
+  
++ Updated Helo Patrol Theme (Now all map compatible)
+  2 patrols of 3 armed helo's are created. The patrol flys between 5 randomly selected village,city,capital locations on the map.  Helo patrols once destroyed do not return until server restart.
+  
+ + AI Gear Exclusion List
+ See BaseServer.sqf in the "Soldier Section".  Gear can now be defined as AI only.  Any equipment placed into these lists will be deleted from an AI when it dies. This will allow AI to utilize weapons not permitted by the player base.
+
+
 v1.5c
  - revert to pre 1.4 HC connection coding. Old heart beat monitor restored.
  - Should fix issues with HC timeouts.
