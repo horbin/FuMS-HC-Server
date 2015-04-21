@@ -12,7 +12,7 @@ This options works WITH vehicles, so, if in the mission file, "SCATTER" is the l
 around the vehicle when it is spawned.
 No loot box will be created when "SCATTER" is used.
 
-Ex: ["Scatter",[50,50]]
+Ex: ["Scatter",[0,0]]
 In this case when loot is to be spawned the loot items contained in the "SCATTER" description in the LootData.sqf will be spawned
 on the ground around the location [0,0] (encounter center).
 
