@@ -24,7 +24,7 @@ else
         // Land vehicle with Convoy ai logic using Roads.
         if (_veh isKindOf "Land" and surfaceIsWater _pos ) then
         { 
-            diag_log format ["##GetSafeSpawnVehPos: Attempting to create Land vehicle:%1 over water. Looking for a better place.",_veh];
+            diag_log format ["<FuMS> GetSafeSpawnVehPos: Attempting to create Land vehicle:%1 over water. Looking for a better place.",_veh];
             _pos = [_pos] call FuMS_fnc_HC_Util_FindNearestLand;
         };
         if (_aiLogic == "CONVOY" and _veh isKindOf "Land") then

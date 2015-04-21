@@ -23,20 +23,33 @@ if (!isNil "_buildingData") then
         private ["_firstBuilding"];
         // check if 1st building is at [0,0,0]. If so, work offsets!
         _firstBuilding = _buildingData select 0;
-        if ([_firstBuilding] call FuMS_fnc_HC_Val_Msn_ValidateBuildings) then
+        if (TypeName _firstBuilding == "ARRAY") then {_firstBuilding = [_firstBuilding] call BIS_fnc_selectRandom;};
+       // if ([_firstBuilding] call FuMS_fnc_HC_Val_Msn_ValidateBuildings) then
+        if (true) then
         {
-            private ["_fbLoc","_useOffset"];
+            private ["_fbLoc","_useOffset","_fireEffect"];
             _fbLoc = _firstBuilding select 1;
             _useOffset = false;          
             if (_fbLoc select 0 == 0 and _fbLoc select 1 == 0 and _fbLoc select 2 ==0) then {_useOffset = true;};    //3d locations, using offsets! 
       //      diag_log format ["##SpawnBuildings: Debug: 1stBuilding: %1  _useOffset:%2",_firstBuilding, _useOffset];
             //foreach _buildingData
             {
-                if ([_x] call FuMS_fnc_HC_Val_Msn_ValidateBuildings) then
+               // if ([_x] call FuMS_fnc_HC_Val_Msn_ValidateBuildings) then
+                if (true) then
                 {
                     _type = _x select 0;
                     _offset = _x select 1;
                     _rotation = _x select 2;
+                    
+                  //  diag_log format ["<FuMS> SpawnBuildings: _type:%1",_type];
+                    if (TypeName _type == "ARRAY") then {_type = _type call BIS_fnc_selectRandom;};
+                 //   diag_log format ["<FuMS> SpawnBuildings: _type selected:%1",_type];
+                    
+                    if (count _x > 4) then
+                    {
+                        _fireEffect = toupper(_x select 4);
+                       // diag_log format ["<FuMS> SpawnBuildings: Fire/Smoke effect found for %1",_x];
+                    }else{_fireEffect="NONE";};
                     
                     if (_useOffset) then
                     {
@@ -59,22 +72,17 @@ if (!isNil "_buildingData") then
                         _settings = _x select 3;
                         _data = [_newpos, "none", _type] call FuMS_fnc_HC_MsnCtrl_Util_GetSafeSpawnVehPos;	
                         //diag_log format ["pos:%1, driver:%2, type:%3 data:%4",_pos, _driver, _vehType select _i,_data];
-                        _veh = [ _type, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	
-                        
-                        
-        //                diag_log format ["##SpawnBuildings: created:%1, _type:%2",_veh,_type];
-                      
-                      
-                      
-                        _vehicles = _vehicles + [_veh];    
-                        
-                        _veh setDir _rotation;
-                        
+                        _veh = [ _type, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	                                                
+        //                diag_log format ["##SpawnBuildings: created:%1, _type:%2",_veh,_type];                                                                  
+                        _vehicles = _vehicles + [_veh];                            
+                        _veh setDir _rotation;                        
                         _veh setFuel (_settings select 0);
                         _veh setVehicleAmmo (_settings select 1);
                         _veh setHitPointDamage ["hitEngine",_settings select 2];
                         _veh setHitPointDamage ["hitFuel", _settings select 3];
-                        _veh setHitPointDamage ["HitHull", _settings select 4];                    
+                        _veh setHitPointDamage ["HitHull", _settings select 4];    
+                        
+                        [_veh,_fireEffect] call FuMS_fnc_HC_Util_Effects;
                         
                     }else
                     {
@@ -84,6 +92,9 @@ if (!isNil "_buildingData") then
                         _keep = false;
                         if (_x select 3 == 1) then {_keep = true;};
                         _bldg setVariable ["FuMS_PERSIST",_keep,false];
+                        
+                        [_bldg,_fireEffect] call FuMS_fnc_HC_Util_Effects;
+                        
                         // store in HC variable.
                         _buildings = _buildings+ [_bldg];
                      //   HC_HAL_NumBuildings = HC_HAL_NumBuildings + 1;
@@ -91,8 +102,8 @@ if (!isNil "_buildingData") then
                     };
                 }else
                 {
-                    diag_log format ["##SpawnBuilding: ERROR in building data format for mission %1/%2", FuMS_ActiveThemes select _themeIndex,  _curMission];
-                    diag_log format ["##SpawnBuilding: Offending building/vehicle : %1", _x];
+                    diag_log format ["<FuMS> SpawnBuilding: ERROR in building data format for mission %1/%2", FuMS_ActiveThemes select _themeIndex,  _curMission];
+                    diag_log format ["<FuMS> SpawnBuilding: Offending building/vehicle : %1", _x];
                     _buildingData=_buildingData-[_x];
                 };
             } foreach _buildingData;

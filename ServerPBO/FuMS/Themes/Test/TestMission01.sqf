@@ -57,6 +57,9 @@
 //---------------------------------------------------------------------------------
 //-----Loot Configuration-----    
 // Refer to LootData.sqf for available loot types and contents.
+// "Random" will select a random configuration, ignoring all 'ScatterXX' options.
+// "ScatterXX" this loot will not appear in a box, but will be scattered about on the ground around the location/offset
+    // Ex: ["Scatter01",[0,0]]  will take the loot contained in the "Scatter01" option and spread it around at offset [0,0] to the mission center.
 [
    ["Random",[0,0]],["Random",[5,5]],["Random",[-5,5]]
    //Array of loot now supported using above syntax.
@@ -72,7 +75,7 @@
 //---------------------------------------------------------------------------------
 //-----Building  and stand alone vehicle Configuration-----       
 //BUILDINGS: persist = 0: building deleted at event completion, 1= building remains until server reset.
-// NOTE: if using 3D coordinates for buildings, if the 1st building uses a location of [0,0,0] 
+// NOTE: if using 3D coordinates for buildings, if the 1st building uses a location of [0,0] 
 // ALL other buildings will assume their locations are offsets!
     // building name                 | offset   |rotation|persist flag
     ["Land_BagBunker_Tower_F",  [0,0],     0,         0],  
@@ -82,8 +85,13 @@
     ["Land_HighVoltageTower_F",    [20,-10],0,       0],
     ["CamoNet_INDP_big_F",        [-20, 10],0,        0],
 	// Vehicle Name  | offset | rotation | Fuel, Ammo, DmgEngine, Dmg FuelTank, DmgHull
-	["I_UGV_01_rcws_F",[0,100],   0,       [.5,   0,     .5,         .5,         .5]]
+	["I_UGV_01_rcws_F",[0,100],   0,       [.5,   1,     .5,         .5,         .5]],
+    ["Land_Wreck_Car2_F",[0,50],0, [.5, 1, .5, .5,.5], "Fire"]
 	// vehicles: 1 for fuel and ammo is full 100%, DmgEngine=1 is 100% damaged
+    // test_EmptyObjectForFireBig = "Fire"
+    // test_EmptyObjectForSmoke = "Smoke"
+  
+    
 	
 ],[
 //---------------------------------------------------------------------------------

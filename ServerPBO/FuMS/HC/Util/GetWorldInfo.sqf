@@ -93,7 +93,7 @@ _worldname = (toLower worldName);
         ["utes",[3519.8037, 3703.0649],1000],
         ["zargabad",[3917.6201, 3800.0376],2000],
         [
-            "Bornholm",
+            "bornholm",
 			[10088.2,9045.73,0],  //Map Center
 			13500, //Map size
 			[

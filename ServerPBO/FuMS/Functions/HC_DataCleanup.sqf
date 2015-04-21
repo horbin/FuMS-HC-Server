@@ -56,8 +56,12 @@ if (!isNil "_var") then
                 }else
                 {
                     diag_log format ["HC:CLEANUP: %1 deleted",_x];
+                    {
+                        detach _x;
+                        deleteVehicle _x;
+                    }foreach attachedObjects _x;
                     deleteVehicle _x;   
-                    _x = nil;
+                    //_x = nil;
                 };
             };
         };
@@ -87,10 +91,18 @@ if (!isNil "_var") then
         if ( TypeName _x == "ARRAY") then
         {
             {
+                {
+                    detach _x;
+                    deleteVehicle _x;
+                }foreach attachedObjects _x;
                 deleteVehicle _x;
             }foreach _x;
         } else
         {
+            {
+                detach _x;
+                deleteVehicle _x;
+            }foreach attachedObjects _x;               
             deleteVehicle _x;
         };
     }foreach _var;

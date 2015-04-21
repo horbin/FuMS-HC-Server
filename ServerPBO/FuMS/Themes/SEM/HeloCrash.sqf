@@ -41,7 +41,7 @@
 ["None" , [0,0] ]  // Failure loot, offset location - spawns on mission failure
 ],
 [//BUILDINGS: persist = 0: building deleted at event completion, 1= building remains until server reset.
-    ["Land_Wreck_Heli_Attack_02_F",[6,6],0,0]   //type, offset, rotation, presist flag
+    ["Land_Wreck_Heli_Attack_02_F",[6,6],0,0,"FIRE_BIG"]   //type, offset, rotation, presist flag
 ],
 [ // AI GROUPS. Only options marked 'Def:' implemented.
 

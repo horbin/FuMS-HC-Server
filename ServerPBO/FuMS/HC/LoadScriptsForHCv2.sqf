@@ -59,7 +59,8 @@ _scripts =
                 "GetBox.sqf", 
                 "GetQuantity.sqf",
                 "FillLoot.sqf", 
-                "GetChoice.sqf"
+                "GetChoice.sqf",
+                "Scatter.sqf"
             ]
         ],
         [
@@ -119,7 +120,8 @@ _scripts =
                 "GetBuildingPositions.sqf",
                 "KKcommonTurrets.sqf",
                 "GetShortName.sqf",
-                "GetWorldInfo.sqf"
+                "GetWorldInfo.sqf",
+                "Effects.sqf"
             ],
             [
                 "HC",

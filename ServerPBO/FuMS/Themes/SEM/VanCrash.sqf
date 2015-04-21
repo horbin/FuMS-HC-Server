@@ -41,8 +41,8 @@
 ["None" , [0,0] ]  // Failure loot, offset location - spawns on mission failure
 ],
 [//BUILDINGS: persist = 0: building deleted at event completion, 1= building remains until server reset.
-    ["Land_Wreck_Van_F",[6,6],0,0],   //type, offset, rotation, presist flag
-	["Land_Wreck_Ural_F",[-6,-6],0,0]  
+    ["Land_Wreck_Van_F",[6,6],0,0,"SMOKE_MEDIUM"],   //type, offset, rotation, presist flag
+	["Land_Wreck_Ural_F",[-6,-6],0,0,"SMOKE_MEDIUM"]  
 ],
 [ // AI GROUPS. Only options marked 'Def:' implemented.
 //   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"],[2,"Hunter"]  ],   ["BoxPatrol",[0,75],[0,0],[0]   ]],

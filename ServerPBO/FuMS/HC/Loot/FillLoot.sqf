@@ -1,16 +1,15 @@
 //FillLoot.sqf
 // Horbin
 // 1/8/15
+// updated 4/19/15 to support Scatter loot options.
 // FillLoot is ONLY called by LootData.sqf from the applicable theme folder!
 // INPUTS: Loot Option, position (x,y,y(ARRAY) OR a veh object(OBJECT)), and LootData to parse!.
 // Outputs: box item, if created.
 // ASSERT Global Variable BaseLoot.sqf have been defined!
-//GetQuantity = compile preprocessFileLineNumbers format ["HC\Encounters\Functions\GetQuantity.sqf"];
-//GetBox = compile preprocessFileLineNumbers format ["HC\Encounters\Functions\GetBox.sqf"];
 
 private ["_lootOption","_pos","_options","_typeLoot","_boxtype","_box","_weapons","_magazines","_items","_backpacks","_found","_isVehicle",
 "_item","_number","_lootData","_randomLootData","_themeIndex"];
-_lootOption = _this select 0;
+_lootOption = toupper (_this select 0);
 _pos = _this select 1;
 _themeIndex = _this select 2;
 
@@ -23,8 +22,8 @@ if (((FuMS_THEMEDATA select _themeIndex) select 0) select 3) then
 };
 if (isNil "_lootData") exitWith
 {
-    diag_log format ["FillLoot: ERROR: no theme specific LootData.sqf for theme #%1",_themeIndex];
-    diag_log format ["Check options in ThemeData.sqf for theme %1",((FuMS_THEMEDATA select _themeIndex) select 0) select 0];
+    diag_log format ["<FuMS> FillLoot: ERROR: no theme specific LootData.sqf for theme #%1",_themeIndex];
+    diag_log format ["<FuMS> Check options in ThemeData.sqf for theme %1",((FuMS_THEMEDATA select _themeIndex) select 0) select 0];
 };
 
 _isVehicle = false;
@@ -37,36 +36,44 @@ _box = [];
 //diag_log format ["## FillLoot: _lootOption:%1 _pos:%2 LOOTDATA index:%3",_lootOption, _pos, _this select 2];
 if (_lootOption != "NONE") then
 {   
-    if (_lootOption == "RANDOM" or _lootOption == "Random") then
+    if (_lootOption == "RANDOM") then
     {
-        _randomLootData = _lootData call BIS_fnc_selectRandom; // grab a random loot data set.
-        _options = _randomLootData select 0;  // grab the 1st block of data from the loot.
-        _lootOption = _options select 0; // assign this loot's name to the loot option.
+        _lootOption = "SCATTER";     // set to make while loop work. 
+        while{_lootOption == "SCATTER"} do
+        {  
+            _randomLootData = _lootData call BIS_fnc_selectRandom;
+            _options = _randomLootData select 0;  // grab the 1st block of data from the loot.
+            _lootOption = toupper (_options select 0); // assign this loot's name to the loot option.
+        };
     };   
+    // lootOption determined. Either 'Scatter', what was specified, or randomly selected.
+    // need to verify the 'specified' is valid...so checking still required.
+    // Now going to search all of the LootData file for a match for '_lootOption'
     _found = false;
     {
         _options = _x select 0; // _options : "LootSetName", "BoxforLoot"
-        _typeLoot = _options select 0;
-        _boxtype = _options select 1;                
+        _typeLoot = toupper (_options select 0);
+        _boxtype = toupper (_options select 1);                
         if (_typeLoot == _lootOption) then  // Found lootOption in the list of LOOTDATA!
         {
             // check boxtype for "RANDOM" if so select from the global random options in BasicLoot.sqf       
           //  diag_log format ["## FillLoot: _typeLoot:%1, _lootOption:%2 _boxtype:%3",_typeLoot, _lootOption, _boxtype];
-            if (_boxtype == "RANDOM" or _boxtype=="Random") then { _boxtype = call FuMS_fnc_HC_Loot_GetBox;};
+            if (_boxtype == "RANDOM" ) then { _boxtype = call FuMS_fnc_HC_Loot_GetBox;};
             //diag_log format ["## FillLoot: _typeLoot:%1, _lootOption:%2 _boxtype:%3",_typeLoot, _lootOption, _boxtype];
             _found = true;
             _weapons = _x select 1;
             _magazines = _x select 2;
             _items = _x select 3;
             _backpacks = _x select 4;
-            if (_isVehicle) then {_box = _pos;} // _pos contains a vehicle Object!
+            if (_isVehicle or _typeLoot == "SCATTER") then {_box = _pos;} // _pos contains a vehicle Object! or we are going to scatter loot.
             else 
-            {             
+            {         
+                // build a box and set up its smoke.
                 if (count _pos ==2) then //offset being used so find something nearby that is Safe.
                 {
                     _pos = [_pos, 0, 30, 1,0, 8,0,[],[]] call BIS_fnc_findSafePos; // 1m clear, terraingradient 8 pretty hilly
                 }; //else leave the 3d solution because person making the mission knows what they are doing!
-               diag_log format ["##FillLoot : Creating %1 at %2",_boxtype, _pos];
+               diag_log format ["<FuMS> FillLoot : Creating %1 at %2 with option %3",_boxtype, _pos, _typeLoot];
                 _box = createVehicle [_boxtype, _pos,[],0,"NONE"];
                 if (FuMS_LootSmoke ) then
                 { 
@@ -77,7 +84,7 @@ if (_lootOption != "NONE") then
                     [_box] spawn
                     {
                         private ["_box","_smoke01","_smokeStopTIme","_count","_smokeOn","_players","_color"];
-                        _box = _this select 0;                       
+                        _box = _this select 0;                            
                         _count = 1;
                         _smokeOn = false;
                         while {!isNil "_box"} do
@@ -85,6 +92,7 @@ if (_lootOption != "NONE") then
                             //if (FuMS_SmokeProximity ==0) then {_smokeOn=true;FuMS_SmokeProximity=2000;_smokeStopTime = time+60*FuMS_SmokeDuration;};
                             while {!_smokeOn} do
                             {
+                                if (isNil "_box") exitwith {};
                                 _players = _box nearEntities ["Man",FuMS_SmokeProximity];
                                 if (count _players > 0) then
                                 {
@@ -121,7 +129,7 @@ if (_lootOption != "NONE") then
                 clearMagazineCargoGlobal _box;
                 clearItemCargoGlobal _box;              
             };
-           // diag_log format ["########################################"];
+            // box complete, now ready to fill box, vehicle, or scatter loot!
             _numItems = 0;
             {                
              //   diag_log format ["##FillLoot: Weapons: _x:%1, _x[0]:%2, _x[1]:%3", _x, _x select 0, _x select 1];
@@ -135,7 +143,15 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0);
                 };
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                _box addWeaponCargoGlobal [_item, _number]; 
+                if (_typeLoot == "SCATTER") then
+                {
+                    // pos is either 3dloc, 2d offset, or a vehicle object.
+                    [_pos, _item, _number,"WEAPON"] call FuMS_fnc_HC_Loot_Scatter;
+                }
+                else
+                {
+                    _box addWeaponCargoGlobal [_item, _number]; 
+                };
                 _numItems = _numItems + _number;
             }foreach _weapons;
             {
@@ -148,7 +164,13 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0);
                 };
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                _box addMagazineCargoGlobal [_item, _number];   
+                if (_typeLoot == "SCATTER") then
+                {
+                    [_pos, _item, _number, "MAGAZINE"] call FuMS_fnc_HC_Loot_Scatter;
+                }else
+                {
+                    _box addMagazineCargoGlobal [_item, _number];   
+                };
                 _numItems = _numItems + _number;
             }foreach _magazines;
             {
@@ -161,7 +183,13 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0);
                 };
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                _box addItemCargoGlobal [_item, _number]; 
+                if (_typeLoot == "SCATTER") then
+                {
+                    [_pos, _item, _number, "ITEM"] call FuMS_fnc_HC_Loot_Scatter;       
+                }else
+                {        
+                    _box addItemCargoGlobal [_item, _number]; 
+                };
                 _numItems = _numItems + _number;
             }foreach _items;
             {
@@ -171,11 +199,17 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0) call BIS_fnc_selectRandom;
                 }else{  _item = (_x select 0);};
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                _box addBackpackCargoGlobal [_item, _number]; 
+                if (_typeLoot == "SCATTER") then
+                {
+                     [_pos, _item, _number, "BACKPACK"] call FuMS_fnc_HC_Loot_Scatter;
+                }else
+                {
+                    _box addBackpackCargoGlobal [_item, _number]; 
+                };
                 _numItems = _numItems + _number;
             }foreach _backpacks;
             //initialize FuMSLoot variable
-            _box setVariable ["FuMS_Loot", [0, _numItems], true];            
+            if (!(TypeName _box == "ARRAY")) then {            _box setVariable ["FuMS_Loot", [0, _numItems], true];            };
         };   
     }foreach _lootData;
     if (!_found) then

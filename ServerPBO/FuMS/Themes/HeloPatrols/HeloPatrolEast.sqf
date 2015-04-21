@@ -138,9 +138,9 @@
     //Airborne Vehicle Configuration
  [  // Division #1
    [         // Vehicle                                 Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-     [  "B_Heli_Light_01_armed_F"           ,[0,0],[2,"Rifleman"],        "Truck01"      ],  //U-80 Ghost Hawk
-     [  "B_Heli_Light_01_armed_F"           ,[0,-100],[2,"Rifleman"],     "Truck01"      ], //AH-9 Pawnee
-     [  "B_Heli_Transport_01_F"               ,[100,0],[2,"Rifleman"],     "Truck01"      ]   //WY-55 Hellcat
+     [  "B_Heli_Light_01_armed_F"           ,[0,0],[1,"Rifleman"],        "Truck01"      ],  //U-80 Ghost Hawk
+     [  "B_Heli_Light_01_armed_F"           ,[0,-100],[1,"Rifleman"],     "Truck01"      ], //AH-9 Pawnee
+     [  "B_Heli_Transport_01_F"               ,[100,0],[1,"Rifleman"],     "Truck01"      ]   //WY-55 Hellcat
     
     //"B_Heli_Transport_01_F" //U-80 Ghost Hawk
     //"I_Heli_light_03_F" // WY-55 Hellcat
@@ -152,7 +152,7 @@
   [   
      // Troops : These are distributed across all aircraft in the division. These lines are identical to the lines in the group section.
      //  Troop behaviour and side options                    # and type of Troops     Patrol logic |  spawn     |dest |'Patrol' options
-    [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[3,"Rifleman"]],["PatrolRoute",[0,0],[0,0],["COMBAT","NORMAL",["Villages"],true,false,true,100   ]]]
+      [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[1,"Rifleman"]],["PatrolRoute",[0,0],[0,0],["COMBAT","NORMAL",["Villages"],true,false,true,100   ]]]
  //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1800],[50,0],[50]]],
   //  [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[0,-1700],[-50,0],[50]]]
    // 'dest' for troops is where they will go to perform their 'Patrol Logic' once they get on deck

@@ -11,7 +11,7 @@
     [// NOTIFICATION Messages and Map display Control.
 	false, "ALL",0, // Notify players via Radio Message, radio channel, range from encounter center (0=unlimited.
     false, // Notify players via global message
-    true,// Show encounter area on the map
+    false,// Show encounter area on the map
     
     // Set the value above to false to remove dot/town indicators for zombie spawns.
     0,    // Win delay: Time in seconds after a WIN before mission cleanup is performed

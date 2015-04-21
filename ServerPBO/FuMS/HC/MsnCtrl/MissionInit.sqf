@@ -81,7 +81,7 @@ _groups = _fragments select 3;
 _vehicles = _fragments select 4;
 _boxes = _fragments select 5;
 // Mission complete: Take action based upon Trigger/Mission Logic above
-diag_log format ["## MissionInit: Mission %2 finished with status of :%1",_msnStatus, _curMission];
+diag_log format ["<FuMS> MissionInit: Mission %2 finished with status of :%1",_msnStatus, _curMission];
 _boxes = [_lootConfig, _eCenter, _msnStatus,_themeIndex, _boxes] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnMissionLoot;
 
 [_markers, _notifications, _msnStatus, _mkr1, _mkr2,_eCenter, _missionNameOverride] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnNotifications;
@@ -89,7 +89,7 @@ _boxes = [_lootConfig, _eCenter, _msnStatus,_themeIndex, _boxes] call FuMS_fnc_H
 // Common Mission clean up
 FuMS_MissionTerritory = FuMS_MissionTerritory - [_eCenter, _encounterSize, format ["%1%2",_missionTheme,_curMission]];
 // For boxes: look to have a seperate timer, spawn a process to wait that timer period then delete them!
-diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
+diag_log format ["<FuMS> MissionInit: Preparing to delete loot: %1",_boxes];
 {
     if (typeName _x != "ARRAY") then
     {
@@ -120,15 +120,22 @@ diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
     }else
     {
         private ["_keep","_found"];
-        
-    //    diag_log format ["## MissionInit : %2: Removing Buildings: %1",_buildings, _curMission];
+           
+        //***************BUILDINGS************************
         {
             private ["_keep"];
             _keep = _x getVariable "FuMS_PERSIST";    
             if (!isNil "_keep") then
             {
                 if (!_keep) then
-                {
+                {                      
+                    //_effects = _x getVariable "effects";
+                   // {deleteVehicle _x} forEach _effects;  
+                    { 
+                        diag_log format ["<FuMS> MissionInit: deleting effect :%1",_x];
+                        detach _x; 
+                        deleteVehicle _x;
+                    } foreach attachedObjects _x;
                     //      diag_log format ["## MissionInit: %2: deleting building :%1", _x, _curMission];
                     deleteVehicle _x;
                     // store in HC variable.
@@ -161,7 +168,7 @@ diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
                             _timer = time;
                             _done = false;
                             _veh = vehicle _unit;
-                            diag_log format ["##MissionInit: %1 cleanup delayed because its driver, %2, is engaged with players!",_veh,_unit];
+                            diag_log format ["<FuMS> MissionInit: %1 cleanup delayed because its driver, %2, is engaged with players!",_veh,_unit];
                             while {alive _unit  and !_done} do
                             {
                                 _enemy = _unit findNearestEnemy _unit;
@@ -171,7 +178,15 @@ diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
                                 }else{_timer = time;};
                                 sleep 15;
                             };    
-                            if (alive _unit) then { deleteVehicle _veh;} // if driver was alive delete the vehicle
+                            if (alive _unit) then
+                            { 
+                                { 
+                                    diag_log format ["<FuMS> MissionInit: deleting effect :%1",_x];
+                                    detach _x; 
+                                    deleteVehicle _x;
+                                } foreach attachedObjects _x;      
+                                deleteVehicle _veh;                            
+                            } // if driver was alive delete the vehicle
                             else
                             {
                                //driver was dead, so wait 3 minutes for TEMPVAR to change on vehicle. If it does not, delete it!
@@ -190,7 +205,17 @@ diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
                                         };
                                         sleep 15;
                                     };
-                                    if (!_keep) then { deleteVehicle _veh;};                                    
+                                    if (!_keep) then
+                                    { 
+                                  //      _effects = _x getVariable "effects";
+                                    //    {deleteVehicle _x} forEach _effects;   
+                                        { 
+                                            diag_log format ["<FuMS> MissionInit: deleting effect :%1",_x];
+                                            detach _x; 
+                                            deleteVehicle _x;
+                                        } foreach attachedObjects _x;                                          
+                                        deleteVehicle _veh;
+                                    };                                    
                                 };                                
                             };                            
                             deleteVehicle _unit;
@@ -198,6 +223,11 @@ diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
                     }else
                     {                       
                         ["Vehicles",_x] call FuMS_fnc_HC_Util_HC_RemoveObject;
+                         { 
+                             diag_log format ["<FuMS> MissionInit: deleting effect :%1",_x];
+                             detach _x; 
+                             deleteVehicle _x;
+                         } foreach attachedObjects _x;      
                         deleteVehicle _x;
                     };
                 };
@@ -217,7 +247,7 @@ diag_log format ["##MissionInit: Preparing to delete loot: %1",_boxes];
                         _unit = _this select 0;
                         _timer = time;
                         _done = false;
-                         diag_log format ["##MissionInit: %1 cleanup delayed because it is engaged with players!",_unit];
+                         diag_log format ["<FuMS> MissionInit: %1 cleanup delayed because it is engaged with players!",_unit];
                         while {alive _unit  and !_done} do
                         {
                             _enemy = _unit findNearestEnemy _unit;

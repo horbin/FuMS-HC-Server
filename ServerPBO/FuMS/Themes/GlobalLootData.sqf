@@ -69,7 +69,31 @@ _lootData =
   [
     
   ]
- ]  //*********** Loot************************ 
+ ],  //*********** Loot************************ 
+ [
+ //**SCATTER loot example.  Loot in this option will be distributed on the ground around the loot location center.
+   ["Scatter", "none"],
+  [// All weapons and quantity 
+      ["LMG_Mk200_F", 2],
+      ["arifle_MXM_Black_F", 2]
+  ],
+  [// All magazines and quantity
+      ["30Rnd_65x39_caseless_mag_Tracer", 4],
+      ["200Rnd_65x39_cased_Box_Tracer", 4]
+  ],
+  [// All items and quantity
+      ["NVG_EPOCH", 2],
+      ["FAK", 3],
+      ["optic_Arco", 2],
+      ["ItemKiloHemp", 3],
+      ["meatballs_epoch", 2],
+      ["HeatPack", 3],
+      ["ItemSodaOrangeSherbet", 2] 
+  ],
+  [// All backpacks and quantity
+    [Backpacks_ALL, 1]
+  ]
+ ]
 //**********************************************************************************************************
 ];
 

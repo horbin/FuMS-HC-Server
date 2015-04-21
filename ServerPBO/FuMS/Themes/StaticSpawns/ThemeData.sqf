@@ -1,14 +1,14 @@
 //ThemeData.sqf
 // Horbin
-// 1/10/15
+// 4/21/15
 // Inputs: Theme index into which to store this data.
 // Outputs: none
  //  Options , Mission List, Points List
 _themeData =
 [
     [  // *******Options*********
-        "Test", // Needs to match the folder name!
-        4,  //Mission Selection: 1=Random, 2=In order, 3=Random:once only until all missions run
+        "StaticSpawns", // Needs to match the folder name!
+        5,  //Mission Selection: 1=Random, 2=In order, 3=Random:once only until all missions run
              // 4=Static: All missions in 'Mission List' will be created at server start!
 			 // 5=Static: with no respawn. Use option 5 for 'create once' type missions.
 			 // Using option 4 will permit mission to run and re-spawn based upon the respawn delay below.
@@ -22,15 +22,16 @@ _themeData =
     [  //***** Mission List *****
     // List of Missions. 
         // The below missions MUST be in the same folder as this file!            
-	//	["TestMission01",[10700,12200] ], // spawn at the specific location. If '0' take from locations below!
-       //   ["BikeGang"],  // will spawn at any of the locations defined below! If none defined, BIS_fnc_findSafePos will be used.
+		//["TestMission01",[10700,12200] ], // spawn at the specific location. If '0' take from locations below!
+        //  ["BikeGang"],  // will spawn at any of the locations defined below! If none defined, BIS_fnc_findSafePos will be used.
 	   //  ["TestMission01","Charkia"],
-	//	  ["LandPatrol", "Zaros"],// mission will only spawn in the town of Charkia
+		  ["DayZHeloCrash"],// mission will only spawn in the town of Charkia
+		 ["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"],["DayZHeloCrash"]
 			//["WaterMission"],
 		// ["TestHeloPatrol","Stavros"],
 		//["MazeTest",[23587,18368.5]],
-         ["NukeDevice"]
-		 //["MazeTest2"]
+        //  ["NukeDevice"],
+		// ["MazeTest2"]
 		// ["MazeTest2",[23300,17800]],
 		// ["MazeTest2",[15500,20000]]
 		//["TestParse"]
@@ -55,13 +56,13 @@ _themeData =
     ],
 	[ //***** Radio Chatter *****
 		[ // AI Radio Chatter configuration
-             "ALL", // radio channel used by AI - "ALL"= messages heard w/o radio (other options 0-9)
+             9, // radio channel used by AI - "ALL"= messages heard w/o radio (other options 0-9)
     //0=Quartz, 1=Garnet, 2=Citrine, 3=Amethyst, 4=Topaz, 5=Sapphire, 6=Onyx, 7=Emerald, 8=Ruby, 9=Jade
 			false, // silent Check-in =true: AI squads will NOT check-in with BaseOps when they spawn.
 			true, // AI death messages enabled.
 			1500, // Radio Range (for AI. BaseOps's high power radio has unlimited range)
-			"Bear",    // AI callsign, groups will be numbered..ie Bear01, Bear02
-			"Closeout" // BaseOps call sign
+			"",    // AI callsign, groups will be numbered..ie Bear01, Bear02
+			"" // BaseOps call sign
 		],
 		//**Do not remove or change order of these items. 
 		// The 'chat text' can be changed to meet your theme's needs.
