@@ -1,7 +1,46 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
 
-v.15d
+v1.5e
+
++ Loot Options:
+"SCATTER" key word.
+"SCATTER" may now be used in place of a Loot option name or "RANDOM" in the 'Loot Configuration' section of all missions.
+When "SCATTER" is specified the loot option named "SCATTER" is selected.
+Loot contained in the 'SCATTER' option (defined in LootData.sqf or GlobalLootData.sqf ) will be distributed on the ground in random directions around the loot's location.
+This options works WITH vehicles, so, if in the mission file, "SCATTER" is the loot option for the vehicle, the loot will be scattered
+around the vehicle when it is spawned.
+No loot box will be created when "SCATTER" is used.
+
+Ex: ["Scatter",[50,50]]
+In this case when loot is to be spawned the loot items contained in the "SCATTER" description in the LootData.sqf will be spawned
+on the ground around the location [0,0] (encounter center).
+
++ Fire and Smoke Effects:
+3 sizes of Fire and smoke
+"Fire" or "Smoke" options are now available to static vehicles and buildings in all missions.
+"FIRE_SMALL","FIRE_MEDIUM","FIRE_BIG","SMOKE_SMALL","SMOKE_MEDIUM","SMOKE_BIG"
+are the list of current valid options.
+Static vehicles are defined in the 'Buildings' section of each mission. See Theme\Test\NukeDevice.sqf for example usage.
+Attaching this parameter to a vehicle or building will cause it to have the desired effect until it despawns.
+
++ Building Randomization:
+In the 'Building' section of each mission when defining structures and static vehicles, the 'name' of the building/vehicle may now 
+be a list of names.  When FuMS sees a list it will randomly select one of the names from the list.
+See \FuMS\Themes\StaticMissions\DayZHeloCrash.sqf for example.
+
++ Crash Site Theme (Title: StaticMissions) - inspired by Richie
+Theme demonstrates new functionality introduced in v1.5e.  This theme will spawn 10 Dayz style helo crashes at random locations
+across the map. All 10 crashes are spawned when the HC connects and remain until server reset.  Placement of these crashes follow
+normal FuMS spawn mechanics so they will not spawn near bases, players or other encounters.
+Note: If you want the locations to show on the map, set the 'show encounter' option to 'true' in the DayZHeloCrash.sqf mission file.
+Note: This mission can be easily edited to add AI, or even change the helo to a semi-functioning, 
+smoking version...it is just another FuMS mission after all!
+
++ MadScience Theme: Modified to not show on map by default.
+
++ SEM Theme: Added Smoke/Fire effects where applicable to crash missions.
+v1.5d
 + Updated TrackPatrol and RoutePatrol to more effectively utilize 'named' locations.
  This update permits use of keywords 'Villages','Cities', and 'Capitals'.  See \Docs folder for specifics on AI logic.
 
