@@ -25,8 +25,7 @@ Static vehicles are defined in the 'Buildings' section of each mission. See Them
 Attaching this parameter to a vehicle or building will cause it to have the desired effect until it despawns.
 
 + Building Randomization:
-In the 'Building' section of each mission when defining structures and static vehicles, the 'name' of the building/vehicle may now 
-be a list of names.  When FuMS sees a list it will randomly select one of the names from the list.
+In the 'Building' section of each mission when defining structures and static vehicles, the 'name' of the building/vehicle may now be a list of names.  When FuMS sees a list it will randomly select one of the names from the list.
 See \FuMS\Themes\StaticMissions\DayZHeloCrash.sqf for example.
 
 + Crash Site Theme (Title: StaticMissions) - inspired by Richie
@@ -41,6 +40,8 @@ smoking version...it is just another FuMS mission after all!
 + MadScience Theme: Modified to not show on map by default.
 
 + SEM Theme: Added Smoke/Fire effects where applicable to crash missions.
+
+
 v1.5d
 + Updated TrackPatrol and RoutePatrol to more effectively utilize 'named' locations.
  This update permits use of keywords 'Villages','Cities', and 'Capitals'.  See \Docs folder for specifics on AI logic.
