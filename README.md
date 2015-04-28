@@ -4,13 +4,19 @@ v1.5f
 + Anit-Air for AI
 Added ability to added anti-air weapons to AI, similar to 'anti-tank'.  Use the same field in the SoldierData.sqf with one of the 
 following settings:
-	 //Anti-Tank options
-	  // true = RPG launcher with ammo.
-	 // "AIR" = Titan_F launcher with ammo.
-	  // "LAND" = RPG launcher with ammo.
-	  // "RANDOM" = 50/50 chance of AIR or Land launcher.
-	  // false = no special anti-vehicle weapons.
-	  // NOTE: controlling the deletion of this equipment upon AI death is controlled via settings in BaseServer.sqf
+ //Anti-Tank options
+
+  // true = RPG launcher with ammo.
+  
+// "AIR" = Titan_F launcher with ammo.
+
+// "LAND" = RPG launcher with ammo.
+
+  // "RANDOM" = 50/50 chance of AIR or Land launcher.
+  
+  // false = no special anti-vehicle weapons.
+  
+  // NOTE: controlling the deletion of this equipment upon AI death is controlled via settings in BaseServer.sqf
         
 See GlobalSoldierData.sqf for examples
 
