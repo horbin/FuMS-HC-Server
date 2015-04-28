@@ -1,6 +1,16 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
 v1.5f
+++++++++++++++++++++++++
+++ RAPTORS ADDON SUPPORT:
+++++++++++++++++++++++++
+http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
+
+See Installation instructions.
+
+
+
+
 + Anit-Air for AI
 
 Added ability to added anti-air weapons to AI, similar to 'anti-tank'.  Use the same field in the SoldierData.sqf with one of the 
@@ -24,10 +34,6 @@ See GlobalSoldierData.sqf for examples
 
 + Fixed a bug with 'HasAdminAccess' that was causing erroneous .rpt logs.
 
-+ Raptors Addon Support:
-http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
-
-See Installation instructions.
 
 
 
