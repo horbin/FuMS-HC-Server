@@ -17,7 +17,7 @@ following settings:
   
   // false = no special anti-vehicle weapons.
   
-  // NOTE: controlling the deletion of this equipment upon AI death is controlled via settings in BaseServer.sqf
+  // NOTE: controlling the deletion of this equipment upon AI death is set in BaseServer.sqf
         
 See GlobalSoldierData.sqf for examples
 
