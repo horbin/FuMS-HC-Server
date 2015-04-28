@@ -4,6 +4,7 @@ v1.5f
 + Anit-Air for AI
 Added ability to added anti-air weapons to AI, similar to 'anti-tank'.  Use the same field in the SoldierData.sqf with one of the 
 following settings:
+
  //Anti-Tank options
 
   // true = RPG launcher with ammo.
