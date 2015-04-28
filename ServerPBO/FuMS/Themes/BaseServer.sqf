@@ -24,22 +24,23 @@ FuMS_ServerData =
         // use this block to easily turn off/on your various mission sets.
         // -1 = all HC's.  0= Server only,  1=1st HC to connect, 2=2nd, etc.
         //  Note: Server option not currenty operational.
-       ["Test",-1],  //Remove this theme if on a production server.
+     //   ["Test",-1]//Remove this theme if on a production server.
         ["HeloPatrols",-1], // 2 sets of 3 armed helo's patrol the skys!!!      
-      ["SEM",-1], // basic old school Arma2 Epoch encounters
+        ["SEM",-1], // basic old school Arma2 Epoch encounters
         ["TownRaid",-1], // random town is raided by 4 truck loads of humans!
-       ["Small",-1],  // 6 man groups invade a random village
-     ["Aquatic",-1], // 3 coastal areas w/ boats and ai
-     ["MadScience",-1], // 10 random towns become infected with crazzed clones
+        ["Small",-1],  // 6 man groups invade a random village
+        ["Aquatic",-1], // 3 coastal areas w/ boats and ai
+        ["MadScience",-1], // 10 random towns become infected with crazzed clones
         ["Convoy",-1], // 2 random convoys of 3 vehicles move across the map.
-        ["StaticSpawns",-1] // creates 10 Dayz style Helo crashes at random locations.
-		
+        ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
+        ["Jurassic",-1] // creates 3 encounters with wondering Raptors and some scattered loot.
+
     ],
     [  // Event and AI Radio messsage behavior
         true, // EnableRadioChatterSystem: turns on the system, allowing below options to function
         false, // EnableRadioAudio: turns on 'audio' effects for radio chatter
         true, // RadioRequired: if false, messages are heard without a radio on the player's belt.
-        false, // RadioFollowTheme: Conforms with Theme radio channel choices. False:any radio works for all channels.
+        true, // RadioFollowTheme: Conforms with Theme radio channel choices. False:any radio works for all channels.
         true, 800 // EnableAIChatter: enables random radio chatter between AI when players get within the specified range (meters) as default.
               // NOTE: Theme 'Radio Range' will override this setting.
     ],
@@ -72,8 +73,8 @@ FuMS_ServerData =
             [], // Vests
             [], // Backpacks.
             [], // Helmets
-            ["launch_RPG32_F"], // Weapons
-            ["RPG32_HE_F","RPG32_F"], // Magazines
+            ["launch_RPG32_F","launch_I_Titan_F"], // Weapons
+            ["RPG32_HE_F","RPG32_F","Titan_AA"], // Magazines
             [] // Items
         ]
 	],
@@ -85,7 +86,7 @@ FuMS_ServerData =
             true, // true= smoke created with box for ease of location.
             100,  // proximity character has to get to box before smokes start. 0=unlimited
             ["Red","White","Blue"],  // colors of smoke
-             5     // Duration, in minutes, smoke lasts once triggered.
+             1     // Duration, in minutes, smoke lasts once triggered.
           ],
 		true,  // vehicles occupied by players persist through server reset and are sellable!
 		// List of box types used by "Random" in LootData and GlobalLootData files.

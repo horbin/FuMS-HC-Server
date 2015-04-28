@@ -7,9 +7,9 @@ _player = _this select 0;
 _data = [];
 _pUID = getPlayerUID _player;
 waitUntil {!isNil "FuMS_Users"};  // hold here at server start for list to become defined. 
-diag_log format ["##GetUserData   Player:%1 with Guid:%2",_player, _pUID];
+diag_log format ["<FuMS> GetUserData   Player:%1 with Guid:%2",_player, _pUID];
 {
-    diag_log format ["##GetUserData examining:%1",_x];
+    diag_log format ["<FuMS> GetUserData examining:%1",_x];
 	_dataUID = _x select 1;
 	if (_pUID == _dataUID) exitWith {_data = _x};
 }foreach FuMS_Users;

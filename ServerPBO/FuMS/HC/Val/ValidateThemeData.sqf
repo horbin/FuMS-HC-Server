@@ -12,7 +12,7 @@ _start = time;
 // FuMS_ActiveThemes contains list of activated themes as defined in BaseDataServer.sqf.
 while {true} do
 {
-	_file = "\FuMS\Themes\BaseServerData.sqf";
+	_file = "\FuMS\Themes\BaseServer.sqf";
 	if (isNil "FuMS_THEMEDATA") exitWith {_abort = true;_critical=true; _msg = format ["No ThemeData passed to Headless Client"];}; 
     if (TypeName FuMS_THEMEDATA != "ARRAY") exitWith {_abort = true;_critical=true; _msg = format ["No ThemeData defined by Server"];};
 	if (count FuMS_THEMEDATA == 0) exitWith {_abort = true;_critical=true; _msg = format ["No ThemeData defined by Server"];};
@@ -34,7 +34,7 @@ while {true} do
             diag_log format ["-------------------------------------------------------------------------------------"];
             diag_log format ["----------------            Fulcrum Mission System                    -----------------"];
             diag_log format ["-------------------------------------------------------------------------------------"];
-            diag_log format ["##ValidateThemeData: ERROR in FuMS_THEMEDATA"];
+            diag_log format ["<FuMS> ValidateThemeData: ERROR in FuMS_THEMEDATA"];
             diag_log format ["Recommend verifying data in file %1 on your server!",_file];                
             diag_log format ["                          Theme %1 offline!", _theme];
             diag_log format ["REASON: %1",_msg];
@@ -64,7 +64,7 @@ if ( _critical and _abort) then
     diag_log format ["-------------------------------------------------------------------------------------"];
     diag_log format ["----------------            Fulcrum Mission System                    -----------------"];
     diag_log format ["-------------------------------------------------------------------------------------"];
-    diag_log format ["##ValidateThemeData: ERROR in FuMS_THEMEDATA"];
+    diag_log format ["<FuMS> ValidateThemeData: ERROR in FuMS_THEMEDATA"];
     diag_log format ["Recommend verifying data in file %1 on your server!",_file];  
     diag_log format ["             	    CRITICAL ERROR: FuMS OFFLINE! "];
     diag_log format ["REASON: %1",_msg];

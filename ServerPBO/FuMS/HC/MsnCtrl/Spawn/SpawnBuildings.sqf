@@ -66,14 +66,14 @@ if (!isNil "_buildingData") then
                         _newpos = [_newx, _newy, _newz];
                     }else {_newpos = [ _eCenter, _offset] call FuMS_fnc_HC_MsnCtrl_Util_XPos;};
                     //   _newpos = [_newpos, 0, 100, 1,0, 8,0,[],[[0,0],[0,0]]] call BIS_fnc_findSafePos; // 1m clear, terraingradient 8 pretty hilly
-                    if (_type isKindOf "Air" or _type isKindOf "LandVehicle" or _type isKindOf "Ship") then
+                    if ( (_type isKindOf "Air" or _type isKindOf "LandVehicle" or _type isKindOf "Ship") and TypeName (_x select 3) == "ARRAY") then
                     {
                         private ["_data","_veh","_settings"];    
                         _settings = _x select 3;
-                        _data = [_newpos, "none", _type] call FuMS_fnc_HC_MsnCtrl_Util_GetSafeSpawnVehPos;	
-                        //diag_log format ["pos:%1, driver:%2, type:%3 data:%4",_pos, _driver, _vehType select _i,_data];
+                        diag_log format ["<FuMS> SpawnBuildings: Vehicle found: pos:%1,  type:%2",_newpos, _type];
+                        _data = [_newpos, "none", _type] call FuMS_fnc_HC_MsnCtrl_Util_GetSafeSpawnVehPos;	                     
                         _veh = [ _type, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	                                                
-        //                diag_log format ["##SpawnBuildings: created:%1, _type:%2",_veh,_type];                                                                  
+                        diag_log format ["<FuMS> SpawnBuildings: created:%1, _type:%2",_veh,_type];                                                                  
                         _vehicles = _vehicles + [_veh];                            
                         _veh setDir _rotation;                        
                         _veh setFuel (_settings select 0);
@@ -89,6 +89,15 @@ if (!isNil "_buildingData") then
                         private ["_keep"];
                         _bldg = createVehicle [ _type, _newpos,[],0,"CAN_COLLIDE"];
                         _bldg setDir _rotation;
+                        
+                        if (surfaceiswater _newpos and count _newpos ==3) then
+                        { 
+                            _adjust = _newpos select 2;
+                            _adjust = _adjust - 1.5;
+                            _newpos set [2,_adjust];
+                            _bldg setposASL _newpos;
+                        };
+                        
                         _keep = false;
                         if (_x select 3 == 1) then {_keep = true;};
                         _bldg setVariable ["FuMS_PERSIST",_keep,false];

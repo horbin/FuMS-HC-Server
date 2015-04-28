@@ -32,6 +32,13 @@ _soldierData =
         [ .8, .9, .5, .3, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, .5, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo, anti-tank!
+        //Anti-Tank options:
+        // true = RPG launcher with ammo.
+        // "AIR" = Titan_F launcher with ammo.
+        // "LAND" = RPG launcher with ammo.
+        // "RANDOM" = 50/50 chance of Air or Land launcher
+        // false = no special anti-vehicle weapons.
+        // NOTE: controlling the deletion of this equipment upon AI death is controlled via settings in BaseServer.sqf
         [ [[Food_Canned,.5],[1,1]], 
 		  [[Drink,.5],[1,2]],
 		  [["FAK",.5],[1,1]],
@@ -47,7 +54,7 @@ _soldierData =
         [PistolPairs,.5], // Secondary Weapon and chance
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
-        [ true, true, true], // DiverOverWater, UnlimitedAmmo, anti-tank
+        [ true, true, "RANDOM"], // DiverOverWater, UnlimitedAmmo, anti-tank
         [ [[Food_Canned,.1],[1,1]],[[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]],[[Grenades_Hand,.3],[1,1]]    ] 
     ],[
         "LMG",[.05, .9, .1, .5, .5, .1, .1, .5],
@@ -168,6 +175,45 @@ _soldierData =
         [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
         [ false, false, false], // DiverOverWater, UnlimitedAmmo
         [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]]             ]
+    ],
+    [
+        // requires installation of 'Raptor' Addon
+        // http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
+        // does not need to be commented out, but ensure missions are not attempting to build this
+        // unit type unless the Addon is enabled!
+        //**********
+        // **NOTE** Only Helmet, and General Inventory items are valid for Raptors.
+        //**********
+        "RaptorM",[1,1,1,1,1,1,1,1],
+		// Raptor_Uniform_Base  RaptorM_Uniform_Base
+        ["",0], // Uniform<<-- place holder, does nothing, skins randomized.
+        ["",0], // Vest.
+        ["Rup_ChristmasHata",0], // Helmet <<-- set this to 1 on the holidays ;)
+        ["",0], // Backpack and chance.
+        ["",0], // PriWeapon and chance <<-- place holder, does nothing.
+        [ 0, 0 , 0], // scope, muzzle, flashlight:  percent chance of having one appropriate to the rifle.
+        ["",0], // Secondary Weapon and chance
+        [ 0, 0, 0, 0, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
+        [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
+        [ false, false, false], // DiverOverWater, UnlimitedAmmo
+        [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]] ]             
+    ],
+	 [
+         // requires installation of 'Raptor' Addon
+        // http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
+        "RaptorF",[1,1,1,1,1,1,1,1],
+		// Raptor_Uniform_Base  RaptorM_Uniform_Base
+        ["",0], // Uniform
+        ["",0], // Vest.
+        ["Rup_ChristmasHat",0], // Helmet
+        ["",0], // Backpack and chance.
+        ["",0], // PriWeapon and chance
+        [ 0, 0 , 0], // scope, muzzle, flashlight:  percent chance of having one appropriate to the rifle.
+        ["",0], // Secondary Weapon and chance
+        [ 0, 0, 0, 0, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
+        [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
+        [ false, false, false], // DiverOverWater, UnlimitedAmmo
+        [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]] ]             
     ]
     
 ];

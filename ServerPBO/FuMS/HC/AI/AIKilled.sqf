@@ -21,8 +21,8 @@ _killer = _this select 1;
 //            ["launch_RPG32_F"], // Weapons
 //            ["RPG32_HE_F","RPG32_F"], // Magazines
 //            [] // Items
-diag_log format ["<FuMS> AIKilled: Victim:%1  SoldierOnly Items:%2",_victim, FuMS_SoldierOnlyItems];
-
+//diag_log format ["<FuMS> AIKilled: Victim:%1  SoldierOnly Items:%2",_victim, FuMS_SoldierOnlyItems];
+private ["_i","_itemList"];
 for [{_i=0},{_i < count FuMS_SoldierOnlyItems},{_i=_i+1}]do
 {
     _itemList = FuMS_SoldierOnlyItems select _i;
@@ -61,8 +61,8 @@ for [{_i=0},{_i < count FuMS_SoldierOnlyItems},{_i=_i+1}]do
 
 // perform a check within 2m's of the AI for any "Launcher_RPG32_F" and delete them also
 // code implemented to address issue of AI dropping the rocket launcher before this EH triggers!!!
-//diag_log format ["##AI_Killed: Neareast Objects within 5m :%1",nearestObjects [_victim,[],5]];
-
+//diag_log format ["<FuMS> AI_Killed: Neareast Objects within 5m :%1",nearestObjects [_victim,[],5]];
+//diag_log format ["<FuMS> AI_Killed: FuMS_SoldierOnlyItems:%1",FuMS_SoldierOnlyItems];
     _droppedLauncher = nearestObjects [_victim, [],5];
     if (!isNil "_droppedLauncher") then
     {
@@ -72,11 +72,20 @@ for [{_i=0},{_i < count FuMS_SoldierOnlyItems},{_i=_i+1}]do
             {
                 //deleteVehicle _x;                
                 _isRPG = getWeaponCargo _x;
-               // diag_log format ["##AI_Killed: Trying to delete RPG from %1 which contains %2",_x, _isRPG];
-                {
-                    //if ( ((_isRPG select 0) select 0) == "launch_RPG32_F") then { clearWeaponCargo _x;};
-                    if ( ((_isRPG select 0) select 0) == _x) then { clearWeaponCargo _x;};
-                }foreach FuMS_SoldierOnlyItems;
+                _firstItem = _isRPG select 0;
+               diag_log format ["<FuMS> AI_Killed: Trying to delete RPG from %1 which contains %2",_x, _isRPG];
+                if (count _firstItem != 0) then
+                {                   
+                    {       
+                         if (count _x != 0) then
+                        {
+                            diag_log format ["<FuMS> AI_Killed: comparing %1 and %2",_firstItem select 0, _x];
+                            {
+                                if ((_firstItem select 0) == _x) then { clearWeaponCargo _x;};   
+                            }foreach _x;
+                        };
+                    }foreach FuMS_SoldierOnlyItems;
+                };
             };
         }foreach _droppedLauncher; // should only be one!
     };
@@ -131,7 +140,7 @@ if (isPlayer _killer and (_killer == vehicle _killer)) then
        // diag_log format ["##Killed EH: %1.",_msg];
         if (isNil "_msg") then
         {
-            diag_log format ["##EH Killed: ERROR No message to send to RadioChatter player:%1, unit:%2",_playername, _unitCallsign];
+            diag_log format ["<FuMS> EH Killed: ERROR No message to send to RadioChatter player:%1, unit:%2",_playername, _unitCallsign];
         } else
         {
             [_msg, _channel, _range, position _victim] spawn FuMS_fnc_HC_AI_RC_RadioChatter;
@@ -145,8 +154,8 @@ if (isPlayer _killer and (_killer == vehicle _killer)) then
         private ["_themeIndex"];
         _themeIndex = _var select 0;
         FuMS_BodyCount set [_themeIndex, ((FuMS_BodyCount select _themeIndex) + 1)];
-        diag_log format ["##AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
-        diag_log format ["##AI_Killed: Player side = %1  Victim Side:%2", side _killer,  side _victim];
+        diag_log format ["<FuMS> AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
+        diag_log format ["<FuMS> AI_Killed: Player side = %1  Victim Side:%2", side _killer,  side _victim];
     };    
     if (side _victim == civilian) then
     { 

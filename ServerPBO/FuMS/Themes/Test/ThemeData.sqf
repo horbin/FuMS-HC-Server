@@ -30,6 +30,10 @@ _themeData =
 		// ["TestHeloPatrol","Stavros"],
 		//["MazeTest",[23587,18368.5]],
          ["NukeDevice"]
+    	 // ["NukeDevice",[12800,16900]],["NukeDevice",[12900,16900]],["NukeDevice",[13000,16900,0]],
+	//	  ["NukeDevice",[12800.3, 17000.4]],["NukeDevice",[12900,17000,8.1]],["NukeDevice",[13000,17000]]
+   // ["OilRig",[27627.2,18501.8]]
+		 // ["NukeDevice",[11040.1,7114.63]],["NukeDevice",[11089.8,7142.63]],["NukeDevice",[11063.9,7136.47]],["NukeDevice",[11064.4,7102.51]]
 		 //["MazeTest2"]
 		// ["MazeTest2",[23300,17800]],
 		// ["MazeTest2",[15500,20000]]

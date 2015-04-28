@@ -7,7 +7,8 @@ if !(hasInterface) then
 {   
     private ["_serverOptions","_themeNumber","_radchat","_i","_abort","_msg","_dat","_dat2"];  
 	
-    diag_log format ["<FuMS> FuMsnInit: Script Transfer complete: FuMS Initializing!"];    
+    diag_log format ["<FuMS> FuMsnInit: Script Transfer complete: FuMS Initializing!"];          
+    
     //ASSERT BaseServer, BaseLoot, and BaseSoldier data now on HC  
     if (!isServer) then
     {
@@ -73,6 +74,8 @@ if !(hasInterface) then
         FuMS_LootSaveVehicle = _dat select 2;
         FuMS_STORAGE	= _dat select 3;
         FuMS_AIONLYVehicles = _dat select 4;
+        
+        // FuMS_Raptors = true;
         
         //FuMS_GlobalDataIndex = count FuMS_ThemeData; <-- set and broadcast by server!
         if([] call FuMS_fnc_HC_Val_ValidateThemeData) exitWith {_abort=true;};                    

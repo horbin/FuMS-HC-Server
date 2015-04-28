@@ -1,11 +1,11 @@
-//NukeDevice.sqf
+//Jurassic01.sqf
 // Horbin
-// 1/11/15
-// Based upon drsubo Mission Scripts
+// 4/27/15
+
 
 [
-["FIRE_Smoke_Test", 200], // Mission Title NOSPACES!, and encounter radius
-["Fire Smoke Test","mil_objective","ELLIPSE","ColorRed","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
+["Jurassic", 100], // Mission Title NOSPACES!, and encounter radius
+["Cloning Anomalies","mil_objective","ELLIPSE","ColorYellow","FDiagonal",100],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
    // type is "mil_objective"
 [  
     [// NOTIFICATION Messages and Map display Control.
@@ -18,56 +18,36 @@
     ],
     // Spawn Mission Message
 ["Mission",
-    "Device discovered!",
-    "Clone proximity has been detected! A Strange device has been activated! Remove the device and enemies as soon as possible!"
+    "",
+    ""
 ],
     
     // Mission Success Message
 ["Mission Success",
     "",
-    "The Device has been disabled."
+    ""
 ],
   
     // Mission Failure Message
 ["Mission Failure!",
     "",
-    "Fortunately the device failed to activate! But the Bandits have escaped."
+    ""
 ] 
 ],
 [  //  Loot Config:  Refer to LootData.sqf for specifcs
-["Scatter" , [0,0] ], //[static loot, offset location] - spawns with the mission
-["Random" , [5,5] ], // Win loot, offset location - spawns after mission success
+[["Scatter",[0,0]],["Scatter",[20,0]],["Scatter",[-20,0]] ], //[static loot, offset location] - spawns with the mission
+["None" , [5,5] ], // Win loot, offset location - spawns after mission success
 ["None" , [0,0] ]  // Failure loot, offset location - spawns on mission failure
 ],
 [//BUILDINGS: persist = 0: building deleted at event completion, 1= building remains until server reset.
- ["Land_Device_disassembled_F",[-2,0],0,0],
-["Land_Device_disassembled_F",[0,0],0,0,"FIRE_SMALL"],
-["Land_Device_disassembled_F",[2,0],0,0,"FIRE_MEDIUM"],
-["Land_Device_disassembled_F",[4,0],0,0,"FIRE_BIG"],
-["Land_Device_disassembled_F",[6,0],0,0,"SMOKE_SMALL"],
-["Land_Device_disassembled_F",[8,0],0,0,"SMOKE_MEDIUM"],
-["Land_Device_disassembled_F",[10,0],0,0,"SMOKE_BIG"],
-  //  ["Land_Device_disassembled_F",[50,50],0,0, "Fire"],   //type, offset, rotation, presist flag
-   ["I_UGV_01_rcws_F",[0,30],0, [.5, 1, .5, .5,.5], "FIRE_SMALL"],
-   ["I_UGV_01_rcws_F",[0,25],0, [.5, 1, .5, .5,.5], "FIRE_MEDIUM"],
-    ["I_UGV_01_rcws_F",[0,20],0, [.5, 1, .5, .5,.5], "FIRE_BIG"],
-   ["I_UGV_01_rcws_F",[0,15],0, [.5, 1, .5, .5,.5], "SMOKE_SMALL"],
-    ["I_UGV_01_rcws_F",[0,10],0, [.5, 1, .5, .5,.5], "SMOKE_MEDIUM"],
-   ["I_UGV_01_rcws_F",[0,5],0, [.5, 1, .5, .5,.5], "SMOKE_BIG"]
-
-	// Vehicle Name  | offset | rotation | Fuel, Ammo, DmgEngine, Dmg FuelTank, DmgHull
-//	["I_UGV_01_rcws_F",[0,100],   0,       [.5,   1,     .5,         .5,         .5]],
-//    ["Land_Wreck_Car2_F",[0,50],0, [.5, 1, .5, .5], "Fire"]
-
+   // ["Land_Device_disassembled_F",[0,0],0,0]   //type, offset, rotation, presist flag
 ],
 [ // AI GROUPS. Only options marked 'Def:' implemented.
 //   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"],[2,"Hunter"]  ],   ["BoxPatrol",[0,75],[0,0],[0]   ]],
 //    [["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"]                                         ],   ["Guard",[-20,10],[0,0],[70] ]],
-[["ZOMBIE","CARELESS","RED","LINE"],   [  [10,"Zombie"]           ],     ["Zombie",[0,0],[0,0],[]     ]],
-[["RESISTANCE","COMBAT","RED","LINE"],[[3,"RaptorM"]],["Buildings",[0,0],[0,0],[70] ]], // 3 rifleman that will patrol all buildings within 70m for unlimited duration
-// **End 'copy'******(see Patrol Options below for other AI behaviour)
-// Example of a 3D map location. This loc is specific to ALTIS
-[["RESISTANCE","COMBAT","RED","LINE"],[[5,"RaptorF"]],["BoxPatrol",[0,0],[0,0],[70] ]]
+[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"RaptorM"]           ],     ["BoxPatrol",[50,50],[0,0],[150]     ]],
+[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"RaptorF"]           ],     ["BoxPatrol",[0,0],[0,0],[150]     ]],
+[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"RaptorF"]           ],     ["BoxPatrol",[-50,-50],[0,0],[150]     ]]
 //[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"],[1,"LMG"] ],   ["Explore",[6,6],[0,0],[150]     ]],
 //[["RESISTANCE","COMBAT","RED","LINE"],   [  [3,"Rifleman"]           ],   ["BoxPatrol",[-6,-6],[0,0],[0]     ]]
 ],
@@ -104,10 +84,9 @@
 // index 0:win, 1:lose, 2:phase1, 3:phase2, 4:phase3, 5:ignore triggers
 [ // NOTE: side RESISTANCE for groups == side GUER for Triggers.
     [    //WIN Triggers and Controls
-     // ["LowUnitCount", "EAST", 0, 0, [0,0]], // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
-      ["ProxPlayer", [0,0], 20, 1], // 1 player is within 20 meters of encounter center.
+      ["LowUnitCount", "GUER", 0, 0, [0,0]], // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
+      ["ProxPlayer", [0,0], 20, 1] // 1 player is within 20 meters of encounter center.
 	//  ["Reinforce", 100, "Random"] // %chance when requested, Mission to run
-      ["BodyCount",1]
     ],
     [    //LOSE Triggers and Controls
 //      ["HighUnitCount", "GUER",10,40,[0,0]] // 10 enemies get within 40m's of encounter center

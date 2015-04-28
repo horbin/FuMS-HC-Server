@@ -83,9 +83,10 @@ if (_lootOption != "NONE") then
                     diag_log format ["##FillLoot: SmokeBox Proximity:%1 Dur:%2 minutes Colors:%3",FuMS_SmokeProximity, FuMS_SmokeDuration, FuMS_SmokeColors];
                     [_box] spawn
                     {
-                        private ["_box","_smoke01","_smokeStopTIme","_count","_smokeOn","_players","_color"];
+                        private ["_box","_smoke01","_smokeStopTIme","_count","_smokeOn","_players","_color","_done"];
                         _box = _this select 0;                            
                         _count = 1;
+                        _done = false;
                         _smokeOn = false;
                         while {!isNil "_box"} do
                         {
@@ -118,8 +119,9 @@ if (_lootOption != "NONE") then
                                     sleep 30;
                                 };
                                 _count = _count +1;
-                                if (time>_smokeStopTime) then {_smokeOn = false;};                        
+                                if (time>_smokeStopTime) exitWith {_smokeOn = false;_done=true;};                        
                             };
+                            if (_done) exitwith {};
                         };
                         deleteVehicle _smoke01;                     
                     };

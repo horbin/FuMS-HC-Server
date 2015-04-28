@@ -121,13 +121,15 @@ while {true} do
 		
 		_dat3 = _dat2 select 11;
 		_pre= format ["%1:Special Settings:",_name];
-		if (TypeName _dat3 !="ARRAY") exitWith {_abort=true; _msg=format ["%1should in form [true,true,true], found %2",_pre,_dat3];};
-		if (count _dat3 !=3) exitWith {_abort=true; _msg=format ["%1should array of 3 true/false values, found %2",_pre,_dat3];};		
-		{
-			if (TypeName _x != "BOOL") exitWith {_abort=true; _msg=format ["%1should be an array of 3 true/false values, found %1",_dat3];};
-		}foreach _dat3;
-		if (_abort) exitwith {};
-		
+        if (TypeName _dat3 !="ARRAY") exitWith {_abort=true; _msg=format ["%1should in form [true,true,true] or [true,true,""AIR""], found %2",_pre,_dat3];};
+		if (count _dat3 !=3) exitWith {_abort=true; _msg=format ["%1should array of 3 true/false values, found %2",_pre,_dat3];};	
+        if (TypeName (_dat3 select 0) != "BOOL") exitWith {_abort=true; _msg=format ["%1DiverOverWater flag should be  true/false value, found %1",_dat3 select 0];};     
+        if (TypeName (_dat3 select 1) != "BOOL") exitWith {_abort=true; _msg=format ["%1Unlimited Ammo flag should be  true/false value, found %1",_dat3 select 1];};     
+        if (TypeName (_dat3 select 2) != "BOOL" and TypeName (_dat3 select 2) !="STRING") exitWith {_abort=true; _msg=format ["%1AntiTank/AntiAir flag should be  true/false, ""AIR"", or ""LAND"", found %1",_dat3 select 2];};     
+        if (TypeName (_dat3 select 2) == "STRING") then
+        {
+            if (toupper (_dat3 select 2) != "AIR" and toupper (_dat3 select 2) != "LAND" and toupper (_dat3 select 2) != "RANDOM") exitwith {_abort=true;_msg=format ["%1AntiTank/AntiAir flag should be  true/false, ""RANDOM"",""AIR"", or ""LAND"", found %1",_dat3 select 2];};     
+        };
 		_dat3 = _dat2 select 12;
 		_pre= format ["%1:Items",_name];
 		if (TypeName _dat3 !="ARRAY") exitWith {_abort=true; _msg=format ["%1should in an array of items [[""item"", %chance],[min,max]], found %2",_pre,_dat3];};
