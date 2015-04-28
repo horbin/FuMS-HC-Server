@@ -1,9 +1,9 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
 v1.5f
-++++++++++++++++++++++++
-++ RAPTORS ADDON SUPPORT:
-++++++++++++++++++++++++
+
+#RAPTORS ADDON SUPPORT:
+
 http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
 
 See Installation instructions.
