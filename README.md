@@ -10,7 +10,7 @@ v1.5f
 
 http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
 
-See Installation instructions.
+See FuMS Installation instructions for setup.
 
 
 
