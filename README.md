@@ -25,21 +25,12 @@ See GlobalSoldierData.sqf for examples
 
 + Raptors Addon Support:
 http://makearmanotwar.com/entry/ec2EDrOCkM#.VT0zFfnF9EK
-1) Download the addon.
-2) Place the '@Jurassic Arma - Raptor Pack' folder in the base folder of your server. At the same folder level as the @Epoch folder.
-3) Place this folder in the same location on your HC, IF your HC does not share the same source folder as your server.
-4) add @Jurrasic Arma - Raptor Pack to the -mod option of your server command line
-5) add this to the -mod option for your HC.
-6) add this to the -mod option for your client.
-7) Ensure your players download the mod, and add the proper @Jurassic.... to their start paramaters.
-8) Enable the "Jurassic" theme in BaseServer.sqf.
-9) Learn to generate a bi-key for the mod and add it.
-   OR
-   edit your config.cfg file and set 'verifySignatures = 0;'
-10) repack and play!
-Note: Raptors use the same AI patrol logics as regular FuMS soldiers, so BoxPatrol, building searching, PatrolRoute logics will 
-  all work with the "RaptorM", and "RaptorF" AI types.
-Note: Feel free to add Raptors to your own encounters!, see the Jurassic theme for examples.
+
+See Installation instructions.
+
+
+
+
 
 v1.5e
 
