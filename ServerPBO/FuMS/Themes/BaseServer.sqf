@@ -24,15 +24,15 @@ FuMS_ServerData =
         // use this block to easily turn off/on your various mission sets.
         // -1 = all HC's.  0= Server only,  1=1st HC to connect, 2=2nd, etc.
         //  Note: Server option not currenty operational.
-     //   ["Test",-1]//Remove this theme if on a production server.
+        ["Test",-1],//Remove this theme if on a production server.
         ["HeloPatrols",-1], // 2 sets of 3 armed helo's patrol the skys!!!      
         ["SEM",-1], // basic old school Arma2 Epoch encounters
-        ["TownRaid",-1], // random town is raided by 4 truck loads of humans!
+       ["TownRaid",-1], // random town is raided by 4 truck loads of humans!
         ["Small",-1],  // 6 man groups invade a random village
         ["Aquatic",-1], // 3 coastal areas w/ boats and ai
         ["MadScience",-1], // 10 random towns become infected with crazzed clones
         ["Convoy",-1], // 2 random convoys of 3 vehicles move across the map.
-        ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
+       ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
         ["Jurassic",-1] // creates 3 encounters with wondering Raptors and some scattered loot.
 
     ],
@@ -85,7 +85,7 @@ FuMS_ServerData =
 		[  // SMOKE BOX Options
             true, // true= smoke created with box for ease of location.
             100,  // proximity character has to get to box before smokes start. 0=unlimited
-            ["Red","White","Blue"],  // colors of smoke
+           ["Red"],  //["Red","Blue","White"]// colors of smoke
              1     // Duration, in minutes, smoke lasts once triggered.
           ],
 		true,  // vehicles occupied by players persist through server reset and are sellable!

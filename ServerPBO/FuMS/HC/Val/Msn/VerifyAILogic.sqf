@@ -36,6 +36,18 @@ while {true} do
 		{
 			if (count _aiOptions != 1 or TypeName (_aiOptions select 0) != "SCALAR") exitwith {_abort=true;FuMS_FileError = format ["'Sentry' logic should have 1 number as a parameter. Found %1",_aiOptions];};
 		};
+        case "TOWERGUARD":
+		{
+            if (count _aiOptions != 2) exitwith {_abort=true; FuMS_FileError = format ["'TowerGuard' logic should have 3 optional paramaters. Found %1",_aiOptions];};
+            
+            if (TypeName (_aiOptions select 0) != "SCALAR") exitwith {_abort=true;FuMS_FileError = format ["'TowerGuard logic should have a number as its first parameter. Found %1",_aiOptions select 0];};
+            if (TypeName (_aiOptions select 1) != "STRING") exitwith {_abort=true;FuMS_FileError = format ["'TowerGuard logic should have a string as ints 2nd parameter. Found %1",_aiOptions select 1];};
+        //    if (TypeName (_aiOptions select 2) != "STRING") exitwith {_abort=true;FuMS_FileError = format ["'TowerGuard logic should have a value of ""StandGround"" or ""Manuver"" as ints 3nd parameter. Found %1",_aiOptions select 2];};
+		};
+        case "GUNNER":
+        {
+              if (count _aiOptions != 1) exitwith {_abort=true; FuMS_FileError = format ["'Gunner logic should have 1 optional paramaters with a value of '0'. Found %1",_aiOptions];};
+        };
 		case "CONVOY":
 		{
       //      diag_log format ["##VerifyAILogic: convoy in _abort = %1  options:%2", _abort, _aiOptions];

@@ -25,15 +25,16 @@ if (((FuMS_THEMEDATA select _themeIndex) select 0) select 4) then
 };
 if (isNil "_soldierData") exitWith
 {
-    diag_log format ["SpawnSoldier: ERROR: no theme specific SoldierData.sqf for theme #%1",_themeIndex];
+    diag_log format ["<FuMS:%2> SpawnSoldier: ERROR: no theme specific SoldierData.sqf for theme #%1",_themeIndex,FuMS_Version];
     diag_log format ["Check options in ThemeData.sqf for theme %1",((FuMS_THEMEDATA select _themeIndex) select 0) select 0];
 };
 
-//diag_log format ["##SpawnSoldier: Index:%2 _soldierData:%1",_soldierData,_themeIndex];
+//diag_log format ["<FuMS:%3> SpawnSoldier: Index:%2 _soldierData:%1",_soldierData,_themeIndex,FuMS_Version];
 _typeFound = false;
 // locate the data for 'type' soldier.
 {
     _aiName = toupper (_x select 0);  // type name
+ //   diag_log format ["<FuMS:%3> SpawnSoldier: _aiName:%1 _type:%2",_type,_aiName,FuMS_Version];
     if (_type == _aiName) then
     {
         _typeFound = true;

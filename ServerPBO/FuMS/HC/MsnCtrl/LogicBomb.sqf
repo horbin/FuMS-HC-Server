@@ -39,7 +39,7 @@ if (count _phaseData >0 ) then {_phase01 =  _phaseData select 0;};
 if (count _phaseData >1) then {_phase02 =  _phaseData select 1;};
 if (count _phaseData >2 ) then {_phase03 = _phaseData select 2;};
 //diag_log format ["##Logic Bomb: phase01: %1",_phase01];
-private ["_state","_proxPlayer","_lowUnitCount","_highUnitCount","_detected", "_stateMax","_timer","_bodyCount","_allDeadorGone"];
+private ["_state","_proxPlayer","_lowUnitCount","_highUnitCount","_detected", "_stateMax","_timer","_bodyCount","_allDeadorGone","_zupaCapture"];
 // nul out all positions so 'select' does not fire a zero divisor exception!
 _proxPlayer = [ [],[],[],[],[] ];  //[pos, range, numplayers]
 _lowUnitCount = [ [],[],[],[],[] ];//[trigger, numAI]
@@ -48,7 +48,8 @@ _detected = [ [],[],[],[],[] ]; //[group, vehicle]
 _timer = [ [],[],[],[],[] ]; //[expireTime]
 _bodyCount = [ [],[],[],[],[] ]; //[numberAI]
 _allDeadorGone=[ [],[],[],[],[] ]; //[nothing]
-_triggerArray= [_proxPlayer, _lowUnitCount, _highUnitCount, _detected, _timer, _bodyCount, _allDeadorGone];  
+_zupaCapture =[ [],[],[],[],[] ]; //[pos, radius, time, mission name]
+_triggerArray= [_proxPlayer, _lowUnitCount, _highUnitCount, _detected, _timer, _bodyCount, _allDeadorGone, _zupaCapture];  
 _instanceTriggers = []; // used for end of mission cleanup of triggers.
 
 _stateMax = [0,0,0,0,0]; // 5 states, win/lose/p1,p2,p3
@@ -162,6 +163,16 @@ if (count (_triggerData select 5) == 0)  then // NO TRIGGERS is commented out.
                     _allDeadorGone set [_state, [_themeIndex]];
                     _stateMax set [_state,(_stateMax select _state) + 1];
                 };
+                case "ZUPACAPTURE":
+                {
+                    private ["_arrayOfData"];
+                    _arrayOfData = _x select 1;
+                    [_arrayOfData, _themeIndex, _curMission,_eCenter] call FuMS_fnc_HC_Triggers_ZuppaCapture;
+                  //  FuMS_Trigger_ZupaCapture set [_themeIndex,false];
+                   // FuMS_Trigger_ZupaCapture set [_themeIndex, false];
+                    _zupaCapture set [_state, [_arrayOfData, _themeIndex, _curMission]];
+                    _stateMax set [_state,(_stateMax select _state) + 1];
+                };
             };      
         }forEach _x; // step through each Trigger/EH option based upon the above 'cases'   
         // each State will have an associated array. The array is index off the case# of _trigName.
@@ -245,7 +256,13 @@ if (count (_triggerData select 5) == 0)  then // NO TRIGGERS is commented out so
                 _triggerCount = _triggerCount + ( [(_triggerArray select 5) select _i, _i] call FuMS_fnc_HC_Triggers_BodyCount);
                 // _allDeadorGone [themeIndex]
                 _triggerCount = _triggerCount + ( [(_triggerArray select 6) select _i, _i] call FuMS_fnc_HC_Triggers_AllDeadorGone);
-                 
+                //  _zupaCapture set [_state, [_pos, _radius, _capTime, _curMission ]];
+              //  diag_log format ["<FuMS:%1> LogicBomb:ThemeIndex:%3 FuMS_Trigger_ZupaCapture = %2",FuMS_Version,FuMS_Trigger_ZupaCapture,_themeIndex];
+                _ZupaFlag = _zupaCapture select _i; // if this state has defined a zupacapture point trigger then check its status.
+                if (!isNil "_ZupaFlag") then 
+                {
+                    if (FuMS_Trigger_ZupaCapture select _themeIndex) then { _triggerCount = _triggerCount + 1;} ;  
+                };
             }; 
             if (_triggerCount == (_stateMax select _i) ) then
             {

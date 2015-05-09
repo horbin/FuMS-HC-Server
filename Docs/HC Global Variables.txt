@@ -30,6 +30,7 @@ FuMS_GlobalDataIndex	scalar	Always equals count FuMS_ActiveThemes+1-index of glo
  FuMS_PhaseMsnID	scalar
  FuMS_PhaseMsn	[]
  FuMS_BodyCount	[]
+ FuMS_Trigger_ZupaCapture []	array of ["string",bool];
  FuMS_OkToGetData	BOOL
 FuMS_DataValidation	text string -- attached to a PVEH on server.
 FuMS_AIONLYVEHICLE	pveh variable for 'getin'

@@ -7,7 +7,7 @@ _player = _this select 0;
 
 _id = owner _player;
 // Pass for ALL PLAYERS!
-_id publicVariableClient "FuMS_str_HC_Zombies_INF_fnc_nextSound";
+//_id publicVariableClient "FuMS_str_HC_Zombies_INF_fnc_nextSound";
 
 
 if (FuMS_AdminControlsEnabled) then

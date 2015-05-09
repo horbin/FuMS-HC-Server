@@ -10,7 +10,7 @@
 [[
 //------------------------------------------------------------------------------------
 //-----Mission Area Setup-----
-    "TestMission",  // Mission Title NOSPACES!
+    "Mil_Outpost",  // Mission Title NOSPACES!
     200 ,               // encounter radius
     "LAND"// Options "LAND","WATER","NONE". Setting this will force a scan of 'encounter Radius' meters around the center of the mission to ensure the same type of water/land is present.
                // This setting should hopefully reduce the chance of the mission being randomly placed too near water for example.
@@ -20,7 +20,7 @@
 //------------------------------------------------------------------------------------
 //-----Notification Configuration-----
 //--Map Marker Config.
-    "Test Mission",  // Name, set to "" for nothing
+    "Static Placement",  // Name, set to "" for nothing
      "mil_dot", // icon type:                                     https://community.bistudio.com/wiki/cfgMarkers for other options.
                      // mil_triangle, mil_objective, mil_box, group1, loc_Power, etc.
      "ELLIPSE", // "RECTANGLE". do not use "ICON", two markers are used in making each mission indicator.
@@ -97,38 +97,15 @@
 //---------------------------------------------------------------------------------
 //-----Group Configuration-----  see Convoy section for AI in vehicles! 
 //--- See SoldierData.sqf for AI type options.
-/*
-    Defined AI logic options: See 'Documenation' for details'
-["BUILDINGS", [spawnloc], [actionloc], [duration, range]]  
-["EXPLORE   ",[spawnloc], [actionloc], [radius]]
-["BOXPATROL", [spawnloc], [actionloc], [radius]]
-["CONVOY",    [spawnloc], [actionloc], [speed, FlagRTB, FlagRoads, FlagDespawn, convoyType]]
-["SENTRY",    [spawnloc], [actionloc], [radius]]
-["PARADROP",  [spawnloc], [actionloc], [speed, altitude, FlagRTB, FlagSmokes]]  
-["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]    
-    
-*/
-// **paste 'copy' below this line to add additional groups.
-
-// **Start 'copy'****Spawn a Group of AI Config Data *********
-// 3 rifleman that will spawn NW of encounter center and patrol all buildings within 70m
-// Example below shows how town names can be used in place of spawn locations and offsets!
-  //  [["RESISTANCE","COMBAT","RED","LINE"],[[8,"Rifleman"]],["TowerGuard",[0,0],[0,0], [70] ]], // 3 rifleman that will patrol all buildings within 70m for unlimited duration
-// **End 'copy'******(see Patrol Options below for other AI behaviour)
-// Example of a 3D map location. This loc is specific to ALTIS
-//[["RESISTANCE","COMBAT","RED","LINE"],[[5,"Rifleman"]],["BoxPatrol",[21520,11491.9,0],[0,0],[70] ]],
-    // 5 rifleman that spawn at [21520,11491.9,0] and march to encounter centr to set up a box patrol!    
-// Expanded group example:
-// 1 sniper, 2 rifleman, 2 hunters wil spawn east of encounter center and perform a box shaped patrol.
 [[
     "RESISTANCE", // side: RESISTANCE, WEST, EAST, CIV
     "COMBAT",      // behaviour: SAFE, AWARE, COMBAT, STEALTH
     "RED",          //combatmode: BLUE, WHITE, GREEN, YELLOW, RED
     "COLUMN"    //formation: STAG COLUMN, WEDGE, ECH LEFT, ECH RIGHT, VEE, LINE, COLUMN
-],[[1,"Sniper"],[3,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[100,"Land_Cargo_Tower_V3_F"] ]],
+],[[1,"Sniper"],[1,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[100,"Land_Cargo_Tower_V3_F"] ]],
 // 4 AI will spawn into the specified building.
 
- [["RESISTANCE","COMBAT","RED","LINE"],[[1,"Sniper"],[3,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[150,"ANY"] ]],
+ [["RESISTANCE","COMBAT","RED","LINE"],[[3,"Sniper"],[3,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[150,"ANY"] ]],
 // if "ANY" is changed to a specific building type, ex: "Land_Cargo_Tower_V3_F", they will all spawn into this building type.
 
 [["RESISTANCE","COMBAT","RED","LINE"],[[5,"Hunter"]],["Buildings",[6,6],[0,0],[100]]]
@@ -140,57 +117,41 @@
 //---------------------------------------------------------------------------------
 //-----LAND Vehicle Configuration----- 
 [
- [  // Convoy #1    
-    // STATIC WEAPONS:
-    // if defining a static weapon, in place of the 'crew', include the 'facing' for the weapon.
-    // Example :  ["B_HMG_01_high_F",[2,62],[250],"None"] --> This weapon will face 250 deg on the compass.
-    
-    // Spawns 3 vehicles 600m south of encounter center. These 3 will move as a convoy and contain 3 groups of mixed troops.
-    // These troops will be dropped off just south of encounter center, then the convoy will return to their spawn location and despawn.
- [         // Vehicle                                 Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
- //  [  "B_Truck_01_transport_EPOCH",[-50,-610],[1,"Rifleman"],        "Truck01"      ], 
- //  [  "C_Offroad_01_EPOCH"           ,[-50,-635],[1,"Rifleman"],     "None"      ], 
-//   [  "C_Offroad_01_EPOCH"           ,[-50,-688],[1,"Rifleman"],     "None"      ]
-   //[  "C_Offroad_01_EPOCH"           ,[13300,14600,0],[ 0, ""          ],       "Truck01"]   
-        ["O_Mortar_01_F",[0,60],[0],"None"],
-        ["B_HMG_01_high_F",[2,62],[250],"None"],
-        ["B_static_AT_F",[5,60],[180],"None"]
-                 // If driver-less vehicles are desired, place them at the bottom of the list. 
-				 // Troops WILL be placed into 'driver-less' vehicles if the other vehicles are full!!!
-    ],[  
-    // Drivers                                                         # and type  |         Patrol     |    spawn   | dest  | 'Patrol' options
-   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["Gunner",[-25,0],[0,0],[0]   ]]
-  ],[   
-     // Troops : These are distributed across all vehicles in this convoy. These lines are identical to the lines in the group section.
-     //  Troop behaviour and side options                        # and type of Troops     Patrol logic |  spawn     |dest |'Patrol' options
-//    [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[1,"Rifleman"]],["BoxPatrol",[-70,-600],[0,0],[0]]],
-  //  [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[2,"Rifleman"]],["BoxPatrol",[-70,-600],[50,0],[50]]],
- //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[1,"Rifleman"]],["BoxPatrol",[-70,-600],[-50,0],[50]]]
-   // 'dest' for troops is where they will go to perform their 'Patrol Logic' once the disembark the convoy IF their vehicle's driver group is using the 'Convoy' patrol logic.
-   // otherwise troops will remain in vehicle unless it is engaged. Once vehicle destroyed, Troops will move onto their 'Patrol Logic'.
+    [  // Emplacement #1 (North)   
+   [         // 3rd paramater sets the 'facing' of the static weapon.
+        ["O_Mortar_01_F",[5,55],[15],"None"],
+        ["B_HMG_01_high_F",[2,55],[330],"None"],
+        ["B_static_AT_F",[5,58],[45],"None"]
+              
+    ],[  // Drivers                                                         # and type  |         Patrol     |    spawn   | dest  |facing
+         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["Gunner",[-25,0],[0,0],[0]   ]]
+    ],
+    [  
      ]
    ],
    
-     [  // Convoy #2                     
-    [         // Vehicle                     Offset         Crew (only 1 type!)   Cargo
-    //       [  "B_Truck_01_transport_EPOCH",[-500,-200],[0,""],"None"      ] 
-                 // If driver-less vehicles are desired, place them at the bottom of the list. 
-				 // Troops WILL be placed into 'driver-less' vehicles if the other vehicles are full!!!
+   [  // Emplacement #2  (South)                   
+       [         // Vehicle                     Offset         Crew (only 1 type!)   Cargo
+          ["B_HMG_01_high_F",[-20,-25],[180],"None"]
       ],
       [                 
-           // Drivers                                                          # and type  |         Patrol     |    spawn   | dest       | 'Patrol' options
-    //      [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["BoxPatrol",[-600,-200],[-50,50],[0]   ]]
-          
-      ],
-      // Troops : These are distributed across all vehicles in this convoy.                                                         
+          [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["Gunner",[-25,0],[0,0],[0]   ]]       
+      ],      
      [      //  Troop behaviour and side options                        # and type of Troops                               Patrol logic |  spawn     |dest |'Patrol' options
-  //      [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[4,"Rifleman"]  ],   ["BoxPatrol",[-600,-200],[20,0],[0]   ]]
- //     [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[5,"Rifleman"]     ],   ["BoxPatrol",[-600,-200],[20,20],[0]   ]]
-            // 'dest' for troops is where they will go to perform their 'Patrol Logic' once the disembark the convoy IF their vehicle's driver group is using the 'Convoy' patrol logic.
-             // otherwise troops will remain in vehicle unless it is engaged. Once vehicle destroyed, Troops will move onto their 'Patrol Logic'.
      ]
-   ] 
+   ] ,
    
+   
+   [  // Emplacement #3  (East)                  
+       [         // Vehicle                     Offset         Crew (only 1 type!)   Cargo
+          ["B_HMG_01_high_F",[70,25],[90],"None"]
+       ],
+       [                 
+          [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["Gunner",[-25,0],[0,0],[0]   ]]       
+       ],                                                    
+      [      //  Troop behaviour and side options                        # and type of Troops                               Patrol logic |  spawn     |dest |'Patrol' options
+      ]
+   ]
    
    
 ],

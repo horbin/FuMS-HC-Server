@@ -127,6 +127,10 @@ if (!isNil "_groupData") then
 							[_x, true] spawn FuMS_fnc_HC_AI_Logic_AIGuardBuilding;
                         } foreach units _group;
                     };
+                    case "GUNNER":
+                    {
+                        [_group, _patternOptions] call FuMS_fnc_HC_AI_Logic_StaticGunner;
+                    };
                     case "Loiter":{};
                     case "CONVOY":
                     {
@@ -157,6 +161,10 @@ if (!isNil "_groupData") then
                        case "TRACKROUTE":
                     {                       
 						 [_group, _patrolPatrolLoc, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_TrackRoute;
+                    };
+                             case "TOWERGUARD":
+                    {                       
+						 [_group, _patrolPatrolLoc, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_TowerGuard;
                     };
                 };
           //  };

@@ -24,6 +24,7 @@ for [{_i=0;},{_i < _number},{_i=_i+1}] do
 	_randomPos = [_pos,_dist,_direction] call BIS_fnc_relPos;
 	// create the weapon holder
     _box = createVehicle ["weaponHolderSimulated",_randomPos,[],0,"CAN_COLLIDE"];
+    _box setPosATL [_randomPos select 0, _randomPos select 1, 2];
 	// register the weapon holder with the HC as a vehicle for mission - currently FuMS does NOT clean up loot...so nothing needed.
 	// register with server so it will clean this up if HC disconnects.
 	["Vehicles",_box] call FuMS_fnc_HC_Util_HC_AddObject;

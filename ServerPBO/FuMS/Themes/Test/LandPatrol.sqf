@@ -10,7 +10,7 @@
     [// NOTIFICATION Messages and Map display Control.
 	true, 0, 0, // Notify players via Radio Message, radio channel, range from encounter center (0=unlimited.
     true, // Notify players via global message
-    false,// Show encounter area on the map
+    true,// Show encounter area on the map
     30,    // Win delay: Time in seconds after a WIN before mission cleanup is performed
     10       // Lose delay: Time in seconds after a lose before mission cleanup is performed
           //NOTE: the above delay must occur before the mission is considered 'complete' by the mission manager control loop.
@@ -39,7 +39,11 @@
 ["None" , [0,0] ]  // Failure loot, offset location - spawns on mission failure
 ],
 [//BUILDINGS: persist = 0: building deleted at event completion, 1= building remains until server reset.
-  
+
+["B_Truck_01_transport_EPOCH",[0,0],   0,       [.5,   1,     .5,         .5,         .5]],
+["C_Offroad_01_EPOCH",[0,10],   0,       [.5,   1,     .5,         .5,         .5]],
+["C_Offroad_01_EPOCH",[0,20],   0,       [.5,   1,     .5,         .5,         .5]]
+
 ],
 [ // AI GROUPS. Only options marked 'Def:' implemented.
  //  [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"],[2,"Hunter"]  ],   ["BoxPatrol",[0,75],[0,0],[0]   ]],
@@ -79,12 +83,12 @@
       [  
           // "Convoy": spawn at -500,-500, drop off cargo at -50,-50, then return to base. (ie 'Convoy' logic behaviour)
            // Drivers                                                          # and type  |         Patrol     |    spawn   | dest       | 'Patrol' options
-          [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["TrackRoute",[-200,-200],[0,0],["SAFE","NORMAL",["Zaros","Panochori"],true,true,false,0]   ]]
+         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["TrackRoute",[-200,-200],[0,0],["SAFE","NORMAL",["Zaros","Panochori"],true,true,false,0]   ]]
          // proceed to 0,-15, drop off troops, then return to spawn location and despawn!
       ],
       // Troops : These are distributed across all vehicles in this convoy.                                                         
      [      //  Troop behaviour and side options                        # and type of Troops                               Patrol logic |  spawn     |dest |'Patrol' options
-         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3,"Sniper"],[2,"Rifleman"]  ],   ["BoxPatrol",[-200,-200],["Zaros"],[100]   ]]
+    //     [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3,"Sniper"],[2,"Rifleman"]  ],   ["BoxPatrol",[-200,-200],["Zaros"],[100]   ]]
         // [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[2,"Rifleman"] ],   ["BoxPatrol",[-70,-600],[50,0],[50]   ]],
         // [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[3,"Rifleman"]  ],   ["BoxPatrol",[-70,-600],[-50,0],[50]   ]]
             // 'dest' for troops is where they will go to perform their 'Patrol Logic' once the disembark the convoy IF their vehicle's driver group is using the 'Convoy' patrol logic.

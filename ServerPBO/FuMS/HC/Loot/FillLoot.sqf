@@ -65,7 +65,7 @@ if (_lootOption != "NONE") then
             _magazines = _x select 2;
             _items = _x select 3;
             _backpacks = _x select 4;
-            if (_isVehicle or _typeLoot == "SCATTER") then {_box = _pos;} // _pos contains a vehicle Object! or we are going to scatter loot.
+            if (_isVehicle or _typeLoot == "SCATTER" or _boxtype =="SCATTER") then {_box = _pos;} // _pos contains a vehicle Object! or we are going to scatter loot.
             else 
             {         
                 // build a box and set up its smoke.
@@ -145,7 +145,7 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0);
                 };
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                if (_typeLoot == "SCATTER") then
+                if (_typeLoot == "SCATTER" or _boxtype == "SCATTER") then
                 {
                     // pos is either 3dloc, 2d offset, or a vehicle object.
                     [_pos, _item, _number,"WEAPON"] call FuMS_fnc_HC_Loot_Scatter;
@@ -166,7 +166,7 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0);
                 };
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                if (_typeLoot == "SCATTER") then
+                if (_typeLoot == "SCATTER" or _boxtype == "SCATTER") then
                 {
                     [_pos, _item, _number, "MAGAZINE"] call FuMS_fnc_HC_Loot_Scatter;
                 }else
@@ -185,7 +185,7 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0);
                 };
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                if (_typeLoot == "SCATTER") then
+                if (_typeLoot == "SCATTER" or _boxtype=="SCATTER") then
                 {
                     [_pos, _item, _number, "ITEM"] call FuMS_fnc_HC_Loot_Scatter;       
                 }else
@@ -201,7 +201,7 @@ if (_lootOption != "NONE") then
                     _item = (_x select 0) call BIS_fnc_selectRandom;
                 }else{  _item = (_x select 0);};
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
-                if (_typeLoot == "SCATTER") then
+                if (_typeLoot == "SCATTER" or _boxtype=="SCATTER") then
                 {
                      [_pos, _item, _number, "BACKPACK"] call FuMS_fnc_HC_Loot_Scatter;
                 }else

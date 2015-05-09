@@ -13,9 +13,11 @@ Logic inherrient to all AI created by FuMS.
 ["CONVOY",      [spawnloc], [actionloc], [speed, FlagRTB, FlagRoads, FlagDespawn, convoyType]]
 ["SENTRY",      [spawnloc], [actionloc], [radius]]
 ["PARADROP",    [spawnloc], [actionloc], [speed, altitude, FlagRTB, FlagSmokes]]
-["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
+["PATROLROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]]
 ["ZOMBIE", [spawnloc], [actionloc],[]]
-["TRACKROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
+["TRACKROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]]
+["TowerGuard", [spawnloc], [actionloc], [radius,"Optional_Building_Name"]]
+["Gunner", [spawnloc], [actionloc], [0]]
 
 **All loc's can be defined via 3D map specific coordinates, 2D offsets, or a town name (ie "Starvos")
 
@@ -39,7 +41,7 @@ syntax: ["BUILDINGS", [spawnloc], [actionloc], [range]]
 -spawnloc: offset or specific map location group will spawn.
 -actionloc: offset or specific map location at which group will begin their patrol.
 -range: range from 'actionloc' that the group will look for buildings to search.
-Behaviour: Units within the group will wait until they are on foot. At this piont they will proceed to 'actionloc'. Upon arrival, all buildings inside of 'range' radius will be identified. A random search of these buildings will begin, and continue until 'duration' time passes. When a unit gets to a building, it will inspect all locations within the building before continuing onto another random building on its list. At this point, the group will continue onto its active waypoint (if any).
+Behaviour: Units within the group will wait until they are on foot. At this piont they will proceed to 'actionloc'. Upon arrival, all buildings inside of 'range' radius will be identified. A random search of these buildings will begin. When a unit gets to a building, it will inspect all locations within the building before continuing onto another random building on its list. 
 Note: There is a tendancy for units to get 'stuck' on certain structures. A routine has been added to try and identify when a unit is stuck and teleport it to a nearby road segment.
 If no buildings are found within 'range'unit will continue to its current active waypoint (if any).
 
@@ -103,9 +105,42 @@ Behaviour: FSM AI logic disabled, AI will wonder randomly, responding to gun fir
 syntax:["TRACKROUTE", [spawnloc], [actionloc], [behaviour, speed, [locations], FlagRTB, FlagRoads, FlagDespawn, flyHeight]
 - identical behavior to "PATROLROUTE", with addition of a symbol, appropriate to the AI's vehicle being continously displayed at the AI's location.
 
+"TowerGuard"
+Syntax:["TowerGuard", [spawnloc], [actionloc], [radius,"Building_Name"]]
+-spawnloc: offset or specific map location <-- ignored for this logic, be retained for continuity of Logic series
+-actionloc: offset or specific map location at which AI will be placed.
+-radius: distance from 'actionloc' to search for rooftops
+-"Building_Name": a building name may be provided. In this case AI only placed ontop of these buildings. Default is "ANY"
+ Behaviour:
+ Script will search 'AREA' for all enter-able buildings. 
+ highest point of all buildings in the area are located.
+ if "Specific" building is provided, the list will be filtered to only buildings matching this name and the closest to the 'Origin' will be selected.
+ AI will be spawned at the top of these buildings and remain there.
+ 
+"Gunner"
+Syntax: ["Gunner", [spawnloc], [actionloc], [0]]
+-spawnloc: offset or specific map location <-- ignored for this logic, be retained for continuity of Logic series
+-actionloc: offset or specific map location at which AI will be placed.
+-[0] - dummy value for now.
+Behaviour:
+Used as a defined logic for 'drivers' in the Convoy section of missions. AI under this logic will man, and remain in static weapons.
+
 
 Custom Variables:
 FuMS_AILOGIC [patrolType, msnCenter, spawnLoc, patrolLoc, patrolpatternoptions]
 FuMS_XFILL [themeIndex, side, "xfillstatus"]
 FuMS_MSNTAG [theme, mission]
+
+
+
+["CamoNet_INDP_big_F",        [-20, 10],0,        0],
+// Vehicle Name  | offset | rotation | Fuel, Ammo, DmgEngine, Dmg FuelTank, DmgHull
+["I_UGV_01_rcws_F",[0,100],   0,       [.5,   1,     .5,         .5,         .5]],
+["Land_Wreck_Car2_F",[0,50],0, [.5, 1, .5, .5,.5], "Fire"]
+// vehicles: 1 for fuel and ammo is full 100%, DmgEngine=1 is 100% damaged
+
+
+
+
+
 

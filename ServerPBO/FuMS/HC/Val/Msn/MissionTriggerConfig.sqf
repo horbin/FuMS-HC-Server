@@ -94,6 +94,10 @@ while {true} do
 				_foundTrigger = true;
 				if (count _x != 1) exitWith {_abort=true;FuMS_FileError = format ["%1:%2 should be [""%2""]. Found %3",_msg,_trigName,_x];};			
 			};
+            case "ZUPACAPTURE":
+            {
+                
+            };
 			default {_abort=true; FuMS_FileError = format ["%1 invalid Trigger name. Found %2",_msg,_trigName];};
 		};
 		if (_abort) exitWith{};

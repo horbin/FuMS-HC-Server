@@ -25,6 +25,7 @@ Note: Reinforce trigger is not considered in the WIN conditions of the WIN state
 ["Timer", seconds]
 ["AllDeadorGone"]
 ["Reinforce", chance, "mission"] <-- only use in Win State trigger area!
+["ZupaCapture", [[ [offset], radius, time], [ [offset], radius, time] ]
 
 Defined Trigges
 ["LowUnitCount", side, numAI, radius, offset]
@@ -68,3 +69,7 @@ Behaviour: After 'seconds' of time elapse from mission start the trigger will re
 Behaviour:  true when all ai associated with a mission and its phase missions have been killed or have despawned.
 This check is done MAP wide, so may be more useful in detecting mission state on some large area mission.
 
+["ZupaCapture", [[ [offset], radius, time,"name"], [ [offset], radius, time,"name"] ]
+Behaviour: establishes capture points of 'radius' size, at each of the 'offset's specified.
+When a player remains within the radius for 'time' the point becomes 'captured'. Once all points are captured the trigger will
+return a value of true.

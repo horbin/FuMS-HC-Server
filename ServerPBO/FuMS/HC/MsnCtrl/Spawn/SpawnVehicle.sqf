@@ -16,15 +16,15 @@ _missionName = _this select 6;
 _returnval =[_groups, _totalvehicles];
 _abort = false;
 _msg = "";
-if (isNil "_vehicleData") then {_abort=true;_msg="Convoy section was totaly blank. Format error. It must at least contain an empty array []";};
-if (count _this != 7) then {_abort=true;_msg = format ["SpawnVehicle: Input variable error! Was expecting 7, received %1.",count _this];};
+//if (isNil "_vehicleData") then {_abort=true;_msg="Convoy section was totaly blank. Format error. It must at least contain an empty array []";};
+//if (count _this != 7) then {_abort=true;_msg = format ["SpawnVehicle: Input variable error! Was expecting 7, received %1.",count _this];};
 if (!_abort) then
 {
     { 
         // Being of Convoy Creation!
         private ["_numVeh","_ebk","_vehType","_vehLoc","_vehLoot","_numDriverGroups","_driverBehaviour","_driverTypes","_driverOptions","_vehCrew",
         "_numTroopGroups","_troopBehaviour","_troopTypes","_troopOptions","_vehicles"];
-        if (count _x != 3) exitWith {_abort=true;_msg="incorrect data format in one of the Convoy data blocks."};
+       // if (count _x != 3) exitWith {_abort=true;_msg="incorrect data format in one of the Convoy data blocks."};
         _convoy = _x;
         _vehdat = _convoy select 0; // vehicle definitions block
         _driverdat = _convoy select 1;  // driver def block
@@ -41,16 +41,17 @@ if (!_abort) then
         _troopTypes = [];
         _troopOptions = [];
         // Parse the Vehicle Data Block!
-        if (isNil "_vehdat") exitWith {_abort=true; _msg = "Vehicle definition missing from 'Convoy' description, see TestMission01 for a good example.";};
+      //  if (isNil "_vehdat") exitWith {_abort=true; _msg = "Vehicle definition missing from 'Convoy' description, see TestMission01 for a good example.";};
         // driverdat and troopdat are acceptable if Nil.
         _numVeh = 0;
         _ebk= "Vehicle Data: Vehicle ";
         {
-            if (count _x !=4) exitWith {_abort=true;_msg=format ["%2format error expecting 4 elements found %1",_x,_ebk];};
+            //if (count _x !=4) exitWith {_abort=true;_msg=format ["%2format error expecting 4 elements found %1",_x,_ebk];};
             _vehType set [ _numVeh, _x select 0];
             _vehLoc set [_numVeh, _x select 1];
             _vehCrew set [_numVeh, _x select 2];
-            _vehLoot set [_numVeh, _x select 3];		
+            _vehLoot set [_numVeh, _x select 3];	
+            /*
             if (isNil "_vehType" or isNil "_vehLoc" or isNil "_vehCrew" or isNil "_vehLoot") exitWith {_abort=true; _msg =format[ "%2data should be [ ""B_Truck_01_transport_EPOCH"",[-50,-610],[1,""Rifleman""],""None""] found %1",_x,_ebk];};
             if (TypeName (_vehType select _numVeh) != "STRING") exitWith {_abort = true; _msg =format[ "%2type should be a string not %1",(_vehType select _numVeh),_ebk];};
             if (TypeName (_vehLoc select _numVeh) != "ARRAY") exitWith	{_abort = true; _msg =format[ "%2spawn location should be an array not %1",(_vehLoc select _numVeh),_ebk];};
@@ -66,36 +67,37 @@ if (!_abort) then
                 };
             };
             if (TypeName (_vehLoot select _numVeh) != "STRING") exitWith	{_abort = true; _msg =format[ "%2loot should be a text string or ""None"" not %1",(_vehLoot select _numVeh),_ebk];};
-            // verify the vehicle is a valid class name -ToDo-		
+            // verify the vehicle is a valid class name -ToDo-	
+            */
             _numVeh = _numVeh + 1;				
         }foreach _vehdat;
-        if (_abort) exitWith{};
+       // if (_abort) exitWith{};
         _numDriverGroups = 0;
         _ebk="Driver Data: Driver ";
         {
-            if (count _x !=3) exitWith {_abort=true;_msg=format["%2format error expecting 3 elements found %1",_x,_ebk];};
+           // if (count _x !=3) exitWith {_abort=true;_msg=format["%2format error expecting 3 elements found %1",_x,_ebk];};
             _driverBehaviour set [_numDriverGroups, _x select 0];
             _driverTypes set [_numDriverGroups, _x select 1]; // array of [[x,name],[x,name]]
             _driverOptions set [_numDriverGroups, _x select 2];
-            if (isNil "_driverBehaviour" or isNil "_driverTypes" or isNil "_driverOptions") exitWith {_abort=true; _msg=format["%2data should be [[""RESISTANCE"",""COMBAT"",""RED"",""COLUMN""],[[3, ""Driver""]],[""Convoy"",[-75,-600],[0,-50],[""NORMAL"",true,true,true]]] found %1",_x,_ebk];};
-            if (TypeName (_driverBehaviour select _numDriverGroups) != "ARRAY") exitWith {_abort=true;_msg=format["%2should be array of text strings, not %1",_x,_ebk];};
-            if (TypeName (_drivertypes select _numDriverGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2types should be a array [[#,type],[#,type]], not %1",_x,_ebk];};
-            if (TypeName (_driverOptions select _numDriverGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2options should be a array, not %1",_x,_ebk];};	
+           // if (isNil "_driverBehaviour" or isNil "_driverTypes" or isNil "_driverOptions") exitWith {_abort=true; _msg=format["%2data should be [[""RESISTANCE"",""COMBAT"",""RED"",""COLUMN""],[[3, ""Driver""]],[""Convoy"",[-75,-600],[0,-50],[""NORMAL"",true,true,true]]] found %1",_x,_ebk];};
+           // if (TypeName (_driverBehaviour select _numDriverGroups) != "ARRAY") exitWith {_abort=true;_msg=format["%2should be array of text strings, not %1",_x,_ebk];};
+         //   if (TypeName (_drivertypes select _numDriverGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2types should be a array [[#,type],[#,type]], not %1",_x,_ebk];};
+         //   if (TypeName (_driverOptions select _numDriverGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2options should be a array, not %1",_x,_ebk];};	
             _numDriverGroups = _numDriverGroups + 1;
         }foreach _driverdat;
-        if (_abort) exitWith{};
+       // if (_abort) exitWith{};
         _numTroopGroups = 0;
         _ebk="Troop Data: Troops ";
         {
             //diag_log format ["##SpawnVehicle: _troopdat:%1",_x];
-            if (count _x !=3) exitWith {_abort=true;_msg=format["%2format error expecting 3 elements found %1",_x,_ebk];};
+         //   if (count _x !=3) exitWith {_abort=true;_msg=format["%2format error expecting 3 elements found %1",_x,_ebk];};
             _troopBehaviour set [_numTroopGroups, _x select 0];
             _troopTypes set [_numTroopGroups, _x select 1];
             _troopOptions set [_numTroopGroups, _x select 2];
-            if (isNil "_driverBehaviour" or isNil "_driverTypes" or isNil "_driverOptions") exitWith {_abort=true; _msg=format["%2data should be [[""RESISTANCE"",""COMBAT"",""RED"",""COLUMN""],[[3, ""Driver""]],[""Convoy"",[-75,-600],[0,-50],[""NORMAL"",true,true,true]]] found %1",_x,_ebk];};
-            if (TypeName (_troopBehaviour select _numTroopGroups) != "ARRAY") exitWith {_abort=true;_msg=format["%2should be array of text strings, not %1",_x,_ebk];};
-            if (TypeName (_trooptypes select _numTroopGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2types should be a array [[#,type],[#,type]], not %1",_x,_ebk];};
-            if (TypeName (_troopOptions select _numTroopGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2options should be a array, not %1",_x,_ebk];};	
+        //    if (isNil "_driverBehaviour" or isNil "_driverTypes" or isNil "_driverOptions") exitWith {_abort=true; _msg=format["%2data should be [[""RESISTANCE"",""COMBAT"",""RED"",""COLUMN""],[[3, ""Driver""]],[""Convoy"",[-75,-600],[0,-50],[""NORMAL"",true,true,true]]] found %1",_x,_ebk];};
+          //  if (TypeName (_troopBehaviour select _numTroopGroups) != "ARRAY") exitWith {_abort=true;_msg=format["%2should be array of text strings, not %1",_x,_ebk];};
+          //  if (TypeName (_trooptypes select _numTroopGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2types should be a array [[#,type],[#,type]], not %1",_x,_ebk];};
+          //  if (TypeName (_troopOptions select _numTroopGroups) != "ARRAY") exitWith { _abort=true;_msg=format["%2options should be a array, not %1",_x,_ebk];};	
             _numTroopGroups = _numTroopGroups + 1;
         }foreach _troopdat;
         if (_abort) exitWith{};
@@ -113,7 +115,7 @@ if (!_abort) then
             private ["_curList","_ii","_logic"];          
             {
                 // _x should be [#,name]
-                if (TypeName _x != "ARRAY") exitWith {_abort=true;_msg=format["Driver Data: driver type format should be similar too [[2,""Driver""]] not %1",_driverTypes select _i];};                
+             //   if (TypeName _x != "ARRAY") exitWith {_abort=true;_msg=format["Driver Data: driver type format should be similar too [[2,""Driver""]] not %1",_driverTypes select _i];};                
                 for [{_ii=_numdrivers},{_ii<(_x select 0)+_numdrivers},{_ii=_ii+1}] do
                 {
                     _logic = (_driverOptions select _i);
@@ -121,10 +123,10 @@ if (!_abort) then
                 };
                 _numdrivers = _numdrivers +( _x select 0);
             }foreach (_driverTypes select _i);
-            if (_abort) exitWith {};
+          //  if (_abort) exitWith {};
            // diag_log format ["##SpawnVehicle: List of drivers :%1",_driverIndividual];
         };
-        if (_abort) exitWith{};
+      //  if (_abort) exitWith{};
         
         for [{_i=0},{_i < _numVeh},{_i=_i+1}] do
         {
@@ -137,7 +139,12 @@ if (!_abort) then
             if (_i < _numdrivers) then {_driver = _driverIndividual select _i;};
             _data = [_pos, _driver, _vehType select _i] call FuMS_fnc_HC_MsnCtrl_Util_GetSafeSpawnVehPos;	
             //diag_log format ["pos:%1, driver:%2, type:%3 data:%4",_pos, _driver, _vehType select _i,_data];
-            _veh = [ _vehType select _i, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;		
+            _veh = [ _vehType select _i, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	
+            if (_veh iskindof "StaticWeapon") then
+            {
+                diag_log format ["<FuMS:%1 SpawnVehicle: Setting staticWeapon %2 to face %3",FuMS_Version,_veh,(_vehCrew select _i) select 0];
+                _veh setDir ((_vehCrew select _i) select 0);
+            };
             // install its loot if any!
             _loot = toupper (_vehLoot select _i);
             if ( _loot != "NONE") then
@@ -159,7 +166,13 @@ if (!_abort) then
         for [{_i=0},{_i < count _drivers},{_i=_i+1}] do
         { 
             private ["_var"];
-            (_drivers select _i) moveinDriver (_vehicles select _i);
+            if ((_vehicles select _i) isKindOf "StaticWeapon") then
+            {
+                (_drivers select _i) moveinGunner (_vehicles select _i);
+            } else
+            { 
+                (_drivers select _i) moveinDriver (_vehicles select _i);
+            };
             // need to update driver's spawn loc with the spawn loc of this vehicle!
             _var = (_drivers select _i) getVariable "FuMS_AILOGIC";
             _var set [2,getPos (_vehicles select _i)];
@@ -176,14 +189,16 @@ if (!_abort) then
             */
         };              
         // create and load up the CREW!	
+        //diag_log format ["<FuMS:%1> SpawnVehicle: Building Crew: %2",FuMS_Version,_vehCrew];
         for [{_i=0},{_i < count _vehCrew},{_i=_i+1}] do
         {
             private ["_crewData"]; 
-            _crewData = _vehCrew select _i;  // this is an array of [#,name] pairs!!!!!
+           // diag_log format ["<FuMS:%1> SpawnVehicle: Building Crew: %2",FuMS_Version,_vehCrew select _i];
+            _crewData = _vehCrew select _i;  // this is an array of [#,name]  or is [facing]
             if (!isNil "_crewData") then // vehicle has crew!
-            {
+            {                
                 private["_turretsArray","_leader","_crewVeh","_ii"];
-                if (count _crewData != 0) then
+                if (count _crewData == 2 ) then
                 {
                     _turretsArray =[_vehicles select _i] call FuMS_fnc_HC_Util_KKcommonTurrets;
                     //diag_log format ["##SPAWN Vehicles : %1 has %2 turrets", _x select 0, count _turretsArray]; 
@@ -211,7 +226,7 @@ if (!_abort) then
                         }else
                         {
                             //no turrents left for the crew!
-                            diag_log format ["##SpawnVehicle: NON-FATAL ERROR: Index:%1/%2 excess crew defined for %3. Vehicle is Full!",_themeIndex,_missionName,_crewVeh];	                           
+                            diag_log format ["<FuMS:%4> SpawnVehicle: NON-FATAL ERROR: Index:%1/%2 excess crew defined for %3. Vehicle is Full!",_themeIndex,_missionName,_crewVeh,FuMS_Version];	                           
                         };                   
                     };
                 };

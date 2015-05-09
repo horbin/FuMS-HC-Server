@@ -59,7 +59,7 @@ Radios = ["EpochRadio0","EpochRadio1","EpochRadio2","EpochRadio3","EpochRadio4",
 
 BeltItems =["ItemCompass","ItemGPS","ItemWatch","Binocular","NVG_EPOCH","Rangefinder","Laserdesignator"];
 
-Ammo762 = ["20Rnd_762x51_Mag","10Rnd_762x51_Mag","30Rnd_762x39_Mag","150Rnd_762x51_Box","150Rnd_762x51_Box_Tracer"];
+Ammo762 = ["20Rnd_762x51_Mag","10Rnd_762x54_Mag","30Rnd_762x39_Mag","150Rnd_762x54_Box","150Rnd_762x54_Box_Tracer"];
 Ammo127 = ["5Rnd_127x108_Mag","5Rnd_127x108_APDS_Mag"];
 Ammo65 = ["30Rnd_65x39_caseless_green","30Rnd_65x39_caseless_green_mag_Tracer","30Rnd_65x39_caseless_mag","30Rnd_65x39_caseless_mag_Tracer",
 "200Rnd_65x39_cased_Box","100Rnd_65x39_caseless_mag","200Rnd_65x39_cased_Box_Tracer","100Rnd_65x39_caseless_mag_Tracer"];

@@ -116,6 +116,7 @@ FuMS_GroupCount set [ _themeIndex, 0 ]; // set this themes group count to zero.
 FuMS_radioChatInitialized set [_themeIndex, true];
 
 FuMS_BodyCount set [_themeIndex, 0];
+FuMS_Trigger_ZupaCapture set [_themeIndex,false];
 
 _abort=false;
 while {true} do

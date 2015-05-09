@@ -38,7 +38,9 @@ _scripts =
                     "Convoy.sqf", 
                     "PatrolRoute.sqf", 
                     "ScriptPatrol.sqf",
-                    "TrackRoute.sqf"
+                    "TrackRoute.sqf",
+                    "TowerGuard.sqf",
+                    "StaticGunner.sqf"
                 ]
             ],
             [
@@ -107,7 +109,8 @@ _scripts =
                 "Detect.sqf",
                 "ProxPlayer.sqf",
                 "Timer.sqf",
-                "UnitCount.sqf"
+                "UnitCount.sqf",
+                "ZuppaCapture.sqf"
             ]
         ],
         [

@@ -65,7 +65,7 @@ FuMS_BuildVehicle_Server =
         {
            // diag_log format ["###EH:GetIn:AI DETECTED: %1 ID entered a vehicle: %2",_idowner,_vehobj];
         }else
-        {
+        {            
 			_typeveh = typeOf _vehobj;
 			_abort = false;
 			{
@@ -84,21 +84,31 @@ FuMS_BuildVehicle_Server =
             _idowner publicVariableClient "FuMS_TEMPVEHICLE";
             // If a player enters the vehicle, update the HCTEMP, so server will not delete vehicle on  an HC disconnect!
             _value = _vehobj getVariable "HCTEMP";
+            diag_log format ["<FuMS> PVEH BuildVehicle_server: _value:%1 LootOption:%2",_value, FuMS_GlobalLootOptions select 2];
 			if (_value != "PLAYER" and (FuMS_GlobalLootOptions select 2) ) then // make vehicle purchasable, and save it to the Hive!
 			{
-				// Possibly needed to keep from breaking normal vehicle limits?    
-				EPOCH_VehicleSlotsLimit = EPOCH_VehicleSlotsLimit + 1;
-				EPOCH_VehicleSlots pushBack str(EPOCH_VehicleSlotsLimit);
-				// Code below is used when a vehicle is 'purchased' off a vendor!
-				_slot=EPOCH_VehicleSlots select 0;
-				EPOCH_VehicleSlots=EPOCH_VehicleSlots-[_slot];
-				EPOCH_VehicleSlotCount=count EPOCH_VehicleSlots;
-				publicVariable "EPOCH_VehicleSlotCount";
-				 _vehObj setVariable["VEHICLE_SLOT",_slot,true];
-				_vehObj call EPOCH_server_save_vehicle;
                 
+                _veh setVariable["LASTLOGOUT_EPOCH",1000000000000];
+                _veh setVariable["LAST_CHECK",1000000000000];
+                // Possibly needed to keep from breaking normal vehicle limits?    
+                EPOCH_VehicleSlotsLimit = EPOCH_VehicleSlotsLimit + 1;
+                EPOCH_VehicleSlots pushBack str(EPOCH_VehicleSlotsLimit);
+                // Code below is used when a vehicle is 'purchased' off a vendor!
+                _slot=EPOCH_VehicleSlots select 0;                
+                _vehObj setVariable["VEHICLE_SLOT",_slot,true];           
+                
+                EPOCH_VehicleSlots=EPOCH_VehicleSlots-[_slot];
+                EPOCH_VehicleSlotCount=count EPOCH_VehicleSlots;
+                publicVariable "EPOCH_VehicleSlotCount";
+                
+                diag_log format ["<FuMS> PVEH BuildVehicle_Server: Attempting to save %1 to server",_vehObj];
+                diag_log format ["<FuMS> PVEH BuildVehicle_Server: Vehicle = %1",vehicle _vehObj];
+              //  _vehObj call EPOCH_server_setToken;
+                _vehObj call EPOCH_server_save_vehicle;
+              //  _vehObj call EPOCH_server_save_vehicle;
+                _vehObj call EPOCH_server_vehicleInit;            
                 if (FuMS_VehicleZeroAmmo) then {_vehobj setvehicleAmmo 0;};
-				//_vehObj call EPOCH_server_vehicleInit;
+				
 			};
             //diag_log format ["###EH:GetIn: HCTEMP = %1", _value];
             _vehobj setVariable ["HCTEMP", "PLAYER", true];
@@ -184,5 +194,16 @@ FuMS_ZombieNoise_Server =
 };
 
 
+"FuMS_ZupaCaptureServer" addPublicVariableEventHandler
+{
+    _data = _this select 1;
+    _players = _data select 0;
+    _timeRemaining = _data select 1;    
+    {
+        FuMS_ZupaCapture = _timeRemaining;
+        (owner _x) publicVariableClient "FuMS_ZupaCapture";
+        diag_log format ["<FuMS:%1> PVEH: ZupaCaptureServer: _data:%2 _playerID:%3/%5 _time:%4",FuMS_Version, _data, owner _x,_timeRemaining,_x];
+    }foreach _players;
+};
 
 

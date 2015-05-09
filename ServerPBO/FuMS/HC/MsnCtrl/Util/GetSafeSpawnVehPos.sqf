@@ -42,7 +42,7 @@ else
                 //diag_log format ["##SpawnVehicle:GetSafeSpawnVehPos: %2:%1 is on land, looking for a road",_veh,_aiLogic];   
                 _pos = [_pos] call FuMS_fnc_HC_Util_FindNearestRoad;
             };
-        };
+        };     
         if (_veh isKindOf "Air") then {_mode = "FLY";};		
     }else // No DRIVER
     {

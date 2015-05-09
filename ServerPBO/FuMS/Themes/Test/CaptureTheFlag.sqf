@@ -1,19 +1,19 @@
-//NukeDevice.sqf
+//CaptureTheFlag.sqf
 // Horbin
-// 1/11/15
-// Based upon drsubo Mission Scripts
+// 5/8/15
+// 
 
 [
-["Zupa_Test", 200], // Mission Title NOSPACES!, and encounter radius
-["Fire Smoke Test","mil_objective","ELLIPSE","ColorRed","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
+["CTF", 200], // Mission Title NOSPACES!, and encounter radius
+["CTF","mil_objective","ELLIPSE","ColorRed","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
    // type is "mil_objective"
 [  
     [// NOTIFICATION Messages and Map display Control.
 	false, "ALL",0, // Notify players via Radio Message, radio channel, range from encounter center (0=unlimited.
     false, // Notify players via global message
     false,// Show encounter area on the map
-    0,    // Win delay: Time in seconds after a WIN before mission cleanup is performed
-    0       // Lose delay: Time in seconds after a lose before mission cleanup is performed
+    30,    // Win delay: Time in seconds after a WIN before mission cleanup is performed
+    30       // Lose delay: Time in seconds after a lose before mission cleanup is performed
           //NOTE: the above delay must occur before the mission is considered 'complete' by the mission manager control loop.
     ],
     // Spawn Mission Message
@@ -327,8 +327,9 @@
       //["ProxPlayer", [0,0], 20, 1], // 1 player is within 20 meters of encounter center.
 	//  ["Reinforce", 100, "Random"] // %chance when requested, Mission to run
     //  ["BodyCount",1]
-["ZupaCapture",[  [ [0,0],       50,300,"Test Point 1"],
-                           [ [100,100],50,300,"Test Point 2" ]                           ]]
+	                //[offset], radius, time, name
+["ZupaCapture",[  [ [0,0],      50,     180,  "Point 1" ],
+                  [ [100,100],  50,     180,  "Point 2" ]			  ]]
     ],
     [    //LOSE Triggers and Controls
 //      ["HighUnitCount", "GUER",10,40,[0,0]] // 10 enemies get within 40m's of encounter center

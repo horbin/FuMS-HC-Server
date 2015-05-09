@@ -162,13 +162,15 @@ if !(hasInterface) then
     //}foreach ( FuMS_DefinedMapLocations);    
     // Based upon the list of themes in 'ActiveThemes' the below arrays will be populated.
     // and a control loop started for each theme.     
-    FuMS_PhaseMsnID = 0;  // gets incremented every time a phased mission is launched.
-    // Each mission launched from another mission increments PhaseMsnID and the phase mission is assigned the value as its ID.
-    // This ID is then used to reference the below array from parent missions.
-    FuMS_PhaseMsn = []; //Array
-    FuMS_BodyCount = []; //Array containing number of AI killed under the current running mission. 
-    //Phased missions contribute to the parent mission's total and are not calculated separately.    
-    //Initialize ALL data before starting Theme Control Loops to permit global data to be fully initialized.      
+       FuMS_PhaseMsnID = 0;  // gets incremented every time a phased mission is launched.
+       // Each mission launched from another mission increments PhaseMsnID and the phase mission is assigned the value as its ID.
+       // This ID is then used to reference the below array from parent missions.
+       FuMS_PhaseMsn = []; //Array
+       FuMS_BodyCount = []; //Array containing number of AI killed under the current running mission. 
+       FuMS_Trigger_ZupaCapture = []; // Array containing 'flag capture' status for all points spawned in a theme.
+      
+       //Phased missions contribute to the parent mission's total and are not calculated separately.    
+       //Initialize ALL data before starting Theme Control Loops to permit global data to be fully initialized.      
        FuMS_ActiveMissions = []; // used by Admin Tools for tracking/killing missions
        // inits globavariables with suffix equal to this HC's ownerID - these used in DataCleanup.
        FuMS_MissionTerritory = []; // used in deconfliction of spawn locations to prevent random loc spawn missions from dropping ontop of current missions.

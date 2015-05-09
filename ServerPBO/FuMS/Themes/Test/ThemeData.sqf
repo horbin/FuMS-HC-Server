@@ -22,14 +22,15 @@ _themeData =
     [  //***** Mission List *****
     // List of Missions. 
         // The below missions MUST be in the same folder as this file!            
-	//	["TestMission01",[10700,12200] ], // spawn at the specific location. If '0' take from locations below!
+		//["Mil_Outpost",[12825,16675] ] // spawn at the specific location. If '0' take from locations below!
        //   ["BikeGang"],  // will spawn at any of the locations defined below! If none defined, BIS_fnc_findSafePos will be used.
 	   //  ["TestMission01","Charkia"],
-	//	  ["LandPatrol", "Zaros"],// mission will only spawn in the town of Charkia
+    //["LandPatrol", [ 15000,17600]]// mission will only spawn in the town of Charkia
 			//["WaterMission"],
 		// ["TestHeloPatrol","Stavros"],
 		//["MazeTest",[23587,18368.5]],
-         ["NukeDevice"]
+         //["NukeDevice"]
+    ["CaptureTheFlag"]
     	 // ["NukeDevice",[12800,16900]],["NukeDevice",[12900,16900]],["NukeDevice",[13000,16900,0]],
 	//	  ["NukeDevice",[12800.3, 17000.4]],["NukeDevice",[12900,17000,8.1]],["NukeDevice",[13000,17000]]
    // ["OilRig",[27627.2,18501.8]]

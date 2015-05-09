@@ -22,6 +22,12 @@ diag_log format ["FuMS initializing for player:%1",player];
     systemChat "FuMS: Some odd technical incompatibility prevents you from interfacing with this vehicle!";
 };
 
+"FuMS_ZupaCapture" addPublicVariableEventHandler
+{
+	_timeRemaining = _this select 1;
+	systemChat format ["Capture point has %1 minutes remaining",_timeRemaining];
+};
+
 FuMS_RadioMsgQue = [];
 
 "FuMS_RADIOCHATTER" addPublicVariableEventHandler
@@ -55,9 +61,14 @@ if (FuMS_AdminControlsEnabled) then
 	{
 		FuMS_GetPlayerIndex = player;
 	publicVariableServer "FuMS_GetPlayerIndex";
-		diag_log format ["##PlayerInit: %1 waiting for authentication.", FuMS_GetPlayerIndex];
+		diag_log format ["<FuMS:%2> PlayerInit: %1 waiting for authentication.", FuMS_GetPlayerIndex, FuMS_Version];
 		sleep 3;
 	};	
 	if (!isNil "FuMS_fnc_Menu_StartMenu") then {[player] spawn compile FuMS_fnc_Menu_StartMenu;};
-	diag_log format ["##PlayerInit: FuMS Admin Menu = %1",(!isNil "FuMS_fnc_Menu_StartMenu")];
+	diag_log format ["<FuMS:%2> PlayerInit: FuMS Admin Menu = %1",(!isNil "FuMS_fnc_Menu_StartMenu"),FuMS_Version];
 };
+// Push controls for Zombie sounds to the player.
+waitUntil {!isNil "FuMS_str_HC_Zombies_INF_fnc_nextSound"};
+diag_log format ["<FuMS:%1> StartMenu: Initializing Zombie Sounds for %2",FuMS_Version,player];
+FuMS_INF_nextSound = compile FuMS_str_HC_Zombies_INF_fnc_nextSound;
+[] call FuMS_INF_nextSound;

@@ -3,8 +3,10 @@
 // 3/7/15
 // FuMS_fnc_Menu_StartMenu will be nil if no menu options are authorized.
 //diag_log format ["##StartMenu: Configured for %1",player];
-FuMS_INF_nextSound = compile FuMS_str_HC_Zombies_INF_fnc_nextSound;
-[] call FuMS_INF_nextSound;
+//diag_log format ["<FuMS:%1> StartMenu: Initializing Zombie Sounds for %2",FuMS_Version,player];
+
+//FuMS_INF_nextSound = compile FuMS_str_HC_Zombies_INF_fnc_nextSound;
+//[] call FuMS_INF_nextSound;
 
 if (!isNil "FuMS_fnc_Menu_AdminMenu") then
 {

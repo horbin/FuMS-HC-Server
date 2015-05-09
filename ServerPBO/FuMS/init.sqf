@@ -5,6 +5,8 @@
 // Server side init for FuMS.pbo addon
 if (!isServer) exitWith {};
 private ["_handle"];
+FuMS_Version = "v1.5g";
+publicVariable "FuMS_Version";
 FuMS_HCIDs = [];
 FuMS_HCNames = [];
 FuMS_HCIDs set [0,0]; // set the 1st slot to be the actual server's ID.
@@ -21,7 +23,7 @@ if (!FuMS_isStable) exitwith
 {
     diag_log format ["************************************************************************"];
     diag_log format ["###Fulcrum Mission System Critical Error!"];
-    diag_log format ["###   System is OFFLINE"];
+    diag_log format ["### %1  System is OFFLINE",FuMS_Version];
     diag_log format ["************************************************************************"];
 
 }; // if critical error, exit and initialize no further for FuMS.
@@ -45,7 +47,7 @@ if (FuMS_ServerFuMSEnable) then
     FuMS_ThemeControlID = 0;
     FuMS_HC_SlotNumber = 0;    
     
-    diag_log format ["##HC_INIT: Script List size = %1",count FuMS_HC_ScriptList];
+    diag_log format ["<FuMS:%2> Init: Script List size = %1",count FuMS_HC_ScriptList,FuMS_Version];
     {        
         private ["_code"];
       _code = compile (missionNamespace getVariable _x);
@@ -53,14 +55,21 @@ if (FuMS_ServerFuMSEnable) then
 	_ary = toArray _x;
 	_string = "FuMS_fnc_";
 	for [{_i=9},{_i< count _ary},{_i=_i+1}]do {_string = format ["%1%2",_string,toString [_ary select _i]];};	
-	diag_log format ["##HC_Init: Compiling %1  into %2",_x,_string];
+	diag_log format ["<FuMS:%3> Init: Compiling %1  into %2",_x,_string, FuMS_Version];
 	missionNamespace setVariable [_string, _code];	
     }foreach FuMS_HC_ScriptList;
 
     [] call FuMS_fnc_HC_FuMSNInit;
 };
+
+diag_log format ["<FuMS:%1> Init: Passing Zombie sound scripts to all players"];
+publicVariable "FuMS_str_HC_Zombies_INF_fnc_nextSound";
+
+
 FuMS_ServerIsClean = true;
 publicVariable "FuMS_ServerIsClean";
-diag_log format ["##\FuMS\Init.sqf:  Server side FuMS initialized and operational."];
+diag_log format ["<FuMS:%1> Init.sqf:  Server side FuMS initialized and operational.",FuMS_Version];
 FuMS_Server_Operational = true;
 publicVariable "FuMS_Server_Operational";
+
+

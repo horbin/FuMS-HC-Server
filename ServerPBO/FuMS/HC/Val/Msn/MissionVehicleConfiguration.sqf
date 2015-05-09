@@ -24,8 +24,8 @@ while {true} do
             _dat3 = _x select 2;
             if (count _dat3 > 0) then
             {
-                if ([_dat3,2] call FuMS_fnc_HC_Val_Util_CheckArray)exitWith {_abort=true; FuMS_FileError = format ["%1%2 crew should be an array of [number,""soldier type""]. Found %3",_prefix,_sec, _dat3];};	                 
-                if (TypeName (_dat3 select 0) != "SCALAR" or TypeName (_dat3 select 1) != "STRING") exitwith {_abort=true; FuMS_FileError = format ["%1%2 Each soldier definition should be a [num, ""Type""] pair. Found %3",_prefix,_sec,_x];};			              
+                if (([_dat3,2] call FuMS_fnc_HC_Val_Util_CheckArray) and ([_dat3,1] call FuMS_fnc_HC_Val_Util_CheckArray))exitWith {_abort=true; FuMS_FileError = format ["%1%2 crew should be an array of [number,""soldier type""] OR [number] for a static weapon. Found %3",_prefix,_sec, _dat3];};	                 
+             //   if (TypeName (_dat3 select 0) != "SCALAR" or TypeName (_dat3 select 1) != "STRING") exitwith {_abort=true; FuMS_FileError = format ["%1%2 Each soldier definition should be a [num, ""Type""] pair. Found %3",_prefix,_sec,_x];};			              
             };
             if (TypeName (_x select 3) != "STRING") exitWith {_abort=true; FuMS_FileError = format ["%1%2 vehicle loot should be a string. Found %3",_prefix, _sec, _x select 3];};
         }foreach _dat2;

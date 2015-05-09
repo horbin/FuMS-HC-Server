@@ -11,7 +11,7 @@ _HCname = profileName;
 for [{_i=0}, {_i < 50}, { _i = _i +1}] do
 {
     diag_log format ["##############################################"];   
-    if (_i == 26) then {diag_log format ["<FuMS> Headless Client %1 connected with profile %2##",player,_HCname];};
+    if (_i == 26) then {diag_log format ["<FuMS> Headless Client %1 connected with profile name %2",player,_HCname];};
 };
 waitUntil {time >0};
 waitUntil {!isNil "FuMS_Server_Operational"};
@@ -30,6 +30,7 @@ while {!FuMS_InitToken } do
 };
 waitUntil
 {	
+	//FuMS_GetHCIndex = profileName;
     if (FuMS_HC_SlotNumber == -1) then
 	{
 		publicVariableServer "FuMS_GetHCIndex";    

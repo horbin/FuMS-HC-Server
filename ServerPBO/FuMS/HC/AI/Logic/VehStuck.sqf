@@ -3,20 +3,26 @@
 // 1/25/15
 // Inputs: Unit
 // Spawns a process that watches the position of the unit. If the unit is a driver, then 
-// the vehicle will get deleted. All ai in the vehicle will be left to do whatever logic/waypoints they 
+// the vehicle will get moved if it is stuck. All ai in the vehicle will be left to do whatever logic/waypoints they 
 // were assigned too.
 // VehStuck = true if it remains within same 2m area for 150 seconds.
 //****Spawn Stuck Vehicle Code for driver ******
-private ["_unit","_lastPos","_stationary","_dist2leader_old","_veh"];
+private ["_unit","_lastPos","_stationary","_dist2leader_old","_veh","_var"];
 _unit = _this select 0;
 _stationary = 0;
 _dist2leader_old = 25;
 if (!isNil "_unit") then
 {
+    
     sleep 10; // wait 10 seconds before starting to check to allow for init/placement.
     while {alive _unit } do
     {
         _veh = vehicle _unit; // AI's vehicle status checked every 60 seconds, or upon no longer being a driver of its previous vehicle
+        if (_veh isKindOf "StaticWeapon") exitWith 
+        {
+            diag_log format ["<FuMS> VehStuck: Gunner logic found, exiting VehStuck logic."];    
+        };
+        
         if ( _veh == _unit or (assignedDriver _veh != _unit) ) then
         { 
             sleep 60;

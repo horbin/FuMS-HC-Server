@@ -94,7 +94,7 @@ _soldierData =
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["20Rnd_556x45_UW_mag",1],[2,3]]             ] 
+        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["20Rnd_556x45_UW_mag",2],[2,3]]             ] 
     ],[
         "Driver",[.05, .9, .1, .5, .5, .1, .1, .5],
         [Outfit_AnyMilitary,1], // Uniform
