@@ -37,7 +37,6 @@ Syntax: ["Gunner", [spawnloc], [actionloc], [0]]
 Behaviour:
 Used as a defined logic for 'drivers' in the Convoy section of missions. AI under this logic will man, and remain in static weapons.
 
-+ Tower and Building static placement
 New AI Logic:
 "TowerGuard"
 Syntax:["TowerGuard", [spawnloc], [actionloc], [radius,"Building_Name"]]
