@@ -51,13 +51,15 @@ less than the maximum player count.
 - Missions already created will remain in play if the player requirement fails while the mission is running.
 When the mission completes the theme will then suspend further missions until the requirement is met again.
 - See ThemeData.htm documentation for details.
+
+
      
 * Fixed bugged with 'AI only gear' sometimes not being cleaned up when an AI dies.
 
 * Two new triggers that allow mission state to be controlled by the amount of damage specific vehicles and/or buildings
 have sustained!  See MissionFile.htm for details and \test\Destroyable mission for example.
 
-Damaged Buildings Trigger
+** Damaged Buildings Trigger
 ["DmgBuildings","INDEXER", amount]
 1.	"INDEXER"
 a.	This is a zero based index on which buildings on which damage will be watched.
@@ -71,7 +73,7 @@ a.	A value from 1.0 to 0.0
 b.	When damage value of the building reaches this amount it is 'counted' towards satisfying the trigger
 3.	Trigger will return true when ALL buildings in the "INDEXER" list are damaged to the 'amount' set in the trigger.
 
-Damaged Vehicles Trigger
+** Damaged Vehicles Trigger
 	["DmgVehicles","INDEXER", amount]
 1.	Identical behavior to "DmgBuildings" above.
 2.	Vehicles created in BOTH the building section and vehicle section are counted when trying to determine the proper 'indexer' values.
