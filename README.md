@@ -88,10 +88,12 @@ c.	IE you have a mission with 3 static vehicles in the building section and a pa
 Supports custom scripts that can be ran at mission start and at mission end.
 Scripts to be run are defined in the \FuMS\Themes\<ThemeName>\Scripts folder.
 Scripts are 'called'. FuMS expects an array to be returned by the start script, which it then in turn passes to the mission end script.
+
 This array can be used to pass variables from the start to the end scripts.
 See MissionFile.htm and ThemeData.htm documentation for details.
 
 *Random mission positioning
+
 FuMS missions now support randomizing the location of the 'core' of the mission within the defined encounter radius.
 See MissionFile.htm and \FuMS\Themes\Test\Destroyable.sqf for details.
 
@@ -99,13 +101,16 @@ See MissionFile.htm and \FuMS\Themes\Test\Destroyable.sqf for details.
 
 --Known issues
 Helo patrols traveling slow.
-Scuba AI not using underwater firearms underwater
+Scuba AI not using underwater firearms underwater.
 
 --Upcoming
 Fixing Helo and Scuba AI behaviour 
 Sound notification and environmental effects for missions
 autonomous AI UAV/UGV's
 VIP rescue/Captor theme
+
+
+
 ------------------------------------------------------------------------------------
 v1.5g
 ** Changes to client side files! Make sure you update them too!
