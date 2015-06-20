@@ -2,6 +2,66 @@
 (like the mod? please feel free to donate.  http://conroh.com/fums/
 
 ------------------------------------------------------------------------------------
+v1.5g
+** Changes to client side files! Make sure you update them too!
++ Fixed bug preventing vehicles from being sold
++ Fixed bug for Scatter Loot: Loot now properly spawns above ground.
++ Fixed bug that was preventing non-admin players to hear corrupted clones (zombies)
++ Fixed 762 Ammo caused by Arma3 class name changes in BaseLoot.sqf
+Ammo762 = ["20Rnd_762x51_Mag","10Rnd_762x54_Mag","30Rnd_762x39_Mag","150Rnd_762x54_Box","150Rnd_762x54_Box_Tracer"];
+
++ M3Editor support for ALL Missions
+FuMS now supports M3Editor format for buildings.  See \Docs\M3Editor Buildings.txt for instructions.
+Mission creators can now place 'prebuilt' areas crated in M3Editor.
+Additionally, FuMS will automatically calculate 'offsets'. This will permit you to then translate the group of buildings to any location
+on ANY map.  Through FuMS you should be able to port M3Editor designs from any map to any other map.
+See \Theme\Test\CaptureTheFlag.sqf for example usage. (I know this does not look pretty!)
+
++ ZupaCapure Points Trigger
+See Docs\Triggers.txt for instructions.
+Missions can now be controlled by ZupaCapure points.  This new trigger permits the mission designer to create any number of capture points
+within his mission.  Mission success occurs when all points are capped.
+Behaviour is based upon ZupaCapture Points. See \Theme\Test\CaptureTheFlag.sqf for example usage.
+
++ Static Weapon support
+Static weapons can be defined, just like a vehicle in the 'convoy' section of a mission.
+["B_HMG_01_high_F",[-20,-25],[180],"None"]
+Note: In place of specifying 'crew' the FACING of the weapon is defined ([180]), so this HMG will face south.
+
+New AI Logic:
+"Gunner"
+Syntax: ["Gunner", [spawnloc], [actionloc], [0]]
+-spawnloc: offset or specific map location <-- ignored for this logic, be retained for continuity of Logic series
+-actionloc: offset or specific map location at which AI will be placed.
+-[0]: Place holder.
+Behaviour:
+Used as a defined logic for 'drivers' in the Convoy section of missions. AI under this logic will man, and remain in static weapons.
+
+New AI Logic:
+"TowerGuard"
+Syntax:["TowerGuard", [spawnloc], [actionloc], [radius,"Building_Name"]]
+- spawnloc: offset or specific map location <-- ignored for this logic, be retained for continuity of Logic series
+- actionloc: offset or specific map location at which AI will be placed.
+- radius: distance from 'actionloc' to search for rooftops
+- "Building_Name": a building name may be provided. In this case AI will only be placed on these buildings. Default is "ANY"
+ Behaviour:
+ Script will search 'AREA' for all enter-able buildings. 
+ highest point of all buildings in the area are located.
+ if "Specific" building is provided, the list will be filtered to only buildings matching this name and the closest to the 'Origin' will be selected.
+ AI will be spawned at the top of these buildings and remain there.
+ 
+ Note: "TowerGuard" and "Gunner" will leave their posts in response to an XFILL call 
+from a driver running the "XFILL" convoy option logic.
+ 
+ ***Example***
+ *** See \FuMS\Themes\Test\Mil_Outpost.sqf
+ ***  for example usage of new functionality
+ *************
+
+** Known Issues:
+- Helicopters sometimes not moving or moving at a much slower rate than specified.
+- Vehicles occupied by players not persisting through server restart.
+- Frogman AI are not firing SDAR while in water.
 
 
 v1.5f
