@@ -97,7 +97,8 @@ _scripts =
                     "GetSafeSpawnVehPos.sqf", 
                     "XPos.sqf",
                     "PullData.sqf",
-                    "GetSafeMissionSpawnPos.sqf"                   
+                    "GetSafeMissionSpawnPos.sqf",
+                    "GetIndexers.sqf"
                 ]
             ]
         ],
@@ -110,7 +111,9 @@ _scripts =
                 "ProxPlayer.sqf",
                 "Timer.sqf",
                 "UnitCount.sqf",
-                "ZuppaCapture.sqf"
+                "ZuppaCapture.sqf",
+                "DmgBuildings.sqf",
+                "DmgVehicles.sqf"
             ]
         ],
         [
@@ -230,7 +233,7 @@ FuMS_ProcessVarName =
         if ((toString [_x]) == ".") exitWith
         {
             //diag_log format ["##LoadScriptsForHCv2 _string:%1",_string];
-            diag_log format ["##LoadScriptsForHCv2 --var:  %1",_var];
+            //diag_log format ["##LoadScriptsForHCv2 --var:  %1",_var];
             missionNamespace setVariable [_var, preprocessFileLineNumbers format["%1",_string]];
             FuMS_HC_ScriptList = FuMS_HC_ScriptList + [_var];
         };
@@ -257,6 +260,7 @@ _base = "\FuMS\HC";
 FuMS_HC_ScriptList = [];
 [_scripts, _base] call FuMS_GetVarName;
 diag_log format ["## HC Script load complete %2 Scripts in %1 secs ",time -_start, count FuMS_HC_ScriptList];
+
 
 
 

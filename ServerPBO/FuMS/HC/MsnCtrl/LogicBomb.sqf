@@ -3,14 +3,7 @@
 // 1/4/15
 //INPUTS: missionData, TriggerData, MsnObjects
 //OUTPUTS: "WIN" or "LOSE" or "NO TRIGGERS"
-// Data passed into this script.
-//ProxPlayer = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\ProxPlayer.sqf";
-//UnitCount = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\UnitCount.sqf";
-//Detect = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\Detect.sqf";
-//Timer = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\Timer.sqf";
-//GetBodyCount = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\BodyCount.sqf";
-//PullData = compile preprocessFileLineNumbers "HC\Encounters\Functions\PullData.sqf";
-//AllDeadorGone = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\AllDeadorGone.sqf";
+
 //HCDEBUG = "LOGICBOMB";
 HCDEBUG = " ";
 private ["_triggerData","_eCenter","_encounterSize","_groups","_vehicles","_missionTheme","_instanceTriggers","_curMission",
@@ -39,7 +32,8 @@ if (count _phaseData >0 ) then {_phase01 =  _phaseData select 0;};
 if (count _phaseData >1) then {_phase02 =  _phaseData select 1;};
 if (count _phaseData >2 ) then {_phase03 = _phaseData select 2;};
 //diag_log format ["##Logic Bomb: phase01: %1",_phase01];
-private ["_state","_proxPlayer","_lowUnitCount","_highUnitCount","_detected", "_stateMax","_timer","_bodyCount","_allDeadorGone","_zupaCapture"];
+private ["_state","_proxPlayer","_lowUnitCount","_highUnitCount","_detected", "_stateMax",
+"_timer","_bodyCount","_allDeadorGone","_zupaCapture","_dmgBuildings","_dmgVehicles"];
 // nul out all positions so 'select' does not fire a zero divisor exception!
 _proxPlayer = [ [],[],[],[],[] ];  //[pos, range, numplayers]
 _lowUnitCount = [ [],[],[],[],[] ];//[trigger, numAI]
@@ -49,7 +43,10 @@ _timer = [ [],[],[],[],[] ]; //[expireTime]
 _bodyCount = [ [],[],[],[],[] ]; //[numberAI]
 _allDeadorGone=[ [],[],[],[],[] ]; //[nothing]
 _zupaCapture =[ [],[],[],[],[] ]; //[pos, radius, time, mission name]
-_triggerArray= [_proxPlayer, _lowUnitCount, _highUnitCount, _detected, _timer, _bodyCount, _allDeadorGone, _zupaCapture];  
+_dmgBuildings=[ [], [], [],[],[] ]; // ["BuildingOptions",%Dmg]
+_dmgVehicles=[[],[],[],[],[]]; // ["VehicleOptions", %Dmg]
+_triggerArray= [_proxPlayer, _lowUnitCount, _highUnitCount, _detected, _timer,
+    _bodyCount, _allDeadorGone, _zupaCapture, _dmgBuildings,_dmgVehicles];  
 _instanceTriggers = []; // used for end of mission cleanup of triggers.
 
 _stateMax = [0,0,0,0,0]; // 5 states, win/lose/p1,p2,p3
@@ -173,6 +170,25 @@ if (count (_triggerData select 5) == 0)  then // NO TRIGGERS is commented out.
                     _zupaCapture set [_state, [_arrayOfData, _themeIndex, _curMission]];
                     _stateMax set [_state,(_stateMax select _state) + 1];
                 };
+                case "DMGBUILDINGS":
+                {
+                    private ["_bldgNum","_amount","_list"];
+                    //_bldgNum values "ALL","BldgNum in List","Range 1-4","Several 2,3,4,5"
+                    _bldgNum = _x select 1;
+                    _amount = _x select 2;
+                    _list = [_bldgNum, count _buildings] call FuMS_fnc_HC_MsnCtrl_Util_GetIndexers;
+                    _dmgBuildings set [_state, [_bldgNum, _amount, _list]];
+                    _stateMax set [_state, (_stateMax select _state)+1];
+                };
+                case "DMGVEHICLES":
+                {
+                    private ["_vehNum","_amount","_list"];
+                    _vehNum = _x select 1;
+                    _amount = _x select 2;
+                    _list = [_vehNum, count _vehicles] call FuMS_fnc_HC_MsnCtrl_Util_GetIndexers;
+                    _dmgVehicles set [_state, [_vehNum, _amount, _list]];
+                    _stateMax set [_state, (_stateMax select _state)+1];
+                };
             };      
         }forEach _x; // step through each Trigger/EH option based upon the above 'cases'   
         // each State will have an associated array. The array is index off the case# of _trigName.
@@ -182,21 +198,25 @@ if (count (_triggerData select 5) == 0)  then // NO TRIGGERS is commented out.
     // pass to server, so if HC disconnects the triggers don't run 'stale' on the server!!!!
     ["Triggers",_instanceTriggers] call FuMS_fnc_HC_Util_HC_AddObject;   
     //Troubleshooting Data Process.
-    if (HCDEBUG=="LOGICBOMB") then
+    if (true) then
     {
-    diag_log format ["##LogicBomb:_1:%2#######################",_themeIndex, _curMission];
-    diag_log format ["######################################################"];
-    diag_log format ["_proxPlayer: %1", _proxPlayer];
-    diag_log format ["_lowUnitcount: %1", _lowUnitCount];
-    diag_log format ["_highUnitcount: %1", _highUnitCount];
-    diag_log format ["_detected: %1", _detected];
-    diag_log format ["_timer: %1", _timer];
-    diag_log format ["_bodyCount: %1", _bodyCount];
+        diag_log format ["<FuMS> LogicBomb DEBUG: %1:%2#######################",_themeIndex, _curMission];
+        diag_log format ["######################################################"];
+        diag_log format ["                      [[WIN],[LOSE],[Phase01],[Phase02],[Phase03] ]"];
+        diag_log format ["_proxPlayer    : %1", _proxPlayer];
+        diag_log format ["_lowUnitcount  : %1", _lowUnitCount];
+        diag_log format ["_highUnitcount : %1", _highUnitCount];
+        diag_log format ["_detected       : %1", _detected];
+        diag_log format ["_timer            : %1", _timer];
+        diag_log format ["_bodyCount     : %1", _bodyCount];
         diag_log format ["_allDeadorGone: %1", _allDeadorGone];
-    diag_log format ["Reinforcements: %1 chance, missionFile:%2", _reinforcements, _reinforceMsn];
-    diag_log format ["_stateMax: %1",_stateMax];
-    diag_log format ["######################################################"];
-    diag_log format ["######################################################"];
+        diag_log format ["_zupaCapture   : %1", _zupaCapture];
+        diag_log format ["_dmgBuildings  : %1", _dmgBuildings];
+        diag_log format ["_dmgVehicles   : %1", _dmgVehicles];
+        diag_log format ["Reinforcements: %1 chance, missionFile:%2", _reinforcements, _reinforceMsn];
+        diag_log format ["_stateMax: %1 (number of conditions needed to advance to this state)",_stateMax];
+        diag_log format ["######################################################"];
+        diag_log format ["######################################################"];
     };
 };
 // for any state that had no triggers set its max to something that would never be reached.
@@ -259,10 +279,15 @@ if (count (_triggerData select 5) == 0)  then // NO TRIGGERS is commented out so
                 //  _zupaCapture set [_state, [_pos, _radius, _capTime, _curMission ]];
               //  diag_log format ["<FuMS:%1> LogicBomb:ThemeIndex:%3 FuMS_Trigger_ZupaCapture = %2",FuMS_Version,FuMS_Trigger_ZupaCapture,_themeIndex];
                 _ZupaFlag = _zupaCapture select _i; // if this state has defined a zupacapture point trigger then check its status.
+                // ****_triggerArray select 7 RESERVED for zupaCapture!
                 if (!isNil "_ZupaFlag") then 
                 {
                     if (FuMS_Trigger_ZupaCapture select _themeIndex) then { _triggerCount = _triggerCount + 1;} ;  
                 };
+				// _dmgBuildings ["WhichBuildings", %amount damaged]
+				_triggerCount = _triggerCount + ( [(_triggerArray select 8) select _i,_buildings,_i] call FuMS_fnc_HC_Triggers_DmgBuildings);
+				// _dmgVehicles ["WhichVehicles", %amount damaged]
+				_triggerCount = _triggerCount + ( [(_triggerArray select 9) select _i,_vehicles,_i] call FuMS_fnc_HC_Triggers_DmgVehicles);
             }; 
             if (_triggerCount == (_stateMax select _i) ) then
             {

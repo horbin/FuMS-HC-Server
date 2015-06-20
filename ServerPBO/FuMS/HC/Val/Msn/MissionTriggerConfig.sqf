@@ -98,7 +98,16 @@ while {true} do
             {
                 
             };
-			default {_abort=true; FuMS_FileError = format ["%1 invalid Trigger name. Found %2",_msg,_trigName];};
+            case "DMGBUILDINGS";
+            case "DMGVEHICLES":
+            {
+                // ["string",%value]
+                _foundTrigger = true;
+                if (count _x != 3) exitWith {_abort=true;FuMS_FileError = format ["%1:%2 should be [""%2"", ""List of Object Index"",%amount damage ]. Found %3",_msg,_trigName,_x];};
+                if (TypeName (_x select 1) != "STRING") exitwith {_abort=true;FuMS_FileError = format ["%1:%2 List of Object Index should be a string of ALL, 1, 1-4, or 2,3,4, etc. Found %3",_msg,_trigName,_x select 1];};							
+                if (TypeName (_x select 2) != "SCALAR") exitwith {_abort=true;FuMS_FileError = format ["%1:%2 %amount damage should be value 0.0 to 1.0. Found %3",_msg,_trigName,_x select 2];};			
+            };
+            default {_abort=true; FuMS_FileError = format ["%1 invalid Trigger name. Found %2",_msg,_trigName];};
 		};
 		if (_abort) exitWith{};
 	  }foreach _x;

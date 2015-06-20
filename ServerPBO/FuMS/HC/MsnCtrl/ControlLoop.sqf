@@ -9,7 +9,9 @@
 //FuMS_C1_PullData = compile FuMS_S_PullData;
 private ["_missionTheme","_respawnDelay","_encounterLocations","_msnDone","_missionList","_spawnedByAdmin",
 "_pos","_activeMission","_missionSelection","_trackList","_missionTheme","_themeIndex","_themeOptions","_themeData",
-"_locationAdditions","_missionNameOverride","_activeThemeIndex", "_controlledByThisHC"];
+"_locationAdditions","_missionNameOverride","_activeThemeIndex", "_controlledByThisHC","_themeMinPlayers","_themeMaxPlayers",
+"_themeName"];
+
 _missionTheme = _this select 0;
 _themeIndex = _this select 1;
 _spawnedByAdmin = _this select 2;
@@ -18,8 +20,12 @@ _themeData = FuMS_THEMEDATA select _themeIndex;
 _themeOptions = _themeData select 0;
 _missionList = _themeData select 1;
 _encounterLocations = _themeData select 2;
+
+_themeName = _themeOptions select 0;
 _missionSelection = _themeOptions select 1;
 _respawnDelay = _themeOptions select 2;
+_themeMinPlayers = _themeOptions select 6;
+_themeMaxPlayers = _themeOptions select 7;
 //diag_log format ["##ControlLoop: %1 Missions Initializing##", _missionTheme];
 // Look for keyword locations. If found, add them to the provided list of _encounterLocations
 //diag_log format ["##ControlLoop: _missionTheme:%1  ActiveThemes:%2",_missionTheme, FuMS_ActiveThemes];
@@ -108,6 +114,7 @@ FuMS_aiDeathMsg set [ _themeIndex,_options select 2];
 FuMS_radioRange set [ _themeIndex,_options select 3];
 FuMS_aiCallsign  set [ _themeIndex,_options select 4];
 FuMS_baseCallsign set [ _themeIndex, _options select 5];
+
 FuMS_aiMsgs  set [ _themeIndex,_data select 1];
 FuMS_baseMsgs set [ _themeIndex, _data select 2]; // list of all bases messagess (array of arrays)
 FuMS_AI_XMT_MsgQue set [ _themeIndex, ["From","MsgType"] ]; // just using radiochannel array to get the 'count'
@@ -118,11 +125,26 @@ FuMS_radioChatInitialized set [_themeIndex, true];
 FuMS_BodyCount set [_themeIndex, 0];
 FuMS_Trigger_ZupaCapture set [_themeIndex,false];
 
+
 _abort=false;
 while {true} do
 {
-    private ["_msnDoneList"];
+    private ["_msnDoneList","_properNumPlayers"];
     _msnDoneList = [];   
+    
+    // ASSERT if number players on line is not betweenn min/max, wait for this to occur before launching another mission!
+    _properNumPlayers = false;
+    while {true} do
+    {
+        private ["_numPlayers"];
+        uisleep 60;
+        _numPlayers = count ([] call BIS_fnc_listPlayers);
+        if (_numPlayers >= _themeMinPlayers and _numPlayers < _themeMaxPlayers) exitWith
+        {           
+            diag_log format ["<FuMS> ControlLoop: Theme:%1(index:%3) #Players:%2 met launch requirements [%3:%4]. Starting a mission!", _themeName, _numPlayers, _themeMinPlayers,_themeMaxPlayers,_themeIndex];
+        };
+    };
+
     if (FuMS_AdminControlsEnabled) then
     {        
         private ["_onOff"];

@@ -69,10 +69,10 @@ if (_lootOption != "NONE") then
             else 
             {         
                 // build a box and set up its smoke.
-                if (count _pos ==2) then //offset being used so find something nearby that is Safe.
-                {
-                    _pos = [_pos, 0, 30, 1,0, 8,0,[],[]] call BIS_fnc_findSafePos; // 1m clear, terraingradient 8 pretty hilly
-                }; //else leave the 3d solution because person making the mission knows what they are doing!
+               // if (count _pos ==2) then //offset being used so find something nearby that is Safe.
+              //  {
+               //     _pos = [_pos, 0, 30, 1,0, 8,0,[],[]] call BIS_fnc_findSafePos; // 1m clear, terraingradient 8 pretty hilly
+              //  }; //else leave the 3d solution because person making the mission knows what they are doing!
                diag_log format ["<FuMS> FillLoot : Creating %1 at %2 with option %3",_boxtype, _pos, _typeLoot];
                 _box = createVehicle [_boxtype, _pos,[],0,"NONE"];
                 if (FuMS_LootSmoke ) then
@@ -83,9 +83,8 @@ if (_lootOption != "NONE") then
                     diag_log format ["##FillLoot: SmokeBox Proximity:%1 Dur:%2 minutes Colors:%3",FuMS_SmokeProximity, FuMS_SmokeDuration, FuMS_SmokeColors];
                     [_box] spawn
                     {
-                        private ["_box","_smoke01","_smokeStopTIme","_count","_smokeOn","_players","_color","_done"];
-                        _box = _this select 0;                            
-                        _count = 1;
+                        private ["_box","_smoke01","_smokeStopTIme","_smokeOn","_players","_color","_done"];
+                        _box = _this select 0;                                             
                         _done = false;
                         _smokeOn = false;
                         while {!isNil "_box"} do
@@ -93,38 +92,35 @@ if (_lootOption != "NONE") then
                             //if (FuMS_SmokeProximity ==0) then {_smokeOn=true;FuMS_SmokeProximity=2000;_smokeStopTime = time+60*FuMS_SmokeDuration;};
                             while {!_smokeOn} do
                             {
-                                if (isNil "_box") exitwith {};
-                                _players = _box nearEntities ["Man",FuMS_SmokeProximity];
-                                if (count _players > 0) then
+                                if (isNil "_box") exitwith {};                                
                                 {
-                                    _smokeOn = true;
-                                    _smokeStopTime = time+60*FuMS_SmokeDuration;
-                                };   
+                                    if (isPlayer _x) exitwith
+                                    {
+                                        _smokeOn = true;
+                                        _smokeStopTime = time+60*FuMS_SmokeDuration;
+                                    };   
+                                }foreach (_box nearEntities FuMS_SmokeProximity);                                
                                 sleep 5;
                             };
                             while {_smokeOn and !isNil "_box"} do
-                            {
-                                if (_count == 1) then
-                                {     
-                                    {   
-                                        _color = "";
-                                        _x = toupper _x;
-                                        if (_x != "WHITE") then
-                                        {
-                                            if (_x == "RED" or _x=="GREEN" or _x=="YELLOW" or _x=="ORANGE" or _x=="PURPLE" or _x=="BLUE") then {_color=_x;};
-                                        };
-                                        _smoke01 = (format ["SmokeShell%1",_color] )createVehicle (getPos _box);    
-                                    }foreach FuMS_SmokeColors;                                
-                                    _count = 0;
-                                    sleep 30;
-                                };
-                                _count = _count +1;
+                            {                               
+                                {   
+                                    _color = "";
+                                    _x = toupper _x;
+                                    if (_x != "WHITE") then
+                                    {
+                                        if (_x == "RED" or _x=="GREEN" or _x=="YELLOW" or _x=="ORANGE" or _x=="PURPLE" or _x=="BLUE") then {_color=_x;};
+                                    };
+                                    _smoke01 = (format ["SmokeShell%1",_color] )createVehicle (getPos _box);    
+                                }foreach FuMS_SmokeColors;                                                              
+                                uisleep 30;                                
                                 if (time>_smokeStopTime) exitWith {_smokeOn = false;_done=true;};                        
                             };
                             if (_done) exitwith {};
                         };
                         deleteVehicle _smoke01;                     
                     };
+                    //End of Smoke spawn for box ------
                     
                 };
                 clearWeaponCargoGlobal _box;

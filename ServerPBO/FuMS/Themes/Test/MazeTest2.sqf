@@ -27,7 +27,7 @@
        200           // size of the marker.    
 ],[[
     // NOTIFICATION Messages and Map display Control.
-	true,    // Notify players via Radio Message
+	false,    // Notify players via Radio Message
     "ALL",   // radio channel. "ALL" = no radio required.
     0,         //range from encounter center AI radio's can be heard (0=unlimited.)
     true,  // Notify players via global message - hint screen on right of game display -

@@ -90,7 +90,61 @@
 	// vehicles: 1 for fuel and ammo is full 100%, DmgEngine=1 is 100% damaged
     // test_EmptyObjectForFireBig = "Fire"
     // test_EmptyObjectForSmoke = "Smoke"
-  
+      
+    
+// These vehicles are static and remain until server reset.
+["M3Editor", [0,0], 777, 1, // 1 = vehicle will persist until server restart.
+   // paste your array of buildings/vehicles what should stay until serverrestart
+ [
+	["B_Truck_01_mover_EPOCH",[14697.4,16707.8,0],133.183,[0,0,1],true]
+]
+ 
+],
+ 
+// M3Editor buildings all with 'big_smoke'
+["M3Editor", [0,0], "SMOKE_BIG", 0,
+ 
+   // paste your array of building objects here
+ [
+	["Land_TentHangar_V1_F",[14692.4,16710.5,0],312.727,[0,0,1],true],
+	["Land_LampShabby_F",[14694.2,16695.4,0],84.0909,[0,0,1],true],
+	["Land_LampShabby_F",[14707.4,16710.3,0],179.091,[0,0,1],true],
+	["Land_LampShabby_F",[14677.4,16711.2,0],349.091,[0,0,1],true],
+	["Land_LampShabby_F",[14690.6,16726.1,0],267.727,[0,0,1],true],
+	["Land_Cargo20_military_green_F",[14686.4,16707.5,0],196.364,[0,0,1],true],
+	["Land_Cargo20_military_green_F",[14692.2,16702.4,0],196.364,[0,0,1],true],
+	["CargoNet_01_barrels_F",[14692.6,16721.2,0],311.818,[0,0,1],true],
+	["CargoNet_01_barrels_F",[14691.6,16720.1,0],311.818,[0,0,1],true],
+	["CargoNet_01_barrels_F",[14690.6,16719,0],311.818,[0,0,1],true],
+	["CargoNet_01_barrels_F",[14691.7,16718,0],311.818,[0,0,1],true],
+	["CargoNet_01_barrels_F",[14692.7,16719.1,0],311.818,[0,0,1],true],
+	["CargoNet_01_barrels_F",[14693.7,16720.3,0],311.818,[0,0,1],true],
+	["Land_PalletTrolley_01_khaki_F",[14693.6,16716.8,0],279.091,[0,0,1],true],
+	["Land_CratesWooden_F",[14698,16716.3,0],44.5454,[0,0,1],true],
+	["Land_CratesWooden_F",[14699,16713.2,0],350,[0,0,1],true],
+	["Land_CratesWooden_F",[14700.6,16714.9,0],225,[0,0,1],true],
+	["Flag_Altis_F",[14686.3,16700.5,0],0,[0,0,1],true],
+	["MetalBarrel_burning_F",[14695.6,16714.1,0],0,[0,0,1],true],
+	["MetalBarrel_burning_F",[14693,16704.3,0],0,[0,0,1],true],
+	["Land_WaterTank_F",[14681.3,16709.2,0],220.455,[0,0,1],true],
+	["Land_Cargo10_military_green_F",[14689.2,16722.3,0],319.091,[0,0,1],true],
+	["Land_FieldToilet_F",[14687.3,16725,0],76.8182,[0,0,1],true],
+	["Land_FieldToilet_F",[14687,16726.3,0],76.8182,[0,0,1],true],
+	["Land_Pallets_stack_F",[14695.5,16718.4,0],40.4546,[0,0,1],true],
+	["Land_WaterCooler_01_new_F",[14683.1,16709.4,0],193.636,[0,0,1],true],
+	["Box_Wps_F",[14689.5,16710.4,0],106.818,[0,0,1],true],
+	["Box_Wps_F",[14688.5,16710.8,0],122.727,[0,0,1],true],
+	["CargoNet_01_box_F",[14685.4,16710.3,0],15.9091,[0,0,1],true],
+	["CargoNet_01_box_F",[14687.2,16709.9,0],30.4546,[0,0,1],true],
+	["CargoNet_01_box_F",[14689,16709.1,0],15.9091,[0,0,1],true],
+	["Box_Wps_F",[14690.5,16708.3,0],106.818,[0,0,1],true],
+	["Box_Wps_F",[14690.7,16708.8,0],106.818,[0,0,1],true],
+	["Box_Wps_F",[14691.6,16708.5,0],126.818,[0,0,1],true],
+	["Box_Wps_F",[14690.9,16709.5,0],108.182,[0,0,1],true]
+]
+ 
+]
+
     
 	
 ],[
@@ -125,13 +179,14 @@
     "COMBAT",      // behaviour: SAFE, AWARE, COMBAT, STEALTH
     "RED",          //combatmode: BLUE, WHITE, GREEN, YELLOW, RED
     "COLUMN"    //formation: STAG COLUMN, WEDGE, ECH LEFT, ECH RIGHT, VEE, LINE, COLUMN
-],[[1,"Sniper"],[3,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[100,"Land_Cargo_Tower_V3_F"] ]],
+],[[1,"Sniper"],[3,"Rifleman"]],[  "BoxPatrol",[0,0], [0,0],[100] ]],
 // 4 AI will spawn into the specified building.
 
  [["RESISTANCE","COMBAT","RED","LINE"],[[1,"Sniper"],[3,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[150,"ANY"] ]],
 // if "ANY" is changed to a specific building type, ex: "Land_Cargo_Tower_V3_F", they will all spawn into this building type.
 
 [["RESISTANCE","COMBAT","RED","LINE"],[[5,"Hunter"]],["Buildings",[6,6],[0,0],[100]]]
+//[["RESISTANCE","COMBAT","RED","LINE"],[[1,"UGV"]],["BoxPatrol",[50,50],[0,0],[100]]]
 // these 5 will patrol in and out of the buildings withn 100m of encounter center.
 ],
 // NOTE: if no buildings are located within 'radius' both 'Buildings'  will locate nearest buildings to the encounter and move there!

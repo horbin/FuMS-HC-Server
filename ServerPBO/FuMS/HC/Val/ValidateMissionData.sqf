@@ -37,7 +37,7 @@ while {true} do
                         _mission = (_dat select _ii) select 0;
                         _missionCode = (_dat select _ii) select 1;                    
                         _file = format ["%1\%2\%3",_path,_theme,_mission];
-                        diag_log format ["##ValidateMissionData: Validating %1",_file];
+                       // diag_log format ["##ValidateMissionData: Validating %1",_file];
                         if ([_missionCode] call FuMS_fnc_HC_Val_Msn_VerifyMission) then                        
                         {
                             _abort=true; 

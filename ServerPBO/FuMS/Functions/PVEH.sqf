@@ -145,14 +145,19 @@ FuMS_HeartMonitor = compile preprocessFileLineNumbers "\FuMS\Functions\HeartMoni
 FuMS_InitToken = true;
 "FuMS_GetInitToken" addPublicVariableEventHandler
 {
-    if (FuMS_ServerisClean) then
+    _headlessClient = _this select 1;
+    diag_log format ["<FuMS> GetInitToken PVEH: Heard Request from player:%1 ServerClean=%2",_headlessClient, FuMS_ServerisClean];    
+    if (!isNull _headlessClient) then
     {
-        FuMS_ServerisClean = false;
-       // publicVariable "FuMS_ServerisClean";
-        _headlessClient = _this select 1;
-        _hcID = owner _headlessClient;
-        diag_log format ["<FuMS> GetInitToken PVEH: player:%1 owner id:%2 holds Init Token",_headlessClient, _hcID];    
-        _hcID publicVariableClient "FuMS_InitToken";        
+        if (FuMS_ServerisClean) then
+        {
+            FuMS_ServerisClean = false;
+            // publicVariable "FuMS_ServerisClean";
+            //      _headlessClient = _this select 1;
+            _hcID = owner _headlessClient;
+            diag_log format ["<FuMS> GetInitToken PVEH: player:%1 owner id:%2 holds Init Token",_headlessClient, _hcID];    
+            _hcID publicVariableClient "FuMS_InitToken";        
+        };
     };
 };
 

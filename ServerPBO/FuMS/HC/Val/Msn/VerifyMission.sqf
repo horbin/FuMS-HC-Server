@@ -17,12 +17,23 @@ while {true} do
     _sec = "Mission Area Setup:";
     _data2 = _msnCode select 0;
     if (TypeName _data2 != "ARRAY") exitWith {_abort=true; FuMS_FileError = format ["%1 data passed is not an ARRAY. Found %2",_sec, _data2];};
-    if (count _data2 != 2 and count _data2 !=3) exitWith {_abort=true; FuMS_FileError = format ["%1 expected 2 or 3 entries. Found %2",_sec, _data2];};
+    if (count _data2 < 2 or count _data2 > 6) exitWith {_abort=true; FuMS_FileError = format ["%1 expected 2,3, or 6 entries. Found %2",_sec, _data2];};
     if (TypeName (_data2 select 0) != "STRING") exitWith {_abort=true; FuMS_FileError = format ["%1 Mission name not a text string. Found %2",_sec, _data2 select 0];};
     if (TypeName (_data2 select 1) != "SCALAR") exitWith {_abort=true; FuMS_FileError = format ["%1 Mission radius should be a number. Found %2",_sec, _data2 select 1];};   
     if (count _data2 > 2 ) then
     {
         if (TypeName (_data2 select 2) != "STRING") exitWith {_abort=true; FuMS_FileError = format ["%1 Mission Spawn type should be ""LAND"",""WATER"", or ""NONE"". Found %2",_sec, _data2 select 2];};    
+    };
+    if (count _data2 > 3 ) then
+    {
+        if (TypeName (_data2 select 3) != "ARRAY")exitWith {_abort=true; FuMS_FileError = format ["%1 Mission 'Position' offset should be an array of 3 numbers (ex:[0,0,0]). Found %2",_sec, _data2 select 3];};    
+        for [{_i=0},{_i < 3},{_i=_i+1}] do
+        {
+            if (TypeName ((_data2 select 3) select _i) != "SCALAR") exitWith {_abort=true; FuMS_FileError = format ["%1 Mission 'Position' offset array should contain numbers. Found %2",_sec, (_data2 select 3) select _i];};   
+        };
+        if (_abort) exitWith{};
+        if (TypeName (_data2 select 4) != "STRING") exitWith {_abort=true; FuMS_FileError = format ["%1 Mission start script should be a string. Found %2",_sec, _data2 select 4];};    
+        if (TypeName (_data2 select 5) != "STRING") exitWith {_abort=true; FuMS_FileError = format ["%1 Mission end script should be a string. Found %2",_sec, _data2 select 5];};    
     };
     // Map marker configuration
     _sec = "Map Marker Config:";

@@ -42,7 +42,7 @@ if (toupper _mission == "RANDOM") exitWith
     };
     if (_abort) then
     {
-        diag_log format ["***********************************************************"];
+        diag_log format ["** <FuMS> ScanMission.sqf************************************************"];
         diag_log format ["*** FuMS: Inconsistency found in the following file:    ***"];
         diag_log format ["***  %1\%2.sqf",_theme,_mission];
         diag_log format ["*** Reason: %1", _status select 1];

@@ -38,7 +38,7 @@ while {true} do
 		};
         case "TOWERGUARD":
 		{
-            if (count _aiOptions != 2) exitwith {_abort=true; FuMS_FileError = format ["'TowerGuard' logic should have 3 optional paramaters. Found %1",_aiOptions];};
+            if (count _aiOptions != 2) exitwith {_abort=true; FuMS_FileError = format ["'TowerGuard' logic should have 2 optional paramaters. Found %1",_aiOptions];};
             
             if (TypeName (_aiOptions select 0) != "SCALAR") exitwith {_abort=true;FuMS_FileError = format ["'TowerGuard logic should have a number as its first parameter. Found %1",_aiOptions select 0];};
             if (TypeName (_aiOptions select 1) != "STRING") exitwith {_abort=true;FuMS_FileError = format ["'TowerGuard logic should have a string as ints 2nd parameter. Found %1",_aiOptions select 1];};

@@ -16,7 +16,9 @@ _themeData =
         60000, // Respawn delay in seconds
 		false, // use Global Loot Data (GlobalLootData.sqf)
 		true,  // use Global Soldier Data file (GlobalSoldierData.sqf)
-		false // ThemeAutoStart: Setting this to 'false' will prevent normal start-up of the Theme! See \Docs\AdminControls.txt
+		false, // ThemeAutoStart: Setting this to 'false' will prevent normal start-up of the Theme! See \Docs\AdminControls.txt
+            1,  // Player minimum to launch missions from this theme.
+        100   // Player maximum above which missions will not launch
        
     ],
     [  //***** Mission List *****

@@ -32,7 +32,7 @@ _unitHandle = [];
         _radius = _params select 1;
   //      diag_log format ["##AI_PB: SPAWN Starting for %1 at %2",_unit, _searchPos];
         if (_timer ==0) then { _forever = true;}else{_forever=false;};
-        if (_radius ==0) then {_radius = 100;};
+        if (_radius ==0) then {_radius = 200;};
         _searchComplete = false;
         _xfillStatus = [0,0," ",0];       
         waitUntil{sleep 5; (vehicle _unit == _unit or !alive _unit)}; //unit on foot 
@@ -58,7 +58,7 @@ _unitHandle = [];
                 private ["_nearest"];
                 _nearest = nearestBuilding _unit;
                 
-                diag_log format ["##AI_PB :%2 No building found within radius.  %1(%4) is the nearest at %3 meters!!!",_nearest,_unit, _unit distance _nearest, _unit getVariable "FuMS_MSNTAG"];
+                diag_log format ["##AI_PB :%2 No building found within %5m radius.  %1(%4) is the nearest at %3 meters!!!",_nearest,_unit, _unit distance _nearest, _unit getVariable "FuMS_MSNTAG", _radius];
                 _buildingList = [_nearest];
                 //_searchComplete = true;
             };  

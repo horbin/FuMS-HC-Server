@@ -8,7 +8,7 @@
 private ["_eCenter","_missionTheme","_missionArea","_markers","_curMission","_mkr1","_mkr2","_initData","_silentspawn",
 "_notifications","_lootConfig","_buildingData","_groupData","_vehicleData","_phaseData","_encounterSize","_triggerData",
 "_buildings","_groups","_vehicles","_msnStatus","_convoys","_themeIndex","_phaseID","_fragments",
-"_missionNameOverride","_passthroughData","_boxes","_aircraftData","_dat"];
+"_missionNameOverride","_passthroughData","_boxes","_aircraftData","_dat","_positionOffset","_startScript","_endScript","_customData"];
 
 _initData = _this select 0;
 _passthroughData = _this select 1;
@@ -31,6 +31,32 @@ _vehicleData= _initData select 6;
 _triggerData = _initData select 7;
 _phaseData = _initData select 8;  
 _aircraftData = _initData select 9;
+
+if (count _missionArea > 3) then {_positionOffset = _missionArea select 3;};
+
+if (count _missionArea > 4) then
+{
+    _startScript = _missionArea select 4;
+    _endScript = _missionArea select 5;
+};
+
+
+if (!isNil "_positionOffset") then
+{
+    private ["_min","_max","_dir","_dist"];
+
+    //diag_log format ["<FuMS> MissionInit: _positionOffset:%1",_positionOffset];
+    // _positionOffset is [min,max, direction]
+    _min = _positionOffset select 0;
+    _max = _positionOffset select 1;
+    _dir = _positionOffset select 2;
+    _dist = random (_max - _min) + _min;
+    if (_dir ==0) then {_dir = random 360;};
+    diag_log format ["<FuMS> MissionInit: _dist:%1 _dir:%2 _eCenter:%3",_dist,_dir,_eCenter];
+    _positionOffset = [_eCenter,_dist, _dir] call BIS_fnc_relPos;  
+}else {_positionOffset = _eCenter;};
+diag_log format ["<FuMS> MissionInit: _positionOffset:%1",_positionOffset];
+
 //diag_log format ["##MissionInit : override=%1",_missionNameOverride];
 if ( _missionNameOverride != "") then
 {
@@ -46,26 +72,46 @@ _mkr2 = format ["%3_%1_%2_2",_missionTheme select 0, _curMission ,_eCenter,FuMS_
 createMarker [_mkr1, [0,0]];
 createMarker [_mkr2, [0,0]];
 
-_dat = [_buildingData, _eCenter, _themeIndex, _curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnBuildings;
+_dat = [_buildingData, _positionOffset, _themeIndex, _curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnBuildings;
 _buildings = _dat select 0;
 _vehicles = _dat select 1;
-sleep 2; // pause for 2 seconds to allow buildings to fully materialize and position.
+//diag_log format ["<FuMS> MissionInit: _buildings: %1",_buildings];
+//diag_log format ["<FuMS> MissionInit: _vehicles: %1", _vehicles];
+
+sleep 5; // pause for 2 seconds to allow buildings to fully materialize and position.
 _silentspawn = (((FuMS_THEMEDATA select _themeIndex) select 3) select 0) select 1;
 //diag_log format ["##MissionInit: SpawnGroup at center:%1",_eCenter];
-_groups = [_groupData, _eCenter, _encounterSize, _themeIndex, _silentspawn,_curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnGroup;
-_convoys = [_vehicleData, _eCenter, _encounterSize, _groups, _vehicles, _themeIndex, _curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnVehicle;
+_groups = [_groupData, _positionOffset, _encounterSize, _themeIndex, _silentspawn,_curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnGroup;
+_convoys = [_vehicleData, _positionOffset, _encounterSize, _groups, _vehicles, _themeIndex, _curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnVehicle;
 _groups = _convoys select 0;
 _vehicles = _convoys select 1;
+
+//diag_log format ["<FuMS> MissionInit: post vehicle spawn: _buildings: %1",_buildings];
+//diag_log format ["<FuMS> MissionInit: post vehicle spawn: _vehicles: %1", _vehicles];
+
 if (!isNil "_aircraftData") then
 {
-    _convoys = [_aircraftData, _eCenter, _encounterSize, _groups, _vehicles, _themeIndex, _curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnVehicle;
+    _convoys = [_aircraftData, _positionOffset, _encounterSize, _groups, _vehicles, _themeIndex, _curMission] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnVehicle;
     _groups = _convoys select 0;
     _vehicles = _convoys select 1;
 };
-_boxes = [_lootConfig, _eCenter, _msnStatus, _themeIndex, _boxes] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnMissionLoot;
+_boxes = [_lootConfig, _positionOffset, _msnStatus, _themeIndex, _boxes] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnMissionLoot;
 
 [_markers, _notifications, _msnStatus, _mkr1, _mkr2, _eCenter, _missionNameOverride] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnNotifications;
 // Mission Completion Logic
+
+
+
+if (!isNil "_startScript") then
+{                                                                           
+    if (toupper _startScript != "NONE") then
+    {        
+        diag_log format ["<FuMS> MissionInit: Running Custom Start Script :%1",_startScript];               
+        _customData = [ _eCenter, _positionOffset, _buildings, _groups, _vehicles, _boxes] call (missionNamespace getVariable _startScript);
+    };
+};
+
+
 _fragments = [_msnStatus,_buildingData, _buildings, _groups, _vehicles, _boxes];
 //diag_log format ["****************************************"];
 //diag_log format ["##MissionInit :%2 : Pre-LogicBomb: %1", _fragments, _curMission];
@@ -82,14 +128,24 @@ _vehicles = _fragments select 4;
 _boxes = _fragments select 5;
 // Mission complete: Take action based upon Trigger/Mission Logic above
 diag_log format ["<FuMS> MissionInit: Mission %2 finished with status of :%1",_msnStatus, _curMission];
-_boxes = [_lootConfig, _eCenter, _msnStatus,_themeIndex, _boxes] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnMissionLoot;
+_boxes = [_lootConfig, _positionOffset, _msnStatus,_themeIndex, _boxes] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnMissionLoot;
 
 [_markers, _notifications, _msnStatus, _mkr1, _mkr2,_eCenter, _missionNameOverride] call FuMS_fnc_HC_MsnCtrl_Spawn_SpawnNotifications;
+
+if (!isNil "_endScript") then
+{
+    if (toupper _endScript != "NONE") then
+    {        
+        [ _eCenter, _positionOffset, _buildings, _groups, _vehicles, _boxes, _customData] call  (missionNamespace getVariable _endScript);
+    };
+};
+
+
 // **********************************************************************
 // Common Mission clean up
 FuMS_MissionTerritory = FuMS_MissionTerritory - [_eCenter, _encounterSize, format ["%1%2",_missionTheme,_curMission]];
 // For boxes: look to have a seperate timer, spawn a process to wait that timer period then delete them!
-diag_log format ["<FuMS> MissionInit: Preparing to delete loot: %1",_boxes];
+diag_log format ["<FuMS> MissionInit: Loot will expire in %2 minutes Loot : %1",_boxes, FuMS_LootBoxTime];
 {
     if (typeName _x != "ARRAY") then
     {

@@ -13,7 +13,7 @@ _eCenter = _this select 3;
 
 // Mission Start Msg: "ZCP-FuMS" "%1 has made Camp. Check your map for the location and claim it for your own!",_ZCP_name]];
 FuMS_Trigger_ZupaCapture set [_themeIndex, false];
-diag_log format ["<FuMS:%1> ZupaCapture: setting for %3 under theme Index %2",FuMS_Version,_themeIndex, _missionName];
+//diag_log format ["<FuMS:%1> ZupaCapture: setting for %3 under theme Index %2",FuMS_Version,_themeIndex, _missionName];
 
 if (count _arrayOfData == 1) then 
 {
@@ -93,7 +93,7 @@ missionNamespace setVariable [_ZupaTrackerVar, []];
         _previousReportedTime = _ZCP_CapTime;
         _ZCP_timeRemaining = _ZCP_CapTime;
         // initialize each element of the global variable to track the state of each FLAG.
-        diag_log format ["<FuMS:%1> ZupaCapture: ZupaTrackerVar name :%2",FuMS_Version,_ZupaTrackerVar];
+     //   diag_log format ["<FuMS:%1> ZupaCapture: ZupaTrackerVar name :%2",FuMS_Version,_ZupaTrackerVar];
         _holder = missionNamespace getVariable _ZupaTrackerVar;
         _holder = _holder + [[false, _mkrName, _dotName]]; // set to true when flag is finally captured. (full timeout)
         missionNamespace setVariable [_ZupaTrackerVar, _holder];
@@ -123,7 +123,7 @@ missionNamespace setVariable [_ZupaTrackerVar, []];
                 _ZCP_min = false;		
                 if (_hasbeentouchedbyplayer) then
                 {
-                    diag_log format ["<FuMS:%1> ZupaCapture: No players near. Reseting cap point %2",FuMS_Version, _capturePosition];
+                 //   diag_log format ["<FuMS:%1> ZupaCapture: No players near. Reseting cap point %2",FuMS_Version, _capturePosition];
                     _msnText = [_capPointName,"Vacant",format["%1 is no longer under player influence.",_capPointName]];
                     _ogjstr = format ["<t align='center' size='2.0' color='#f29420'>%1</t>",_msnText select 0];
                     _ogjstr = format ["%1<br /><t size='1.10' color='#f22b20'>%2</t>",_ogjstr,_msnText select 1];
@@ -264,7 +264,7 @@ missionNamespace setVariable [_ZupaTrackerVar, []];
             { 
                 _holder set [_i, [true,_mkrName,_dotName]];
                 missionNamespace setVariable [_ZupaTrackerVar, _holder];
-                diag_log format ["<FuMS:%1> ZupaCapture. Setting ZupaTrackerVar:%2 with %3",FuMS_Version, _ZupaTrackerVar, _holder];  
+         //       diag_log format ["<FuMS:%1> ZupaCapture. Setting ZupaTrackerVar:%2 with %3",FuMS_Version, _ZupaTrackerVar, _holder];  
             };
         };              
     }; 
@@ -286,7 +286,7 @@ missionNamespace setVariable [_ZupaTrackerVar, []];
         _ZupaTrackerVar = missionNamespace getVariable (_this select 0);
         _themeIndex = _this select 1;
         _missionName = _this select 2;
-        diag_log format ["<FuMS:%1> ZupaCapture: _ZupaTrackerVar = %2",FuMS_Version, _ZupaTrackerVar];
+     //   diag_log format ["<FuMS:%1> ZupaCapture: _ZupaTrackerVar = %2",FuMS_Version, _ZupaTrackerVar];
     };
     
     _done = false;

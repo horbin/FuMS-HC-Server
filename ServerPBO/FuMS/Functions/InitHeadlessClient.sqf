@@ -43,38 +43,58 @@ _hc publicVariableClient "FuMS_BaseListofMissions";// Array of ["Name", "string 
     _hc publicVariableClient (format ["%1",_x]);    
 }foreach FuMS_ListofGlobalGear;    
 
-diag_log format ["##FuMsnInit: Starting transfer of  %2 Scripts to Headless Client <%1>.",_hc, count FuMS_HC_ScriptList];  
+diag_log format ["<FuMS> InitHeadlessClient:  Starting transfer of %2 Custom Scripts to HC <%1:%3>",_hc, count FuMS_CustomScripts, _owner];
+{
+      waitUntil {_curFPS = diag_fps; _curFPS > FuMS_FPSMinimum};
+    _codeString = missionNamespace getVariable _x;
+    _hc publicVariableClient (format ["%1",_x]);
+    sleep .5;
+}foreach FuMS_CustomScripts;
+_hc PublicVariableClient "FuMS_CustomScripts";
+
+
+
+
+
+
+
+
+
+// Add any other initialization ABOVE this code!!!!
+diag_log format ["##FuMsnInit: Starting transfer of  %2 Scripts to Headless Client <%1:%3>.",_hc, count FuMS_HC_ScriptList,_owner];  
 private ["_start","_startFPS","_curFps"];
-    _start = time;
-    //FuMS_FPSMinimum = 15;
-    _startFPS = round (diag_fps * .3);
-    { 
-        
-        waitUntil {_curFPS = diag_fps; _curFPS > FuMS_FPSMinimum};
-        
-        _codeString = missionNamespace getVariable _x;
-        diag_log format ["##InitHeadlessClient: FPS:%3 ---transmitting %1 to HC:%2    :",_x,_hc, _curFPS];
-        _hc PublicVariableClient _x;
-        sleep .5;
-    }foreach FuMS_HC_ScriptList;
-    _hc PublicVariableClient  "FuMS_HC_ScriptList";
+_start = time;
+//FuMS_FPSMinimum = 15;
+_startFPS = round (diag_fps * .3);
+{ 
     
-    if (count FuMS_HCIDs == 1) then
+    waitUntil {_curFPS = diag_fps; _curFPS > FuMS_FPSMinimum};
+    
+    _codeString = missionNamespace getVariable _x;
+    //  diag_log format ["##InitHeadlessClient: FPS:%3 ---transmitting %1 to HC:%2    :",_x,_hc, _curFPS];
+    _hc PublicVariableClient _x;
+    sleep .5;
+}foreach FuMS_HC_ScriptList;
+_hc PublicVariableClient  "FuMS_HC_ScriptList";
+
+
+
+if (count FuMS_HCIDs == 1) then
+{
+    FuMS_HCIDs set [1,_hc];
+    FuMS_HCThemeControlID = 1;
+    FuMS_HCNames set [1, _shortName];
+}else
+{
+    private ["_oldSlotFound"];
+    _oldSlotFound = false;
+    for [{_i=1},{_i< count FuMS_HCIDs},{_i=_i+1}] do
     {
-        FuMS_HCIDs set [1,_hc];
-        FuMS_HCThemeControlID = 1;
-        FuMS_HCNames set [1, _shortName];
-    }else
-    {
-        private ["_oldSlotFound"];
-        _oldSlotFound = false;
-        for [{_i=1},{_i< count FuMS_HCIDs},{_i=_i+1}] do
+        if (FuMS_HCIDs select _i == -1) then
         {
-            if (FuMS_HCIDs select _i == -1) then
-            {
-                FuMS_HCIDs set [_i,_hc];
-                FuMS_HCThemeControlID = _i;
-                FuMS_HCNames set [_i, _shortName];
+            FuMS_HCIDs set [_i,_hc];
+            FuMS_HCThemeControlID = _i;
+            FuMS_HCNames set [_i, _shortName];
                 _oldSlotFound = true;
             };
         };
@@ -86,7 +106,7 @@ private ["_start","_startFPS","_curFps"];
         };
     };
     _hc publicVariableClient "FuMS_HCThemeControlID";
-    diag_log format ["##FuMsnInit: Script Transfer complete to Headless Client <%1> in %2 secs",_hc, time-_start];    
+    diag_log format ["##FuMsnInit: Script Transfer complete to Headless Client <%1:%3> in %2 secs",_hc, time-_start,_owner];    
     
 // Push HC info to all Admin clients
 {

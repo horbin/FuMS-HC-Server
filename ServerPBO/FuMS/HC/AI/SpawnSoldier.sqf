@@ -62,7 +62,7 @@ _typeFound = false;
             if (_type == "ZOMBIE") then
             {        
                 //_unit = _group createUnit["A3L_Zombie", _pos, [], 25, "FORM"];
-                _unit = _group createUnit["I_Soldier_EPOCH", _pos, [], 25, "FORM"];    // swap when skins available            
+                _unit = _group createUnit["I_Soldier_EPOCH", _pos, [], 0, "FORM"];    // swap when skins available            
                 _unit disableAI "FSM";
                 _unit disableAI "AUTOTARGET";
                 _unit disableAI "TARGET";
@@ -93,7 +93,13 @@ _typeFound = false;
             }
             else
             {
-                _unit = _group createUnit["I_Soldier_EPOCH", _pos, [], 25, "FORM"];
+                if (_type == "UGV") then
+                {
+                    _unit = _group createUnit ["I_UGV_01_rcws_F", _pos, [], 0, "FORM"];
+                }else
+                {
+                    _unit = _group createUnit["I_Soldier_EPOCH", _pos, [], 0, "FORM"];
+                };
             };
             // NOTE if I_Soldier_EPOCH type is changed, AllDeadorGone.sqf will need to be modified
             removeUniform _unit;

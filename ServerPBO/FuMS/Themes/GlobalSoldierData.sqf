@@ -214,6 +214,21 @@ _soldierData =
         [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
         [ false, false, false], // DiverOverWater, UnlimitedAmmo
         [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]] ]             
+    ],
+    [
+        "UGV",[.02, .7, .1, .3, .5, .1, .05, .1],
+        [Outfit_Civilian,1], // Uniform
+        [Vest_Bandolier,0], // Vest.
+        [Hat_Civilian,.8], // Helmet
+        [Backpacks_All,0], // Backpack and chance.
+        [RifleOtherPairs,0], // PriWeapon and chance
+        [ 0, 0 , 0], // scope, muzzle, flashlight:  percent chance of having one appropriate to the rifle.
+        [PistolPairs,0], // Secondary Weapon and chance
+        [ .1, 0, 0, .1, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
+        [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
+        [ true, true, false], // DiverOverWater, UnlimitedAmmo
+        [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]]             ]
+        
     ]
     
 ];

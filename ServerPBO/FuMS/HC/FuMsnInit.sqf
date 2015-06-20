@@ -21,8 +21,8 @@ if !(hasInterface) then
        // FuMS_BaseLOOTDATA = [];
        // FuMS_BaseSOLDIERDATA = [];
        // FuMS_BaseListofMissions = [];
-        diag_log format ["<FuMS> FuMsnInit: ThemeData: %1",FuMS_THEMEDATA];
-        diag_log format ["<FuMS> FuMsnInit: ListofMissions: %1", FuMS_ListofMissions];
+       // diag_log format ["<FuMS> FuMsnInit: ThemeData: %1",FuMS_THEMEDATA];
+       // diag_log format ["<FuMS> FuMsnInit: ListofMissions: %1", FuMS_ListofMissions];
     };
     //ASSERT ServerData, THEMEDATA, LOOTDATA,SOLDIERDATA fully initialized at this point!   
        
@@ -124,13 +124,13 @@ if !(hasInterface) then
         //diag_log format ["##FuMsnInit: Theme spawn locs: %1",FuMS_AdminThemeSpawnLoc];
     };
     
-    diag_log format ["<FuMS> FuMsnInit: ServerData:%1",FuMS_ServerData];
-    diag_log format ["<FuMS> FuMsnInit: Indx:%2:GlobalLootData %1", FuMS_LOOTDATA select FuMS_GlobalDataIndex, FuMS_GlobalDataIndex];
-    diag_log format ["<FuMS> FuMsnInit: Indx:%2:GlobalSoldierData %1", FuMS_SOLDIERDATA select FuMS_GlobalDataIndex,FuMS_GlobalDataIndex];
-    diag_log format ["<FuMS> FuMsnInit: #%2:ActiveThemes: %1",FuMS_ActiveThemes, count FuMS_ActiveThemes];          
-    diag_log format ["<FuMS> FuMsnInit: #%2:THEMEDATA:%1",FuMS_THEMEDATA, count FuMS_THEMEDATA]; 
-    diag_log format ["<FuMS> FuMsnInit: #%2:LOOTDATA:%1", FuMS_LOOTDATA, count FuMS_LOOTDATA];
-    diag_log format ["<FuMS> FuMsnInit: #%2:SOLDIERDATA:%1", FuMS_SOLDIERDATA, count FuMS_SOLDIERDATA];
+   // diag_log format ["<FuMS> FuMsnInit: ServerData:%1",FuMS_ServerData];
+    //diag_log format ["<FuMS> FuMsnInit: Indx:%2:GlobalLootData %1", FuMS_LOOTDATA select FuMS_GlobalDataIndex, FuMS_GlobalDataIndex];
+    //diag_log format ["<FuMS> FuMsnInit: Indx:%2:GlobalSoldierData %1", FuMS_SOLDIERDATA select FuMS_GlobalDataIndex,FuMS_GlobalDataIndex];
+   // diag_log format ["<FuMS> FuMsnInit: #%2:ActiveThemes: %1",FuMS_ActiveThemes, count FuMS_ActiveThemes];          
+   // diag_log format ["<FuMS> FuMsnInit: #%2:THEMEDATA:%1",FuMS_THEMEDATA, count FuMS_THEMEDATA]; 
+    //diag_log format ["<FuMS> FuMsnInit: #%2:LOOTDATA:%1", FuMS_LOOTDATA, count FuMS_LOOTDATA];
+   // diag_log format ["<FuMS> FuMsnInit: #%2:SOLDIERDATA:%1", FuMS_SOLDIERDATA, count FuMS_SOLDIERDATA];
             
     // Identify major civilized areas on the map.
     FuMS_VillageList = nearestLocations [FuMS_MapCenter, ["NameVillage"], 30000];
@@ -183,7 +183,7 @@ if !(hasInterface) then
        if (FuMS_SoldierVCOM_Driving) then
        {
            [] execVM "HC\VCOM_Driving\init.sqf";
-           diag_log format ["<FuMS> Genesis92x VCOM_Driving V1.01 Initialized."];
+           diag_log format ["<FuMS> FuMsnInit: Genesis92x VCOM_Driving V1.20 Initialized."];
        };   
        
        FuMS_RoamingZombieGroup = createGroup east;

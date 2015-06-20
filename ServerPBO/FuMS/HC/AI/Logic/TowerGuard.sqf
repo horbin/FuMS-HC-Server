@@ -22,7 +22,7 @@ Name: Rooftop Static Weapons Script
 // IF an unoccupied static weapon is located within 5m's of the spawn point, the AI will occupy the static weapon.
 
 // Get arguments
-private ["_group","_actionLoc","_patternOptions","_radius","_specBuilding","_area","_legalRooftops","_rooftopPositionsUsed","_debug","_buildings","_units","_tactic"];
+private ["_group","_actionLoc","_patternOptions","_radius","_specBuilding","_area","_legalRooftops","_rooftopPositionsUsed","_debug","_buildings","_units","_tactic","_numToAdd"];
 _group = _this select 0; // group to be placed
 _actionLoc= _this select 1; //3D point already processed by FuMS.
 _patternOptions = _this select 2;
@@ -39,7 +39,7 @@ if (isNil "_specBuilding") then {_specBuilding = "ANY";};
 _area = [_radius,_radius];
 _legalRooftops = [];
 _rooftopPositionsUsed = [];
-_debug = true;
+_debug = false;
 
 
 // Define weapon placement types
@@ -49,16 +49,14 @@ _debug = true;
 
 _buildings = nearestObjects [_actionLoc, ["house"], (_area select 0)];
 
-if (_debug) then 
-{
-    diag_log format["<FuMS> TowerGuard: Buildings found: %1", count(_buildings)];
-};
+
+diag_log format["<FuMS> TowerGuard: Buildings found: %1:%2", count(_buildings), _buildings];
 
 {
     if (typeOf _x == _specBuilding or _specBuilding == "ANY") then
     {
         private ["_buildingPositions","_isHighPoint","_buildingPositionASL","_isObstructedX","_isObstructedY","_isObstructedZ","_highestPos"];
-        diag_log format ["<FuMS> TowerGuard: Looking at building : %1",typeOf _x];
+        //diag_log format ["<FuMS> TowerGuard: Looking at building : %1",typeOf _x];
         
         //	_buildingPositions = [_x] call BIS_fnc_buildingPositions;
         _buildingPositions = [_x] call FuMS_fnc_HC_Util_GetBuildingPositions;
@@ -88,8 +86,34 @@ if (_debug) then
 // Exit if no legal rooftops found
 if ((count _legalRooftops) < 1) exitWith {diag_log format ["<FuMS> Towerguard: No valid spawn locations found near %1 radius:%2",_actionLoc, _radius];};
 
-if (_debug) then {
-	diag_log format["<FuMS> TowerGuard: Viable high points founds: %1:%2", count(_legalRooftops), _legalRooftops];
+
+diag_log format["<FuMS> TowerGuard: Viable high points founds: %1:%2", count(_legalRooftops), _legalRooftops];
+
+// If the number of rooftops is less than then number of AI in the group, then take non-rooftop positions from list of available buildings
+_numToAdd = count (units _group) - count _legalRooftops;
+diag_log format["<FuMS> TowerGuard: Number of AI to place: %1, finding %2 additional locations.", count (units _group), _numToAdd];
+if (_numToAdd > 0) then
+{
+    private ["_i","_bps","_buildingList"];
+    // filter building list to specific requested
+    if (_specBuilding == "ANY") then
+    {
+        _buildingList = _buildings;
+    }else
+    {
+        _buildingList = [];
+        {
+            if (typeOf _x == _specBuilding) then {_buildingList = _buildingList + [_x];};
+        }foreach _buildings;
+    };
+    if (count _buildingList > 0) then
+    {
+        for [{_i=0;},{_i < _numToAdd;},{_i=_i+1;}] do
+        {
+            _bps = [_buildingList call BIS_fnc_selectRandom] call FuMS_fnc_HC_Util_GetBuildingPositions;
+            _legalRooftops = _legalRooftops + [_bps call BIS_fnc_selectRandom];
+        };
+    };
 };
 
 _units = units _group;
@@ -125,7 +149,7 @@ _units = units _group;
             //_unit disableAI "MOVE";
             _unit forceSpeed 0;
             _outofPosition = false;
-            _debug = true;
+            _debug = false;
             
             if (_debug) then 
             {              
@@ -137,7 +161,7 @@ _units = units _group;
             
             while {alive _unit} do
             {
-                _debugMarker setMarkerPos (getPosATL _unit);
+               // _debugMarker setMarkerPos (getPosATL _unit);
                 
                 if (!isNull (_unit findNearestEnemy _unit) and _tactic == "MANUVER") then
                 {
@@ -149,7 +173,7 @@ _units = units _group;
                     waitUntil
                     { 
                         _unit doMove _rooftopPos;
-                        _debugMarker setMarkerPos _unit;
+                      //  _debugMarker setMarkerPos _unit;
                         (unitReady _unit or !alive _unit)
                     };
                     _unit forceSpeed 0;
@@ -165,7 +189,7 @@ _units = units _group;
                // _unit doMove _rooftopPos;                
                 sleep 2;
             };
-            diag_log format ["<FuMS> TowerGuard: Logic terminated for %1.",_unit];
+           // diag_log format ["<FuMS> TowerGuard: Logic terminated for %1.",_unit];
         };	
 	};
 }foreach _units;

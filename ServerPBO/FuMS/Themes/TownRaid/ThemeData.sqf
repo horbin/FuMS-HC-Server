@@ -12,7 +12,9 @@ _themeData =
         60, // Respawn delay in seconds
 		true, // Global loot data
 		true, // Global soldier data  
-		false
+		false,
+            1,  // Player minimum to launch missions from this theme.
+        100   // Player maximum above which missions will not launch
     ],
     [  //***** Mission List *****
     //see Test Theme ThemeData.sqf for other options

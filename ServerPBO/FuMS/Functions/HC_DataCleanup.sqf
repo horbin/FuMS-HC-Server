@@ -9,8 +9,8 @@ _hcID = _this select 0;
 _prefix = "FuMS_HC_HAL_";
 for [{_i=1},{_i<count FuMS_HCIDs},{_i=_i+1}]do
 {
-    diag_log format ["##HC_DataCleanup: FuMS_HCIDs:%1",FuMS_HCIDs];
-    diag_log format ["##HC_DataCleanup: FuMS_HCNames:%1",FuMS_HCNames];
+ //   diag_log format ["##HC_DataCleanup: FuMS_HCIDs:%1",FuMS_HCIDs];
+//    diag_log format ["##HC_DataCleanup: FuMS_HCNames:%1",FuMS_HCNames];
     if (FuMS_HCIDs select _i == _hcID) then
     { 
         FuMS_HCIDs set [_i,-1];
@@ -21,18 +21,36 @@ for [{_i=1},{_i<count FuMS_HCIDs},{_i=_i+1}]do
     };
 };
 
+// ASSERT:  HC has been verified to be disconnected.
+// ASSERT: HC owned assets may still not be owned by Server, so need to wait for ownership transfer
 _varName = format ["%1AIGroups%2",_prefix,_hcID]; //AIGroups
-diag_log format ["##HC_DataCleanup: _varName :%1",_varName];
-
 _var = missionNameSpace getVariable _varName;
+//diag_log format ["##HC_DataCleanup: _varName :%1 _var:%2",_varName, _var];
+
 if (!isNil "_var") then
 {
     {
-        { deleteVehicle _x } forEach units _x;
-        deleteGroup _x;
-        _x = nil;
+        if (!isNull _x) then 
+        {
+            waitUntil
+            { 
+               // diag_log format ["HC:CLEANUP Groups: %1 is local= %2", _x, local _x];  
+                local _x
+            };
+            {
+                if (!isNull _x) then
+                {
+                    waitUntil { local _x};
+                    deleteVehicle _x; 
+                };
+            } forEach units _x;         
+            deleteGroup _x;     
+        };
+  
+        
     }foreach _var;
-    diag_log format ["HC:CLEANUP Groups: %1 deleted from ", count _var, _varName];
+ 
+    diag_log format ["HC:CLEANUP Groups: %1 deleted from %2", count _var, _varName];
 };
 
 _varName = format ["%1Vehicles%2",_prefix,_hcID];
@@ -47,7 +65,7 @@ if (!isNil "_var") then
         {
             private ["_value"];
             _value = _x getVariable "HCTEMP";
-            diag_log format ["HC:CLEANUP: %1 being checked.",_x];
+       //     diag_log format ["HC:CLEANUP: %1 being checked.",_x];
             if (!(isNil "_value")) then  // if _value 'isNil' then somehow calling on a vehicle not created by the HC!
             {
                 if (_value != "AI") then
@@ -55,7 +73,7 @@ if (!isNil "_var") then
                     diag_log format ["HC:CLEANUP: %1 is no longer AI controlled: %2",_x, _value];           
                 }else
                 {
-                    diag_log format ["HC:CLEANUP: %1 deleted",_x];
+        //            diag_log format ["HC:CLEANUP: %1 deleted",_x];
                     {
                         detach _x;
                         deleteVehicle _x;
@@ -129,5 +147,5 @@ if (!isNil "_var") then
     diag_log format ["HCCLEANUP Triggers: %1 deleted from %2", count _var,_varName];  
 };
 
- FuMS_ServerIsClean = true;
+FuMS_ServerIsClean = true;
 publicVariable "FuMS_ServerIsClean";

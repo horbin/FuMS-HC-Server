@@ -14,7 +14,7 @@ while {true} do
 {	
     if (isNil "_dat") exitWith {_abort=true; _msg = format ["Syntax/Format error in ThemeData.sqf for theme %1",_theme];};//Abort later, no need to if Theme=<NULL>
     if (TypeName _dat != "ARRAY") exitWith {_abort=true; _msg = format ["Syntax/Format error in ThemeData.sqf for theme %1",_theme];};//Abort later, no need to if Theme=<NULL>
-    if (count _dat !=  4 ) exitWith {_abort=true; _msg = format ["ThemeData Error in theme %1. Expected 4 sections, found %2",_theme, count _dat];};  // 4 major fields defined in each ThemeData.sqf		
+    if (count _dat !=  4  and  count _dat !=5) exitWith {_abort=true; _msg = format ["ThemeData Error in theme %1. Expected 4 sections, found %2",_theme, count _dat];};  // 4 major fields defined in each ThemeData.sqf		
     // Options -6-
     _sec = "Options:";
     _dat2 = _dat select 0;
@@ -24,8 +24,8 @@ while {true} do
     //   bool
     //   bool
     // bool - admin controls
-    if (TypeName _dat2 != "ARRAY") exitWith {_abort = true;_msg = format ["%1 found %2, expected array of 2 entries",_sec, _dat2];}; 
-    if ((count _dat2) != 6) exitWith {_abort = true;_msg = format ["%1 found %2, expected 5 entries",_sec, count _dat2];}; 
+    if (TypeName _dat2 != "ARRAY") exitWith {_abort = true;_msg = format ["%1 found %2, expected array of entries",_sec, _dat2];}; 
+    if ((count _dat2) != 8) exitWith {_abort = true;_msg = format ["%1 found %2, expected 8 entries",_sec, count _dat2];}; 
     _dat3 = _dat2 select 0;
     if (TypeName _dat3 != "STRING") exitWith {_abort = true;_msg = format ["%1 Theme name should be a text string! Found %2",_sec, count _dat3];}; 
     if ( _dat3 != (_theme select 0)) exitWith {_abort = true; _msg = format ["%1 Theme name mismatch! Theme name in BaseServerData:%2, found %3 in the actual THEMEDATA. Values MUST MATCH!",_sec, _theme select 0, _dat3];}; 
@@ -40,6 +40,10 @@ while {true} do
     if (TypeName _dat3 != "BOOL") exitWith {_abort = true;_msg = format ["%1 Global Soldier Data flag needs to be true or false, found %2",_sec, _dat3];};
     _dat3 = _dat2 select 5;
     if (TypeName _dat3 != "BOOL") exitWith {_abort = true;_msg = format ["%1 Admin Controls flag needs to be true or false, found %2",_sec, _dat3];};
+     _dat3 = _dat2 select 6;
+    if (TypeName _dat3 != "SCALAR") exitWith {_abort = true;_msg = format ["%1 Min Players for theme needs to be a number,  found %2",_sec, _dat3];};
+     _dat3 = _dat2 select 7;
+    if (TypeName _dat3 != "SCALAR") exitWith {_abort = true;_msg = format ["%1 Max Players for theme needs to be a number, found %2",_sec, _dat3];};
     // Mission List -list-
     // array of atleast 1 element
     // each element can be:

@@ -13,7 +13,9 @@ _themeData =
         60, // Respawn delay in seconds
 		true, // Use global loot data
 		true, // Use global soldier data
-		true // Autostart
+		true, // Autostart
+            1,  // Player minimum to launch missions from this theme.
+        100   // Player maximum above which missions will not launch
     ],
     [  //***** Mission List *****
     // List of Missions. Value of '0' indicates random location ##NOT [0] ###, otherwise location indicated used for the encounter.

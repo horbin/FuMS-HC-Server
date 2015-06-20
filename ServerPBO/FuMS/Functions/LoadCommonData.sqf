@@ -24,6 +24,7 @@ FuMS_BaseTHEMEDATA = [];
 FuMS_BaseLOOTDATA = [];
 FuMS_BaseSOLDIERDATA = [];
 FuMS_BaseListofMissions = [];
+FuMS_CustomScripts = [];
 // 4 arrays above used as data source for info passed to connecting headlesss clients
 // ASSERT above 4 arrays will be static based upon data read in from files!
 
@@ -89,6 +90,27 @@ _abort = false;
         {
             diag_log format ["<FuMS:%3> LoadCommonData: %1:%2",_themeNumber,_x,FuMS_Version];
         }foreach (FuMS_ListofMissions select _themeNumber);
+        
+        // Check theme for a list of custom scripts.
+        _customScripts = (FuMS_THEMEDATA select _themeNumber) select 4;
+        if (!isNil "_customScripts") then
+        {
+            private ["_curTheme"];
+            _curTheme = _x;
+            {
+                if (! (_x in FuMS_CustomScripts)) then
+                {
+                    private ["_path"];
+                    FuMS_CustomScripts = FuMS_CustomScripts + [_x];
+                    _path = format ["\FuMS\Themes\%1\Scripts\%2.sqf", _curTheme, _x];
+                    missionNamespace setVariable [_x, preprocessFileLineNumbers format["%1",_path]];      
+                    diag_log format ["<FuMS> LoadCommonData: Preprocessing custom script %1 for theme %2",_x,_curTheme];
+                };
+            }foreach _customScripts;
+        };
+        // create global variable for the script's code
+        // add the GV to FuMS_CustomScripts
+        // preprocess the script and assign it to the globalvariable
         
       //  diag_log format ["##FuMsnInit: Theme %1 data parse complete.",_x];
       //  diag_log format ["-----------------------------------------------------------"];

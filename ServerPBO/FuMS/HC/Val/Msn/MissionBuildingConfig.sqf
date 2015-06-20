@@ -27,7 +27,7 @@ while {true} do
         if (_abort) exitWith{};
         
 		if ([_x select 1] call FuMS_fnc_HC_Val_Util_VerifyLocation) exitwith {_abort=true;FuMS_FileError = format ["%1 . Found %2",FuMS_FileError, _x select 1];};
-		if (TypeName (_x select 2) != "SCALAR") exitwith {_abort=true;FuMS_FileError = format ["%1 Rotation should be a number. Found %2",_prefix, _x select 2];};
+        if (TypeName (_x select 2) != "SCALAR" and TypeName (_x select 2) != "STRING") exitwith {_abort=true;FuMS_FileError = format ["%1 Rotation should be a number. OR if in M3Editor format a string. Found %2",_prefix, _x select 2];};
 		if (TypeName (_x select 3) != "SCALAR" and TypeName (_x select 3) != "ARRAY") exitwith {_abort=true;FuMS_FileError = format ["%1:Persist Flag should be number, or vehicle damage array of 5 elements. Found %2",_prefix, _x select 3];};
 		if (TypeName (_x select 3) == "ARRAY") then
 		{

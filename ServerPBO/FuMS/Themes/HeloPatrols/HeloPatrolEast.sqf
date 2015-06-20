@@ -28,7 +28,7 @@
 ],[[
     // NOTIFICATION Messages and Map display Control.
 	true,    // Notify players via Radio Message
-    "ALL",   // radio channel. "ALL" = no radio required.
+    1,   // radio channel. "ALL" = no radio required.
     0,         //range from encounter center AI radio's can be heard (0=unlimited.)
     false,  // Notify players via global message - hint screen on right of game display -
     false,   // Show encounter area on the map
@@ -138,7 +138,7 @@
     //Airborne Vehicle Configuration
  [  // Division #1
    [         // Vehicle                                 Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-     [  "B_Heli_Light_01_armed_F"           ,[0,0],[1,"Rifleman"],        "Truck01"      ],  //U-80 Ghost Hawk
+     [  "B_Heli_Light_01_armed_F"           ,[0,0],[1,"Rifleman"],        "Truck01"      ],  
      [  "B_Heli_Light_01_armed_F"           ,[0,-100],[1,"Rifleman"],     "Truck01"      ], //AH-9 Pawnee
      [  "B_Heli_Transport_01_F"               ,[100,0],[1,"Rifleman"],     "Truck01"      ]   //WY-55 Hellcat
     

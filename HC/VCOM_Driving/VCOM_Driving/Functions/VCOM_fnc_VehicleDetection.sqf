@@ -1,9 +1,9 @@
+private ["_Unit", "_GetVehicleVelocity", "_playervelocityX", "_playervelocityY", "_GetVehiclePosition", "_VehiclePositionX", "_VehiclePositionY", "_boostX", "_boostY", "_predictX", "_predictY", "_Position", "_arrow", "_nearestObject", "_unit", "_objects", "_objectsArray", "_BridgeCheck", "_GateCheck", "_GetVelocity", "_VelocityCheckY", "_AlreadySpawned", "_Object", "_BoundingBox", "_p2", "_p2maxx", "_p2maxy", "_p2maxz", "_TopRightCorner", "_TopLeftCorner", "_BottomLeftCorner", "_BottomRightCorner", "_BottomMiddleSection", "_TopMiddleSection", "_BottomLeftRightSection", "_TopLeftRightSection", "_Vehicle1", "_Vehicle2", "_Vehicle3", "_Vehicle4", "_Vehicle5", "_Vehicle6", "_Vehicle7", "_Vehicle8", "_objectsHouse", "_objectsHouseArray", "_objOnRoad"];
 //This script aims to improve AI driving skills...It's basic. But it works.
 //Hunter tops out around 22 velocity
 _Unit = _this select 0;
 if (isPlayer _Unit) exitWith {};
 
-//diag_log format ["VCOM_fnc_VehicleDetection: %1 driving school initiated",_Unit];
 while {alive _Unit && ((vehicle _Unit) != _Unit)} do 
 {
 
@@ -49,7 +49,10 @@ if (!(_GetVehicleVelocity isEqualTo [0,0,0])) then
       
       if (!(_x isKindOf "Man") && {!(_x isKindOf "Helper_Base_F") && !(_x isKindOf "Logic")}) then
       {
-  
+      _BridgeCheck = ["bridge",_x] call BIS_fnc_inString;
+      _GateCheck = ["gate",_x] call BIS_fnc_inString;
+      if (!_BridgeCheck && {!_GateCheck}) then
+      {
       _GetVelocity = velocityModelSpace _x;
       _VelocityCheckY = _GetVelocity select 1;
       if (_VelocityCheckY < 6) then 
@@ -111,6 +114,7 @@ if (!(_GetVehicleVelocity isEqualTo [0,0,0])) then
           _objectsArray pushback _Vehicle7;
           _objectsArray pushback _Vehicle8;
         };
+      };
       };
       };
       } foreach _objects;

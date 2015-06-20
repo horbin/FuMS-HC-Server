@@ -20,7 +20,7 @@ if (!isNil "_unit") then
         _veh = vehicle _unit; // AI's vehicle status checked every 60 seconds, or upon no longer being a driver of its previous vehicle
         if (_veh isKindOf "StaticWeapon") exitWith 
         {
-            diag_log format ["<FuMS> VehStuck: Gunner logic found, exiting VehStuck logic."];    
+            //diag_log format ["<FuMS> VehStuck: Gunner logic found, exiting VehStuck logic."];    
         };
         
         if ( _veh == _unit or (assignedDriver _veh != _unit) ) then

@@ -11,6 +11,13 @@ diag_log format ["FuMS initializing for player:%1",player];
     hint parseText format["%1", _GHint];
 };
 
+"FuMS_GlobalSound" addPublicVariableEventHandler
+{
+	private ["_sound"];
+	_sound = _this select 1;
+	playsound _sound;
+};
+
 "FuMS_TEMPVEHICLE" addPublicVariableEventHandler
 {
     //    diag_log format ["#####%1 entered a tempary vehicle!",player];

@@ -10,7 +10,7 @@
 	"LAND" // location requirement: LAND, WATER, NONE
     // this paramater is optional, but if a value is present it MUST be one of the three above values.
 ], 
-["Bike Gang","mil_dot","ELLIPSE","ColorYellow","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
+["Bike Gang War","mil_dot","ELLIPSE","ColorYellow","FDiagonal",200],    // Map Markers ["MapText", "SHAPE", "COLOR", "FILL", size];
 [  
     [// NOTIFICATION Messages and Map display Control.
 	true, "ALL", 0, // Notify players via Radio Message, radio channel, range from encounter center (0=unlimited.
@@ -147,14 +147,15 @@
     ],   
     [    //Phase01 Triggers and Controls
 //        ["Timer", 180]  // Mission Ends in 180 seconds
-      ["Detected",0,0]    //Launch mission if any group or vehicle detects a player
+      //["Detected",0,0]    //Launch mission if any group or vehicle detects a player
       //   ["ProxPlayer", [0,0], 100, 1] // 1 player is within 100 meters of encounter center.
+    	["ProxPlayer", [0,0], 50, 1]
     ],
     [    //Phase02 Triggers and Controls
-		["Timer", 180]
+	//	["Timer", 180]
     ],
     [    //Phase03 Triggers and Controls
-		["ProxPlayer", [0,0], 50, 1]
+	
     ],
     [    // NO TRIGGERS: Uncomment the line below to simply have this mission execute. Mission triggers from a mission that
           // launched this mission will continue to be observed.
@@ -196,9 +197,7 @@ Def: ["Reinforce", chance, "MsnName"]: Sets up reinforcement logic in the event 
 // The below specified missions will be precompiled into the specified 'calls' when this script runs.
 // The file needs to be located in the same folder as this mission launching them.
 [
-    "NukeDevice",  //Phase01
-    "TestPhase2", //Phase02
-    "TestMission01Enemy" //Phase03
+    "TestMission01Enemy" //Phase01
 ]
 
 

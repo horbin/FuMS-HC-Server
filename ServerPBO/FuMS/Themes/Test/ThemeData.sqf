@@ -16,26 +16,28 @@ _themeData =
         60, // Respawn delay in seconds
 		true, // use Global Loot Data (GlobalLootData.sqf)
 		true,  // use Global Soldier Data file (GlobalSoldierData.sqf)
-		true // ThemeAutoStart: Setting this to 'false' will prevent normal start-up of the Theme! See \Docs\AdminControls.txt
+		true, // ThemeAutoStart: Setting this to 'false' will prevent normal start-up of the Theme! See \Docs\AdminControls.txt
+        1,  // Player minimum to launch missions from this theme.
+        100   // Player maximum above which missions will not launch
        
     ],
     [  //***** Mission List *****
     // List of Missions. 
         // The below missions MUST be in the same folder as this file!            
-		//["Mil_Outpost",[12825,16675] ] // spawn at the specific location. If '0' take from locations below!
-       //   ["BikeGang"],  // will spawn at any of the locations defined below! If none defined, BIS_fnc_findSafePos will be used.
-	   //  ["TestMission01","Charkia"],
+		["Mil_Outpost",[12825,16675] ], // spawn at the specific location. If '0' take from locations below!
+     //     ["BikeGang"],  // will spawn at any of the locations defined below! If none defined, BIS_fnc_findSafePos will be used.
+   ["TestMission01",[10700,10200]],
     //["LandPatrol", [ 15000,17600]]// mission will only spawn in the town of Charkia
 			//["WaterMission"],
-		// ["TestHeloPatrol","Stavros"],
-		//["MazeTest",[23587,18368.5]],
+		// ["TestHeloPatrol","Stavros"],	
          //["NukeDevice"]
-    ["CaptureTheFlag"]
+   ["CaptureTheFlag"],
     	 // ["NukeDevice",[12800,16900]],["NukeDevice",[12900,16900]],["NukeDevice",[13000,16900,0]],
 	//	  ["NukeDevice",[12800.3, 17000.4]],["NukeDevice",[12900,17000,8.1]],["NukeDevice",[13000,17000]]
-   // ["OilRig",[27627.2,18501.8]]
+    //["OilRig",[27627.2,18501.8]],
+    ["Destroyable"],
 		 // ["NukeDevice",[11040.1,7114.63]],["NukeDevice",[11089.8,7142.63]],["NukeDevice",[11063.9,7136.47]],["NukeDevice",[11064.4,7102.51]]
-		 //["MazeTest2"]
+		 ["MazeTest2"]
 		// ["MazeTest2",[23300,17800]],
 		// ["MazeTest2",[15500,20000]]
 		//["TestParse"]
@@ -93,6 +95,11 @@ _themeData =
 			["Death", "Copy all. Keep us advised of your status."], 
 			["DetHostileAI", "Roger. Weapons Free, Capture as many as you can."]
 		]
-	]	
+	],
+    [//***** Custom Scripts *****
+        "StartExample",
+        "EndExample",
+        "supportscript"
+    ]
 ];
 FuMS_THEMEDATA set [_this select 0, _themeData];

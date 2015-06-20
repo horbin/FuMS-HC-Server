@@ -12,7 +12,7 @@ FuMS_BlackList	[]
 FuMS_Defaultpos	[]
 FuMS_ActiveThemes	[]	List of active themes loaded
 FuMS_ActiveThemesHC [] HC id the theme should run on: 0=server, -1= all HC's and Not server, 1=just 1st HC, 2=just 2nd HC.
- 
+
 FuMS_GlobalDataIndex	scalar	Always equals count FuMS_ActiveThemes+1-index of globalloot and globalsoldier data
  FuMS_RC_EnableRadioChatterSystem	bool
  FuMS_RC_EnableRadioAudio	bool	publicVariable "FuMS_RC_EnableRadioAudio";

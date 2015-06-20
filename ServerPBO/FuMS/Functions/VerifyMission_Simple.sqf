@@ -22,7 +22,7 @@ while {true} do
     _sec = "Mission Area Setup:";
     _data2 = _data select 0;
     if (TypeName _data2 != "ARRAY") exitWith {_abort=true; _msg = format ["%1 data passed is not an ARRAY. Found %2",_sec, _data2];};
-    if (count _data2 != 2 and count _data2 !=3) exitWith {_abort=true; _msg = format ["%1 expected 2 or 3 entries. Found %2",_sec, _data2];};
+    if (count _data2 < 2 or count _data2 > 6) exitWith {_abort=true; _msg = format ["%1 expected 3, 4 or 6 entries. Found %2",_sec, _data2];};
     if (TypeName (_data2 select 0) != "STRING") exitWith {_abort=true; _msg = format ["%1 Mission name not a text string. Found %2",_sec, _data2 select 0];};
     _name = _data2 select 0;
     _data2 = _data select 7; // Trigger section:
@@ -59,7 +59,8 @@ while {true} do
             if (TypeName _name == "ARRAY") then {_name = _name select 0;};
             if (TypeName _name != "STRING") exitWith {_abort=true; _msg = format ["%1 phase file name not a string. Found %2",_sec, _x];};			
         };
-    }foreach _filePhase;	
+    }foreach _filePhase;
+   
     if (true) exitWith{};
 };
 _fileList = ["","","",""];
