@@ -43,27 +43,26 @@ Also see Test theme TestMission01.sqf for multiple examples.
 
 *New AI Logic:
 "CAPTIVE" - makes a unit 'neutral' with AI regardless of its 'side'.  Adds an action menu to the AI with the following options:
-	Flee: If within 200m of a rescue spot captive will run to that location. Otherwise it selects a random rescue spot from the list provided.  Unit sets CARELESS behavior and sprints to its destination.
-	Stay: Unit will stop at its location and assume the stance of the player issuing the order.
-	Follow: Unit will follow the player, mimicking his stance. If the player gets more than 250m away from the unit, the unit will resort to a 'Stay' behavior using the stance of the player at the time the unit loses him.
-	Board: Unit will board nearest non-ai controlled vehicle.
-	Escape Point: Unit will temporarily display its 'escape point' on the map.
-	Note: The captives are a little 'shell shocked' and will sometimes take a few seconds to respond to commands, but they will always acknowledge they heard the command via 'system chat'.
-	Note: Captives that start a mission as 'cargo' in an AI vehicle will remain in the vehicle until it is disabled.
-	Note: Captives assigned to follow an AI group will stop following that group when the group leader dies.
-	Note: Captives remain 'neutral' to hostile AI until directed to Flee.
+	- Flee: If within 200m of a rescue spot captive will run to that location. Otherwise it selects a random rescue spot from the list provided.  Unit sets CARELESS behavior and sprints to its destination.
+	- Stay: Unit will stop at its location and assume the stance of the player issuing the order.
+	- Follow: Unit will follow the player, mimicking his stance. If the player gets more than 250m away from the unit, the unit will resort to a 'Stay' behavior using the stance of the player at the time the unit loses him.
+	- Board: Unit will board nearest non-ai controlled vehicle.
+	- Escape Point: Unit will temporarily display its 'escape point' on the map.
+	- Note: The captives are a little 'shell shocked' and will sometimes take a few seconds to respond to commands, but they will always acknowledge they heard the command via 'system chat'.
+	- Note: Captives that start a mission as 'cargo' in an AI vehicle will remain in the vehicle until it is disabled.
+	- Note: Captives assigned to follow an AI group will stop following that group when the group leader dies.
+	- Note: Captives remain 'neutral' to hostile AI until directed to Flee.
 
 *New "CAPTIVE" Theme
-Theme demonstrates new Captive logic. This theme creates a mission in a random location that contains 10 prisoners being guarded by a small
-squad of Humans, and an unarmed UGV.  The goal is to get into the camp and rescue at least 7 of the captured clone prisoners. 
-Beware, if too many of the guards are killed, reinforcements will be called upon!
-Talk to an AI to find his 'evac location', take advantage of nearby transportation, and if you succeed expect to find loot at the Evac site!
+- Theme demonstrates new Captive logic. This theme creates a mission in a random location that contains 10 prisoners being guarded by a small squad of Humans, and an unarmed UGV.  The goal is to get into the camp and rescue at least 7 of the captured clone prisoners. 
+- Beware, if too many of the guards are killed, reinforcements will be called upon!
+- Talk to an captive to find his 'evac location', take advantage of nearby transportation, and if you succeed expect to find loot at one of the Evac sites!
 
 *New SoldierData Flag
-All AI defined in SoldierData files may also be provided with a true/false flag to set their captivity.
-This flag has no relation to the new 'Captive' AI logic and missions.
-This flag is a method to define custom AI that, by default, are 'setcaptive', thus hostile AI will not fire upon them.
-See GlobalSoldierData.htm section 8 for more details.
+- All AI defined in SoldierData files may also be provided with a true/false flag to set their captivity.
+- This flag has no relation to the new 'Captive' AI logic and missions.
+- This flag is a method to define custom AI that, by default, are 'setcaptive', thus hostile AI will not fire upon them.
+- See GlobalSoldierData.htm section 8 for more details.
 
 Issues:
 * Loot set to be placed in vehicles is not working consistently.
