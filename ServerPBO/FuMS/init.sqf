@@ -5,7 +5,7 @@
 // Server side init for FuMS.pbo addon
 if (!isServer) exitWith {};
 private ["_handle"];
-FuMS_Version = "v1.5g";
+FuMS_Version = "v2.1";
 publicVariable "FuMS_Version";
 FuMS_HCIDs = [];
 FuMS_HCNames = [];
@@ -13,34 +13,6 @@ FuMS_HCIDs set [0,0]; // set the 1st slot to be the actual server's ID.
 FuMS_HCNames set [0, "SERVER"];
 FuMS_AdminListofMissions = []; //Full list of all missions on the server. [themeIndex, themeName, missionName] format.
 FuMS_isStable = true; // set to false in LoadCommonData if critical errors are found.
-
-//FuMS_ServerFuMSEnable = true; // will be set in LoadCommonData.sqf
-
-/*
-//stacked event handler to capture disconnects of HC's.
-["FuMS_HC_DC", "onPlayerDisconnected",
-{
-    // vars _id and _name, and _uid are set
-    diag_log format ["<FuMS> Init.sqf: Player Disconnect: _id:%1 _name:%2 _uid:%3",_id, _name,_uid];
-}] call BIS_fnc_addStackedEventHandler;
-
-["FuMS_HC_MDC","HandleDisconnect",
-{
-    private ["_owner","_hcID"];
-    _owner = _this select 0;
-    _hcID = _this select 1;
-    diag_log format ["<FuMS> Init.sqf: HandleDisconnect MissionEH Disconnect: _owner:%1 _hcID:%2",_owner,_hcID]; 
-}] call BIS_fnc_addStackedEventHandler;
-*/
-/*
-addMissionEventHandler ["HandleDisconnect",
-{
-    private ["_owner","_hcID"];
-    _owner = _this select 0;
-    _hcID = _this select 1;
-    diag_log format ["<FuMS> Init.sqf: HandleDisconnect MissionEH Disconnect: _owner:%1 _hcID:%2",_owner,_hcID]; 
-}];
-*/
 
 _handle = [] execVM "\FuMS\Functions\LoadCommonData.sqf";
 waitUntil {ScriptDone _handle};

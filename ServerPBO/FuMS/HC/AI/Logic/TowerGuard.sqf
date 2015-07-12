@@ -50,7 +50,7 @@ _debug = false;
 _buildings = nearestObjects [_actionLoc, ["house"], (_area select 0)];
 
 
-diag_log format["<FuMS> TowerGuard: Buildings found: %1:%2", count(_buildings), _buildings];
+//diag_log format["<FuMS> TowerGuard: Buildings found: %1:%2", count(_buildings), _buildings];
 
 {
     if (typeOf _x == _specBuilding or _specBuilding == "ANY") then
@@ -87,11 +87,11 @@ diag_log format["<FuMS> TowerGuard: Buildings found: %1:%2", count(_buildings), 
 if ((count _legalRooftops) < 1) exitWith {diag_log format ["<FuMS> Towerguard: No valid spawn locations found near %1 radius:%2",_actionLoc, _radius];};
 
 
-diag_log format["<FuMS> TowerGuard: Viable high points founds: %1:%2", count(_legalRooftops), _legalRooftops];
+//diag_log format["<FuMS> TowerGuard: Viable high points founds: %1:%2", count(_legalRooftops), _legalRooftops];
 
 // If the number of rooftops is less than then number of AI in the group, then take non-rooftop positions from list of available buildings
 _numToAdd = count (units _group) - count _legalRooftops;
-diag_log format["<FuMS> TowerGuard: Number of AI to place: %1, finding %2 additional locations.", count (units _group), _numToAdd];
+//diag_log format["<FuMS> TowerGuard: Number of AI to place: %1, finding %2 additional locations.", count (units _group), _numToAdd];
 if (_numToAdd > 0) then
 {
     private ["_i","_bps","_buildingList"];
@@ -137,7 +137,7 @@ _units = units _group;
 	{
 		_rooftopPositionsUsed = _rooftopPositionsUsed + [_rooftopPos];
 	
-        diag_log format ["<FuMS> TowerGuard: Moving %1 to %2",_x,_rooftopPos];
+      //  diag_log format ["<FuMS> TowerGuard: Moving %1 to %2",_x,_rooftopPos];
 		_x setPosATL _rooftopPos;
         
         [_x, _rooftopPos, _tactic] spawn

@@ -80,7 +80,7 @@ while {true} do
     _sec = "Soldier Defaults:";
     _dat2 = _dat select 5; // Soldier Defaults
     if (TypeName _dat2 != "ARRAY")exitWith {_abort = true;_msg = format ["%1  should array of settings, found %2",_sec, _dat2];}; 
-    if (count _dat2 != 4 and count _dat2 !=5) exitWith {_abort = true;_msg = format ["%1  Missing variables. Expecting 4 or 5, found %2",_sec,_dat2];};      
+    if (count _dat2 !=6) exitWith {_abort = true;_msg = format ["%1  Missing variables. Expecting 6, found %2",_sec,_dat2];};      
     if (TypeName (_dat2 select 0) != "SCALAR" ) exitWith {_abort = true;_msg = format ["%1 exepecting numeric value, found %2",_sec,_dat2 select 0];};   
     if (TypeName (_dat2 select 1) != "SCALAR" ) exitWith {_abort = true;_msg = format ["%1 exepecting numeric value, found %2",_sec,_dat2 select 1];};   
     if (TypeName (_dat2 select 2) != "BOOL" ) exitWith {_abort = true;_msg = format ["%1 exepecting bool value of true or false, found %2",_sec,_dat2 select 2];};   
@@ -94,6 +94,7 @@ while {true} do
     {
         if (TypeName (_dat2 select 4) != "ARRAY") exitWith {_abort=true;_msg = format ["%1 AI only items should be an array of strings. found %2",_sec, _dat2 select 4];};      
     };
+    if (TypeName (_dat2 select 5) != "ARRAY") exitWith {_abort=true;_msg = format ["%1 AI only items should be an array of strings. found %2",_sec, _dat2 select 5];};      
     
     _sec = "Loot Defaults:";
     _dat2 = _dat select 6; // Loot Defautls

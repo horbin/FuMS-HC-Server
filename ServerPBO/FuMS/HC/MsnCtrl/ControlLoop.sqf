@@ -7,7 +7,7 @@
 //PullData = compile preprocessFileLineNumbers "HC\Encounters\Functions\PullData.sqf";
 //StaticMissionControlLoop = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\StaticMissionControlLoop.sqf";
 //FuMS_C1_PullData = compile FuMS_S_PullData;
-private ["_missionTheme","_respawnDelay","_encounterLocations","_msnDone","_missionList","_spawnedByAdmin",
+private ["_missionTheme","_respawnDelay","_encounterLocations","_missionList","_spawnedByAdmin",
 "_pos","_activeMission","_missionSelection","_trackList","_missionTheme","_themeIndex","_themeOptions","_themeData",
 "_locationAdditions","_missionNameOverride","_activeThemeIndex", "_controlledByThisHC","_themeMinPlayers","_themeMaxPlayers",
 "_themeName"];
@@ -124,7 +124,7 @@ FuMS_radioChatInitialized set [_themeIndex, true];
 
 FuMS_BodyCount set [_themeIndex, 0];
 FuMS_Trigger_ZupaCapture set [_themeIndex,false];
-
+ // _id = format ["%1%2",_themeName, _themeIndex];
 
 _abort=false;
 while {true} do
@@ -136,13 +136,13 @@ while {true} do
     _properNumPlayers = false;
     while {true} do
     {
-        private ["_numPlayers"];
-        uisleep 60;
+        private ["_numPlayers"];       
         _numPlayers = count ([] call BIS_fnc_listPlayers);
         if (_numPlayers >= _themeMinPlayers and _numPlayers < _themeMaxPlayers) exitWith
         {           
-            diag_log format ["<FuMS> ControlLoop: Theme:%1(index:%3) #Players:%2 met launch requirements [%3:%4]. Starting a mission!", _themeName, _numPlayers, _themeMinPlayers,_themeMaxPlayers,_themeIndex];
+            diag_log format ["<FuMS> ControlLoop: Theme:%1(index:%5) #Players:%2 met launch requirements [%3:%4]. Starting a mission!", _themeName, _numPlayers, _themeMinPlayers,_themeMaxPlayers,_themeIndex];
         };
+         uisleep 60;
     };
 
     if (FuMS_AdminControlsEnabled) then
@@ -153,7 +153,7 @@ while {true} do
 			waitUntil
 			{
 				_onOff = missionNameSpace getVariable format["FuMS_AdminThemeOn%1",FuMS_ThemeControlID];
-			//  diag_log format ["##ControlLoop:  _themeIndex:%1  _onOff : %2",_themeIndex, _onOff];
+		//	  diag_log format ["<FuMS> ControlLoop:  _themeIndex:%1  _onOff : %2",_id, _onOff];
 				sleep 2; 
 				(_onOff select _themeIndex)
 			};
@@ -161,7 +161,8 @@ while {true} do
     };
 
     // SELECT A MISSION.
- //  diag_log format ["##ControlLoop: OrderOption:%2 _missionList:%1",_missionList, _missionSelection];
+  
+//   diag_log format ["<FuMS> ControlLoop: %3 OrderOption:%2 _missionList:%1",_missionList, _missionSelection, _id];
 	//  perform call of the mission chosen
     switch (_missionSelection) do
     {
@@ -222,7 +223,7 @@ while {true} do
     }
     else
     {
-        private ["_result","_dataFromServer","_missionFileName"];
+        private ["_result","_dataFromServer","_missionFileName","_msnTag"];
        // diag_log format ["##ControlLoop: _activeMission:%1",_activeMission];   
         {   
             // Get location for the mission
@@ -266,30 +267,36 @@ while {true} do
             if (_spawnedByAdmin) then
             {			
                 if (count FuMS_AdminSPAWNLOC > 1) then {_pos = FuMS_AdminSPAWNLOC;};
-			};
-           // _dataFromServer = [_themeIndex,_missionFileName] call FuMS_fnc_HC_MsnCtrl_Util_PullData;
-            //data no longer from server, but PullData functionallity changed!
+            };
+          
+            [_dataFromServer,[_pos, _missionTheme, _themeIndex, _missionNameOverride], [0,"PARENT",0,"ROOT"]] spawn FuMS_fnc_HC_MsnCtrl_NewLogicBomb;
       
-                //diag_log format ["##ControlLoop: Misssion Data from Server :%1",_dataFromServer];
-               // _msnDone = [_dataFromServer, [_pos, _missionTheme, _themeIndex, 0, _missionNameOverride]] execVM "HC\Encounters\LogicBomb\MissionInit.sqf";                                     
-				_msnDone = [_dataFromServer, [_pos, _missionTheme, _themeIndex, 0, _missionNameOverride]] spawn FuMS_fnc_HC_MsnCtrl_MissionInit;
-                //_activeMissionFile = format ["HC\Encounters\%1\%2.sqf",_missionTheme,_missionFileName];
-              //  diag_log format ["##ControlLoop:  Theme: %1 index:%4 : HC:%4 now starting mission %2 at %3",_missionTheme, _missionFileName, _pos, FuMS_ThemeControlID,_themeIndex];
-             //   diag_log format ["############"];
-             //   diag_log format ["############ThemeData: %1", FuMS_ThemeData];
-              //  diag_log format ["############BaseThemeData: %1", FuMS_BaseThemeData];
-                // setting _phaseID = 0 implies this mission is a 'root parent' (it has no parents itself!)
-                // _msnDone =[[_pos, _missionTheme, _themeIndex, 0, _missionNameOverride]] execVM _activeMissionFile;
-                _msnDoneList = _msnDoneList + [_msnDone];
-         
         }foreach _activeMission; 
-        // wait for ALL missions started to complete, before restarting all missions that where started, or selecting a new one.
+  
+        private ["_var"];
+        _msnTag = format ["FuMS_%1_%2_%3",_themeIndex,0,0];       
+        waitUntil
+        {            
+            _var = missionNamespace getVariable (format ["%1_MsnStatus",_msnTag]);            
+            (!isNil "_var")
+        };    
+        // if MsnStatus is 'dead' at this point it was set by the previous mission. So wait until THIS mission changes the status to something other than DEAD!
+        diag_log format ["<FuMS> ControlLoop: %1_MsnStatus defined with value of %2. Waiting for mission to start.",_msnTag, _var];
+        waitUntil
         {
-            waitUntil { scriptDone _x};  
-        }foreach _msnDoneList; 
+            _var = missionNamespace getVariable (format ["%1_MsnStatus",_msnTag]);            
+            ( (_var select 0) != "DEAD")
+        };
+        diag_log format ["<FuMS> ControlLoop: %1_MsnStatus defined with value of %2. Waiting for 'DEAD'",_msnTag, _var];
+        waitUntil
+        {           
+            _var = missionNamespace getVariable (format ["%1_MsnStatus",_msnTag]);
+            ( (_var select 0) == "DEAD")
+        };
+        diag_log format ["<FuMS> ControlLoop: %1_MsnStatus %2. Selecting a new mission for this Theme:%3",_msnTag, _var, _missionTheme];
         sleep _respawnDelay;
     };    
-    if (_abort) exitWith{    diag_log format ["##ControlLoop: Theme:%1 loop terminated after multi-mission spawn of single loops due to Admin Controls being disabled."];};
+    if (_abort) exitWith{    diag_log format ["<FuMS> ControlLoop: Theme:%1 loop terminated after multi-mission spawn of single loops due to Admin Controls being disabled."];};
 };
     
     

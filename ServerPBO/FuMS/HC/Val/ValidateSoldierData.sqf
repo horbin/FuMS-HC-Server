@@ -39,7 +39,7 @@ while {true} do
             }else
             {
                 _file = format ["\FuMS\Themes\%1\SoldierData.sqf",_theme];               
-                _usingGlobal = (((FuMS_THEMEDATA select _i) select 0) select 3);
+                _usingGlobal = (((FuMS_THEMEDATA select _i) select 0) select 4);
             };
         };
         if (!_usingGlobal) then 
@@ -53,7 +53,7 @@ while {true} do
             diag_log format ["-------------------------------------------------------------------------------------"];
             diag_log format ["----------------            Fulcrum Mission System                    -----------------"];
             diag_log format ["-------------------------------------------------------------------------------------"];            
-            diag_log format ["##ValidateLootData: ERROR in FuMS_LOOTDATA"];
+            diag_log format ["##ValidateSoldierData: ERROR in FuMS_SOLDIERDATA"];
             diag_log format ["Recommend verifying data in file %1 on your server!",_file];            
             diag_log format ["                          Theme %1 offline!", _theme];
             _abort = false;

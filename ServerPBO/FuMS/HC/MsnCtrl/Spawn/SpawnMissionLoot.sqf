@@ -6,12 +6,22 @@
 //XPos = compile preprocessFileLineNumbers "HC\Encounters\Functions\XPos.sqf";
 //FillLoot = compile preprocessFileLineNumbers "HC\Encounters\LogicBomb\FillLoot.sqf";
 
-private ["_lootConfig","_eCenter","_option","_staticLoot","_winLoot","_pos","_themeIndex","_box","_boxes","_loseLoot","_loot","_abort"];
+private ["_lootConfig","_eCenter","_option","_staticLoot","_winLoot","_pos","_themeIndex","_box","_boxes","_loseLoot","_loot","_abort","_msnStatus",
+"_lineage","_generation","_offspringID","_msnTag"];
+
 _lootConfig = _this select 0;
 _eCenter = _this select 1;
-_option = _this select 2;
-_themeIndex = _this select 3;
+_msnStatus = _this select 2; // ["Win"]
+_lineage = _this select 3;
 _boxes = _this select 4;
+
+_option = _msnStatus select 0;
+
+_themeIndex = _lineage select 0;
+_generation = _lineage select 1;
+_offspringID = _lineage select 2;
+_msnTag = format ["FuMS_%1_%2_%3",_themeIndex,_generation,_offspringID];
+
 if (!isNil "_lootConfig") then  // if no loot data then no loot for mission!
 {
     _staticLoot = _lootConfig select 0;
@@ -42,13 +52,22 @@ if (!isNil "_lootConfig") then  // if no loot data then no loot for mission!
     {    
         _pos = [_eCenter, _loot select 1] call FuMS_fnc_HC_MsnCtrl_Util_XPos;
         _box = [_loot select 0, _pos, _themeIndex] call FuMS_fnc_HC_Loot_FillLoot;
-        _boxes = _boxes + [_box];
+        if (TypeName _box != "ARRAY") then
+        {
+            if (!isNull _box) then
+            {
+                // if loot was not a 'scatter' add the container.                
+                _box setVariable ["LINEAGE",_msnTag, false];
+                _boxes = _boxes +[_box];
+            };
+        };        
     }else
     {
         //ASSERT it is an array of loot options!
         {
             _pos = [_eCenter, _x select 1] call FuMS_fnc_HC_MsnCtrl_Util_XPos;
             _box = [_x select 0, _pos, _themeIndex] call FuMS_fnc_HC_Loot_FillLoot;
+            _box setVariable ["LINEAGE",_msnTag, false];
             _boxes = _boxes + [_box];
         }foreach _loot;
     };

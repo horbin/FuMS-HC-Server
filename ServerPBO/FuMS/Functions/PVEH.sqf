@@ -151,12 +151,13 @@ FuMS_InitToken = true;
     {
         if (FuMS_ServerisClean) then
         {
-            FuMS_ServerisClean = false;
-            // publicVariable "FuMS_ServerisClean";
-            //      _headlessClient = _this select 1;
             _hcID = owner _headlessClient;
-            diag_log format ["<FuMS> GetInitToken PVEH: player:%1 owner id:%2 holds Init Token",_headlessClient, _hcID];    
-            _hcID publicVariableClient "FuMS_InitToken";        
+            if (_hcID != 0) then
+            {
+                FuMS_ServerisClean = false;                
+                diag_log format ["<FuMS> GetInitToken PVEH: player:%1 owner id:%2 holds Init Token",_headlessClient, _hcID];    
+                _hcID publicVariableClient "FuMS_InitToken";        
+            };
         };
     };
 };
@@ -211,4 +212,10 @@ FuMS_ZombieNoise_Server =
     }foreach _players;
 };
 
-
+"FuMS_CaptiveAction" addPublicVariableEventHandler
+{
+    _data = _this select 1;
+    _hcID = owner (_data select 0);
+    _hcID publicVariableClient "FuMS_CaptiveAction";
+    diag_log format ["<FuMS> PVEH FuMS_CaptiveAction  %1 passed to HC ID:%2",FuMS_CaptiveAction,_hcID];
+};

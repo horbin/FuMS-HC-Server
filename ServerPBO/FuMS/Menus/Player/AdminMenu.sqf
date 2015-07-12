@@ -96,9 +96,7 @@ if (true) then
     
     diag_log format ["##AdminMenu: Nearest PlotPole: %1",_nearestObjects];
     
-    
-    
-    
+           
     
 };
 

@@ -51,52 +51,34 @@
 [
  
 ],
-// Triggers and Event control.
-
-[ 
-    [    
-    
-    ],
-    [    //LOSE Triggers and Controls
-
-    ],   
-    [    //Phase01 Triggers and Controls
-    
-    ],
-    [    //Phase02 Triggers and Controls
-    
-    ],
-    [    //Phase03 Triggers and Controls
-    
-    ],
-    [    
-       ["NO TRIGGERS"]
-    ]
-],
-// Phased Missions.
 [
-   // "NukeDevice",  //Phase01
-   // "TestPhase2", //Phase02
-  //  "TestPhase3" //Phase03
-],
-// Helicopters
-[
- [  // Division #1
-   [         // Vehicle                                 Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-//     [  "O_Heli_Light_02_unarmed_EPOCH",[0,-1900],[1,"Rifleman"],        "Truck01"      ], 
-//     [  "O_Heli_Light_02_unarmed_EPOCH"           ,[0,-1800],[1,"Rifleman"],     "None"      ], 
-     [  "O_Heli_Light_02_unarmed_EPOCH"           ,[0,-1700],[1,"Rifleman"],     "None"      ]
-    ],[  
-    // Pilots                                                          # and type  |         Patrol     |    spawn   | dest  | 'Patrol' options
-   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["ParaDrop",[0,-1700],[0,0],["Full", 100, true,true  ]   ]]
-  ],[   
-     // Troops : These are distributed across all aircraft in the division. These lines are identical to the lines in the group section.
-     //  Troop behaviour and side options                    # and type of Troops     Patrol logic |  spawn     |dest |'Patrol' options
- //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1900],[0,0],[0]]],
- //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1800],[50,0],[50]]],
-    [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[4,"Rifleman"]],["BoxPatrol",[0,-1700],[0,0],[50]]]
-   // 'dest' for troops is where they will go to perform their 'Patrol Logic' once they get on deck
-     ]
-   ]
- ]
+	[
+      //Define all the triggers this mission will be using
+	  // Trigger names must be unique within each mission.
+	  // NOTE: "FuMS_KillMe" is a reserved trigger word. Do not use!!!
+	  // NOTE: "OK" is a reserved trigger. Do not define it here.
+	  //  "OK" can be used in the actions section to force an action to occur at mission start!	 
+//	  ["PROX",["ProxPlayer",[0,0],80,1]  ],
+//	  ["LUCNT",["LowUnitCount","GUER",1,0,[0,0]]  ],
+//	  ["HUCNT",["HighUnitCount","GUER",6,0,[0,0]] ],
+//	  ["Detect",["Detected","ALL","ALL"] ],
+//	  ["BodyCount",["BodyCount",9] ]
+//	  ["Timer",["TIMER", 1800] ],
+	  //                            offset      radius    time(s)  Name
+//	  ["Zuppa", ["ZuppaCapture",[ [ [-100,-100], 50,         90,  "Point 1" ],
+ //                               [ [100,100],   50,         90,  "Point 2" ]   ]]  ],
+//       ["VehDmg1", ["DmgVehicles", "1",0.8]  ],
+//       ["BldgDmg1",["DmgBuildings","2,3,7",1.0]  ]
+	  
+	],
+	[
+	  // Define what actions should occur when above trigger logics evaluate to true
+	   // Note: a comma between two logics is interpreted as "AND"
+//	  [["WIN"],["LUCNT"     ]],  // 
+	//  [["CHILD","Help_Helo",[0,0]],["OK"      ]],  // 
+	// [["Reinforce","Help_Vehicle","Trig4"]], 
+//	  [["LOSE"],["TIMER", "OR", "VehDmg1", "BldgDmg1"]   ],
+      [["END"],["OK"     ]]  
+	]      
+]
 ];

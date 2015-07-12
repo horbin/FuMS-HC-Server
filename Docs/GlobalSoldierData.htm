@@ -14,17 +14,17 @@ xmlns="http://www.w3.org/TR/REC-html40">
  <o:DocumentProperties>
   <o:Author>rohan</o:Author>
   <o:Template>Normal</o:Template>
-  <o:LastAuthor>rohan</o:LastAuthor>
-  <o:Revision>13</o:Revision>
-  <o:TotalTime>395</o:TotalTime>
+  <o:LastAuthor>sirhc</o:LastAuthor>
+  <o:Revision>15</o:Revision>
+  <o:TotalTime>398</o:TotalTime>
   <o:Created>2015-05-15T00:51:00Z</o:Created>
-  <o:LastSaved>2015-05-15T01:39:00Z</o:LastSaved>
+  <o:LastSaved>2015-07-10T01:36:00Z</o:LastSaved>
   <o:Pages>1</o:Pages>
-  <o:Words>543</o:Words>
-  <o:Characters>2471</o:Characters>
-  <o:Lines>20</o:Lines>
+  <o:Words>477</o:Words>
+  <o:Characters>2722</o:Characters>
+  <o:Lines>22</o:Lines>
   <o:Paragraphs>6</o:Paragraphs>
-  <o:CharactersWithSpaces>3008</o:CharactersWithSpaces>
+  <o:CharactersWithSpaces>3193</o:CharactersWithSpaces>
   <o:Version>12.00</o:Version>
  </o:DocumentProperties>
 </xml><![endif]-->
@@ -34,7 +34,7 @@ href="GlobalSoldierData_files/colorschememapping.xml">
 <!--[if gte mso 9]><xml>
  <w:WordDocument>
   <w:SpellingState>Clean</w:SpellingState>
-  <w:TrackMoves/>
+  <w:TrackMoves>false</w:TrackMoves>
   <w:TrackFormatting/>
   <w:PunctuationKerning/>
   <w:ValidateAgainstSchemas/>
@@ -335,17 +335,18 @@ href="GlobalSoldierData_files/colorschememapping.xml">
  @font-face
 	{font-family:"Cambria Math";
 	panose-1:2 4 5 3 5 4 6 3 2 4;
-	mso-font-charset:0;
+	mso-font-charset:1;
 	mso-generic-font-family:roman;
+	mso-font-format:other;
 	mso-font-pitch:variable;
-	mso-font-signature:-536870145 1107305727 0 0 415 0;}
+	mso-font-signature:0 0 0 0 0 0;}
 @font-face
 	{font-family:Calibri;
 	panose-1:2 15 5 2 2 2 4 3 2 4;
 	mso-font-charset:0;
 	mso-generic-font-family:swiss;
 	mso-font-pitch:variable;
-	mso-font-signature:-536870145 1073786111 1 0 415 0;}
+	mso-font-signature:-520092929 1073786111 9 0 415 0;}
 @font-face
 	{font-family:Consolas;
 	panose-1:2 11 6 9 2 2 4 3 2 4;
@@ -510,10 +511,12 @@ ul
 	mso-ascii-font-family:Calibri;
 	mso-ascii-theme-font:minor-latin;
 	mso-hansi-font-family:Calibri;
-	mso-hansi-theme-font:minor-latin;}
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;}
 </style>
 <![endif]--><!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext="edit" spidmax="1026"/>
+ <o:shapedefaults v:ext="edit" spidmax="3074"/>
 </xml><![endif]--><!--[if gte mso 9]><xml>
  <o:shapelayout v:ext="edit">
   <o:idmap v:ext="edit" data="1"/>
@@ -783,7 +786,7 @@ style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span></span><![
 style='font-size:11.0pt;font-family:"Arial","sans-serif"'>Soldier <span
 class=SpellE>Options<span style='text-decoration:none;text-underline:none'>:ARRAY</span></span></span></u><span
 style='font-size:11.0pt;font-family:"Arial","sans-serif"'>: [DOW, <span
-class=SpellE>UAmmo</span>, <span class=SpellE>AnitTank_Air</span>]<o:p></o:p></span></p>
+class=SpellE>UAmmo</span>, <span class=SpellE>AnitTank_Air</span>, ISCAPTURED]<o:p></o:p></span></p>
 
 <p class=MsoPlainText style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level2 lfo2'><![if !supportLists]><span
 style='font-size:11.0pt;font-family:"Arial","sans-serif";mso-fareast-font-family:
@@ -871,6 +874,26 @@ style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span></span><![endif]
 style='font-size:11.0pt;font-family:"Arial","sans-serif"'>&quot;RANDOM&quot; =
 AI will be provided with either an AA or AT weapon and correct ammo.<span
 style='mso-spacerun:yes'>  </span>50/50 chance of either.<o:p></o:p></span></p>
+
+<p class=MsoPlainText style='margin-left:.5in;text-indent:-.25in;mso-list:l0 level2 lfo2'><![if !supportLists]><span
+style='font-size:11.0pt;font-family:"Arial","sans-serif";mso-fareast-font-family:
+Arial'><span style='mso-list:Ignore'>d)<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='font-size:11.0pt;font-family:"Arial","sans-serif"'>ISCAPTURED<o:p></o:p></span></p>
+
+<p class=MsoPlainText style='margin-left:.75in;text-indent:-.25in;mso-list:
+l0 level3 lfo2'><![if !supportLists]><span style='font-size:11.0pt;font-family:
+"Arial","sans-serif";mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>i)<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+style='font-size:11.0pt;font-family:"Arial","sans-serif"'>true = AI will not be
+fired upon by other AI, even of opposite faction<o:p></o:p></span></p>
+
+<p class=MsoPlainText style='margin-left:.75in;text-indent:-.25in;mso-list:
+l0 level3 lfo2'><![if !supportLists]><span style='font-size:11.0pt;font-family:
+"Arial","sans-serif";mso-fareast-font-family:Arial'><span style='mso-list:Ignore'>ii)<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span><![endif]><span
+style='font-size:11.0pt;font-family:"Arial","sans-serif"'>Has no impact on
+&quot;CAPTURE&quot; AI logic. Capture AI logic will set/unset this flag on its
+own.<o:p></o:p></span></p>
 
 <p class=MsoPlainText style='margin-left:.75in'><span style='font-size:11.0pt;
 font-family:"Arial","sans-serif"'><o:p>&nbsp;</o:p></span></p>

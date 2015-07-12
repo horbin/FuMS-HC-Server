@@ -51,10 +51,12 @@ _lootData =
 // Loot Option title, and box to be used.  If box = 'VEHICLE' then loot is intended to be placed in a vehicle.
   ["Truck01","box_nato_ammo_f"],
   [// All weapons and quantity  
-   
+     ["LMG_Mk200_F", 2],
+      ["arifle_MXM_Black_F", 2]
   ],
   [// All magazines and quantity
-   
+     ["30Rnd_65x39_caseless_mag_Tracer", 4],
+      ["200Rnd_65x39_cased_Box_Tracer", 4]
   ],
   [// All items and quantity
       ["meatballs_epoch", 5],
@@ -67,7 +69,7 @@ _lootData =
       ["Heal_EPOCH",1]
   ],// All backpacks and quantity
   [
-    
+     [Backpacks_ALL, 2]
   ]
  ],  //*********** Loot************************ 
  [

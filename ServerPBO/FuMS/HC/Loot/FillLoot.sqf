@@ -32,7 +32,7 @@ if ( (TypeName _pos) == "OBJECT") then
     // ASSERT value passed is a vehicle object!
     _isVehicle = true;
 };
-_box = [];
+_box = objNull;
 //diag_log format ["## FillLoot: _lootOption:%1 _pos:%2 LOOTDATA index:%3",_lootOption, _pos, _this select 2];
 if (_lootOption != "NONE") then
 {   
@@ -83,7 +83,7 @@ if (_lootOption != "NONE") then
                     diag_log format ["##FillLoot: SmokeBox Proximity:%1 Dur:%2 minutes Colors:%3",FuMS_SmokeProximity, FuMS_SmokeDuration, FuMS_SmokeColors];
                     [_box] spawn
                     {
-                        private ["_box","_smoke01","_smokeStopTIme","_smokeOn","_players","_color","_done"];
+                        private ["_box","_smoke01","_smokeStopTIme","_smokeOn","_color","_done","_entities"];
                         _box = _this select 0;                                             
                         _done = false;
                         _smokeOn = false;
@@ -92,14 +92,19 @@ if (_lootOption != "NONE") then
                             //if (FuMS_SmokeProximity ==0) then {_smokeOn=true;FuMS_SmokeProximity=2000;_smokeStopTime = time+60*FuMS_SmokeDuration;};
                             while {!_smokeOn} do
                             {
-                                if (isNil "_box") exitwith {};                                
+                                if (isNil "_box") exitwith {};    
+                                if (isNull _box) exitwith {}; 
+                                _entities = _box nearEntities FuMS_SmokeProximity;
+                                if (count _entities > 0) then
                                 {
-                                    if (isPlayer _x) exitwith
                                     {
-                                        _smokeOn = true;
-                                        _smokeStopTime = time+60*FuMS_SmokeDuration;
-                                    };   
-                                }foreach (_box nearEntities FuMS_SmokeProximity);                                
+                                        if (isPlayer _x) exitwith
+                                        {
+                                            _smokeOn = true;
+                                            _smokeStopTime = time+60*FuMS_SmokeDuration;
+                                        };   
+                                    }foreach _entities;
+                                };
                                 sleep 5;
                             };
                             while {_smokeOn and !isNil "_box"} do
@@ -128,9 +133,12 @@ if (_lootOption != "NONE") then
                 clearItemCargoGlobal _box;              
             };
             // box complete, now ready to fill box, vehicle, or scatter loot!
+            private ["_numItems"];
             _numItems = 0;
+            //diag_log format ["<FuMS> FillLoot: Filling %1 with loot!",_box];
+            
             {                
-             //   diag_log format ["##FillLoot: Weapons: _x:%1, _x[0]:%2, _x[1]:%3", _x, _x select 0, _x select 1];
+               // diag_log format ["<FuMS> FillLoot: Weapons: _x:%1, _x[0]:%2, _x[1]:%3", _x, _x select 0, _x select 1];
                 // _x[0] = "weapon name" or 'array of weapon names'
                 // _x[1] = quantity to add.
                 if (TypeName (_x select 0) == "ARRAY") then
@@ -148,12 +156,13 @@ if (_lootOption != "NONE") then
                 }
                 else
                 {
-                    _box addWeaponCargoGlobal [_item, _number]; 
+            //        diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
+                    if (_number > 0 ) then {_box addWeaponCargoglobal [_item, _number]; };                    
                 };
                 _numItems = _numItems + _number;
             }foreach _weapons;
             {
-              //  diag_log format ["##FillLoot: Magazines: _x:%1 _x[0]:%2 _x[1]:%3", _x, _x select 0, _x select 1];
+               // diag_log format ["<FuMS> FillLoot: Magazines: _x:%1 _x[0]:%2 _x[1]:%3", _x, _x select 0, _x select 1];
                 if (TypeName (_x select 0) == "ARRAY") then
                 {
                     _item = ((_x select 0) call BIS_fnc_selectRandom);
@@ -167,12 +176,13 @@ if (_lootOption != "NONE") then
                     [_pos, _item, _number, "MAGAZINE"] call FuMS_fnc_HC_Loot_Scatter;
                 }else
                 {
-                    _box addMagazineCargoGlobal [_item, _number];   
+               //     diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
+                    _box addMagazineCargoglobal [_item, _number];   
                 };
                 _numItems = _numItems + _number;
             }foreach _magazines;
             {
-               // diag_log format ["##FillLoot: Items: _x:%1  _x[0]:%2  _x[1]:%3", _x, _x select 0, _x select 1];
+              //  diag_log format ["<FuMS> FillLoot: Items: _x:%1  _x[0]:%2  _x[1]:%3", _x, _x select 0, _x select 1];
                 if (TypeName (_x select 0) == "ARRAY") then
                 {
                     _item = (_x select 0) call BIS_fnc_selectRandom;
@@ -185,13 +195,14 @@ if (_lootOption != "NONE") then
                 {
                     [_pos, _item, _number, "ITEM"] call FuMS_fnc_HC_Loot_Scatter;       
                 }else
-                {        
-                    _box addItemCargoGlobal [_item, _number]; 
+                {       
+             //       diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
+                    _box addItemCargoglobal [_item, _number]; 
                 };
                 _numItems = _numItems + _number;
             }foreach _items;
             {
-             //   diag_log format ["##FillLoot: Backpacks: _x:%1 _x[0]:%2 _x[1]:%3", _x, _x select 0, _x select 1];
+                //diag_log format ["<FuMS> FillLoot: Backpacks: _x:%1 _x[0]:%2 _x[1]:%3", _x, _x select 0, _x select 1];
                 if (TypeName (_x select 0) == "ARRAY") then
                 {
                     _item = (_x select 0) call BIS_fnc_selectRandom;
@@ -202,12 +213,36 @@ if (_lootOption != "NONE") then
                      [_pos, _item, _number, "BACKPACK"] call FuMS_fnc_HC_Loot_Scatter;
                 }else
                 {
-                    _box addBackpackCargoGlobal [_item, _number]; 
+              //      diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
+                    _box addBackpackCargoglobal [_item, _number]; 
                 };
                 _numItems = _numItems + _number;
             }foreach _backpacks;
             //initialize FuMSLoot variable
-            if (!(TypeName _box == "ARRAY")) then {            _box setVariable ["FuMS_Loot", [0, _numItems], true];            };
+           if (!(TypeName _box == "ARRAY")) then { _box setVariable ["FuMS_Loot", [0, _numItems], true];            };
+          diag_log format ["<FuMS> FillLoot: %1 items added to %2",_numItems, _box];
+           // private ["_packs","_ammo","_items","_weapons","_lootItems","_actualNumItems"];
+            if (TypeName _box != "ARRAY") then
+            {
+                _packs = getBackpackCargo _box;
+                _ammo = getmagazineCargo _box;
+                _items = getItemCargo _box;
+                _weapons = getWeaponCargo _box;
+                _lootItems = [[_packs],[_ammo],[_items],[_weapons]];
+                _actualNumItems = 0;
+                // diag_log format ["_lootItems = %1",_lootItems];
+                {
+                    //  diag_log format ["category = %1",_x];
+                    {
+                        //    diag_log format ["quantity = %1",_x];
+                        {
+                            //       diag_log format ["scalar = %1",_x];
+                            _actualNumItems = _actualNumItems + _x;
+                        }foreach (_x select 1); // [5,10]]
+                    }foreach _x; // [["5ItemsType1","10ItemsType2"],[5,10]]
+                }foreach _lootItems; 
+                diag_log format ["<FuMS> FillLoot: %1 has %2 items (verified)",_box, _actualNumItems];
+            };
         };   
     }foreach _lootData;
     if (!_found) then

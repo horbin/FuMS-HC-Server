@@ -43,7 +43,12 @@ else
                 _pos = [_pos] call FuMS_fnc_HC_Util_FindNearestRoad;
             };
         };     
-        if (_veh isKindOf "Air") then {_mode = "FLY";};		
+        if (_veh isKindOf "Air") then
+        {
+            _mode = "FLY";
+          //  diag_log format ["<FuMS> GetSafeSpawnVehPos: creating a flying vehicle: %1",_veh];
+        
+        };		
     }else // No DRIVER
     {
         // find nearest road for a 'safe position' if a clear spot can not be found within 100m of the desired spawn location!

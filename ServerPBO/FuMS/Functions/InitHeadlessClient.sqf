@@ -52,6 +52,7 @@ diag_log format ["<FuMS> InitHeadlessClient:  Starting transfer of %2 Custom Scr
 }foreach FuMS_CustomScripts;
 _hc PublicVariableClient "FuMS_CustomScripts";
 
+_hc PublicVariableClient "FuMS_UnMannedVehicles";
 
 
 
@@ -112,6 +113,7 @@ if (count FuMS_HCIDs == 1) then
 {
     _x publicVariableClient "FuMS_HCIDs";
     _x publicVariableClient "FuMS_HCNames";
+    diag_log format ["<FuMS> InitHeadlessClient: Pushing %1:%2 to all Admins:%3",FuMS_HCIDs, FuMS_HCNames, FuMS_AdminIDs];
 }foreach FuMS_AdminIDs;
 
 //FuMS_Server_Operational = true; // placed here also, due to random hang-ups by the HC. Seems it does not get the broadcast value during JIP....sometimes.

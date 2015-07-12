@@ -8,6 +8,35 @@ if !(hasInterface) then
     private ["_serverOptions","_themeNumber","_radchat","_i","_abort","_msg","_dat","_dat2"];  
 	
     diag_log format ["<FuMS> FuMsnInit: Script Transfer complete: FuMS Initializing!"];          
+
+    "FuMS_CaptiveAction" addpublicVariableEventHandler 
+    {
+        _data = _this select 1;
+      //  diag_log format ["<FuMS> FuMsnInit: CaptiveAction: _data:%1",_data];
+        // 0 = the unit  1=the player, 2=the action    
+        if (_data select 2 == "Everyone Out!") then
+        {
+            // action attached to the vehicle captives are in.
+            _crew = crew vehicle (_data select 0);
+          //  diag_log format ["<FuMS> FuMsnInit: CaptiveAction: _crew: %1",_crew];
+            {
+                private ["_var"];
+                _var = _x getVariable "FuMS_CaptiveAction";
+                if (!isNil "_var") then
+                {                 							
+                    if (_x != vehicle _x) then
+                    {
+                        _x setVariable ["FuMS_CaptiveAction",["Everyone Out!",_data select 1]];
+                    };                    
+                };
+            }foreach _crew;
+        }else
+        {
+            (_data select 0) setVariable ["FuMS_CaptiveAction",[_data select 2, _data select 1]];
+        };
+        // CaptiveAction is [ action , player ] pair!
+        //diag_log format ["<FuMS> FuMsnInit: PVEH CaptiveAction %1 set",_data];
+    };
     
     //ASSERT BaseServer, BaseLoot, and BaseSoldier data now on HC  
     if (!isServer) then
@@ -55,7 +84,9 @@ if !(hasInterface) then
         FuMS_RC_EnableAIChatter = _radchat select 4;
         FuMS_RC_AIRadioRange = _radchat select 5;
         FuMS_RC_REINFORCEMENTS = []; // used in LogicBomb to detect when a group calls for help and BaseOps approves assistance!    
-         // Soldier Defaults
+        FuMS_RadioChannel = [];
+        
+         // Soldier Defaults               
         _dat = FuMS_ServerData select 5;
         FuMS_SoldierMagCount_Rifle = _dat select 0;
         FuMS_SoldierMagCount_Pistol = _dat select 1;
@@ -238,7 +269,7 @@ if !(hasInterface) then
 		  [_x, _themeNumber] spawn FuMS_fnc_HC_MsnCtrl_ControlLoop;
         //    diag_log format ["*********************************************************************"];
          //   diag_log format ["*********************************************************************"];
-            diag_log format ["<FuMS> FUMSN Init: Fulcrum Mission System control loops starting for %1.", _x];    
+            diag_log format ["<FuMS> FUMSN Init: Fulcrum Mission System control loops starting for %1 at index %2.", _x, _themeNumber];    
          //   diag_log format ["*********************************************************************"];
          //   diag_log format ["*********************************************************************"];
             sleep 5; //pause for 5 secs to permit this control loop to init, and launch its 1st mission.                        

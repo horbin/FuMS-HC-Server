@@ -8,20 +8,8 @@ private ["_victim","_killer","_droppedLauncher","_isRPG"];
 _victim = _this select 0;
 _killer = _this select 1;
 
-//diag_log format ["##AI_Killed:%2 PriWeapon:%1", primaryweapon _victim,_victim];
-//diag_log format ["##AI_Killed:%2 All Weapons:%1", weapons _victim,_victim];
+if (isNull _victim) exitWith {};
 
-//_victim RemoveMagazineGlobal "RPG32_HE_F";
-//_victim RemoveMagazineGlobal "RPG32_F";
-//_victim RemoveWeaponGlobal "launch_RPG32_F";
-//    [], //Uniforms
-//            [], // Vests
-//            [], // Backpacks.
-//            [], // Helmets
-//            ["launch_RPG32_F"], // Weapons
-//            ["RPG32_HE_F","RPG32_F"], // Magazines
-//            [] // Items
-//diag_log format ["<FuMS> AIKilled: Victim:%1  SoldierOnly Items:%2",_victim, FuMS_SoldierOnlyItems];
 private ["_i","_itemList"];
 for [{_i=0},{_i < count FuMS_SoldierOnlyItems},{_i=_i+1}]do
 {
@@ -77,18 +65,27 @@ for [{_i=0},{_i < count FuMS_SoldierOnlyItems},{_i=_i+1}]do
           //  diag_log format ["##AI_Killed: Checking %1, which is typeOf:%2",_x, typeOf _x];
             if (_x isKindOf "WeaponHolderSimulated") then
             {
-                //deleteVehicle _x;                
-                _isRPG = getWeaponCargo _x;
-                _firstItem = _isRPG select 0;
-              // diag_log format ["<FuMS> AI_Killed: Trying to delete RPG from %1 which contains %2",_x, _isRPG];
+                // _x  is the container created when the AI dropped the object.  
+                _container = _x;
+                _isRPG = getWeaponCargo _x; // array of objects
+                _firstItem = _isRPG select 0; // 1st object [["launch_I_Titan_F"],[1]]
+                _firstItemName = _firstItem select 0; // "launch_I_Titan_F"
+             //  diag_log format ["<FuMS> AI_Killed: Container:%1 contains %2.  1st Object is %3",_x, _isRPG,_firstItem];
                 if (count _firstItem != 0) then
-                {                   
+                {       
+                    // something is in the container.
                     {       
+                        // check the item in the container against all 'prohibited' items in the FuMS_SoldierOnlyItems list.
                          if (count _x != 0) then
                         {
-                        //    diag_log format ["<FuMS> AI_Killed: comparing %1 and %2",_firstItem select 0, _x];
+                          //  diag_log format ["<FuMS> AI_Killed: comparing %1 and %2",_firstItemName, _x];
                             {
-                                if ((_firstItem select 0) == _x) then { clearWeaponCargo _firstItem;};   
+                                if (_firstItemName == _x) then
+                                { 
+                                   // if (typename (_firstItem select 0) == "STRING") then { clearWeaponCargo (_firstItem);}
+                                   // else {clearWeaponCargo (_firstItem select 0);};
+                                    clearWeaponCargo _container;
+                                };   
                             }foreach _x;
                         };
                     }foreach FuMS_SoldierOnlyItems;
@@ -163,9 +160,10 @@ if ((_killer == vehicle _killer)) then
     {
         private ["_themeIndex"];
         _themeIndex = _var select 0;
-        FuMS_BodyCount set [_themeIndex, ((FuMS_BodyCount select _themeIndex) + 1)];
-        diag_log format ["<FuMS> AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
-        diag_log format ["<FuMS> AI_Killed: Killer:%3  side=%1  Victim Side:%2", side _killer,  side _victim, _killer];
+       //FuMS_BodyCount set [_themeIndex, ((FuMS_BodyCount select _themeIndex) + 1)];
+       // diag_log format ["<FuMS> AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
+        [_victim] spawn FuMS_fnc_HC_MsnCtrl_LogicBomb_CheckforBodyCount;
+        diag_log format ["<FuMS> AI_Killed: Killer:%2  side=%1", side _killer, _killer];
     };    
     if (side _victim == civilian) then
     { 

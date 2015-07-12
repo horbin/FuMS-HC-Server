@@ -24,16 +24,18 @@ FuMS_ServerData =
         // use this block to easily turn off/on your various mission sets.
         // -1 = all HC's.  0= Server only,  1=1st HC to connect, 2=2nd, etc.
         //  Note: Server option not currenty operational.
-        ["Test",-1], //Remove this theme if on a production server.
-        ["HeloPatrols",-1], // 2 sets of 3 armed helo's patrol the skys!!!      
+    //   ["Admin",-1],
+       ["Test",-1], //Remove this theme if on a production server.
+      ["HeloPatrols",-1], // 2 sets of 3 armed helo's patrol the skys!!!      
         ["SEM",-1], // basic old school Arma2 Epoch encounters
-       ["TownRaid",-1], // random town is raided by 4 truck loads of humans!
+     ["TownRaid",-1], // random town is raided by 4 truck loads of humans!
       ["Small",-1],  // 6 man groups invade a random village
-        ["Aquatic",-1], // 3 coastal areas w/ boats and ai
+      ["Aquatic",-1], // 3 coastal areas w/ boats and ai
         ["MadScience",-1], // 10 random towns become infected with crazzed clones
         ["Convoy",-1], // 2 random convoys of 3 vehicles move across the map.
-       ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
-        ["Jurassic",-1] // creates 3 encounters with wondering Raptors and some scattered loot.
+      ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
+        ["Jurassic",-1], // creates 3 encounters with wondering Raptors and some scattered loot.
+        ["Captive", -1] // Mission in which 7 hostages must be rescued from the humans within 30minutes while fending off paradropped reinforcemnets.
 
     ],
     [  // Event and AI Radio messsage behavior
@@ -76,7 +78,30 @@ FuMS_ServerData =
             ["launch_RPG32_F","launch_I_Titan_F"], // Weapons
             ["RPG32_HE_F","RPG32_F","Titan_AA"], // Magazines
             [] // Items
+        ],
+        // List of UAV and UGV's that FuMS will recognize and populate with proper AI logic when created in the vehicle section of missions.
+        // vehicles created in the 'buildings' section will be inactive!
+        [
+            // side 'GUER' or Resistance (ie the bad guys)
+            "I_UGV_01_rcws_F",
+            "I_UAV_01_F",
+            "I_UAV_02_F",
+            "I_UAV_02_CAS_F",
+            "I_UGV_01_F"     ,
+            // side West
+             "B_UGV_01_rcws_F",
+            "B_UAV_01_F",
+            "B_UAV_02_F",
+            "B_UAV_02_CAS_F",
+            "B_UGV_01_F",
+            // side East
+             "O_UGV_01_rcws_F",
+            "O_UAV_01_F",
+            "O_UAV_02_F",
+            "O_UAV_02_CAS_F",
+            "O_UGV_01_F"     
         ]
+        
 	],
 	[ // Loot Defaults
 

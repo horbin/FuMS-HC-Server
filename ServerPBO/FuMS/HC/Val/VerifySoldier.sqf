@@ -122,7 +122,7 @@ while {true} do
 		_dat3 = _dat2 select 11;
 		_pre= format ["%1:Special Settings:",_name];
         if (TypeName _dat3 !="ARRAY") exitWith {_abort=true; _msg=format ["%1should in form [true,true,true] or [true,true,""AIR""], found %2",_pre,_dat3];};
-		if (count _dat3 !=3) exitWith {_abort=true; _msg=format ["%1should array of 3 true/false values, found %2",_pre,_dat3];};	
+		if (count _dat3 !=3 and count _dat3 !=4) exitWith {_abort=true; _msg=format ["%1should array of 3 or 4 true/false values, found %2",_pre,_dat3];};	
         if (TypeName (_dat3 select 0) != "BOOL") exitWith {_abort=true; _msg=format ["%1DiverOverWater flag should be  true/false value, found %1",_dat3 select 0];};     
         if (TypeName (_dat3 select 1) != "BOOL") exitWith {_abort=true; _msg=format ["%1Unlimited Ammo flag should be  true/false value, found %1",_dat3 select 1];};     
         if (TypeName (_dat3 select 2) != "BOOL" and TypeName (_dat3 select 2) !="STRING") exitWith {_abort=true; _msg=format ["%1AntiTank/AntiAir flag should be  true/false, ""AIR"", or ""LAND"", found %1",_dat3 select 2];};     

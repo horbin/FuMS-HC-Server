@@ -11,7 +11,7 @@ private ["_inputString","_maxValue","_list"];
 _inputString = toupper (_this select 0);
 _maxValue = _this select 1; 
 _list = [];
-
+if (_inputString == "NONE") exitwith {_list};
 if (_inputString == "ALL") then
 {
   private ["_i"];

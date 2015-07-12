@@ -40,7 +40,8 @@ _scripts =
                     "ScriptPatrol.sqf",
                     "TrackRoute.sqf",
                     "TowerGuard.sqf",
-                    "StaticGunner.sqf"
+                    "StaticGunner.sqf",
+                    "Captured.sqf"
                 ]
             ],
             [
@@ -74,10 +75,11 @@ _scripts =
         [
             "MsnCtrl",
             [
-                "LogicBomb.sqf", 
-                "MissionInit.sqf", 
+         //       "LogicBomb.sqf", 
+        //        "MissionInit.sqf", 
                 "ControlLoop.sqf", 
-                "StaticMissionControlLoop.sqf"
+                "StaticMissionControlLoop.sqf",
+                "NewLogicBomb.sqf"
             ],
             [
                 "Spawn",
@@ -100,20 +102,37 @@ _scripts =
                     "GetSafeMissionSpawnPos.sqf",
                     "GetIndexers.sqf"
                 ]
+            ],
+            [
+                 "LogicBomb",
+                [
+                    "RemoveDecayObjects.sqf",
+                    "TriggerBomb.sqf",
+                    "ActionBomb.sqf",
+                    "LogicBomb.sqf",
+                    "SpawnTrigger.sqf",
+                    "CheckforBodyCount.sqf",
+                    "TransferObjects.sqf"
+                ]
             ]
         ],
         [
             "Triggers",
             [
-                "AllDeadorGone.sqf",
+             //   "AllDeadorGone.sqf",
                 "BodyCount.sqf",
                 "Detect.sqf",
                 "ProxPlayer.sqf",
                 "Timer.sqf",
-                "UnitCount.sqf",
+             //   "UnitCount.sqf",
+                "LowUnitCount.sqf",
+                "HighUnitCount.sqf",
                 "ZuppaCapture.sqf",
-                "DmgBuildings.sqf",
-                "DmgVehicles.sqf"
+             //   "DmgBuildings.sqf",
+             //   "DmgVehicles.sqf",
+                "ZuppaCaptureInit.sqf",
+                "DmgObjects.sqf",
+                "CaptiveCount.sqf"
             ]
         ],
         [

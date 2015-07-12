@@ -1,68 +1,59 @@
 //Detect.sqf
 // Horbin
-// 1/4/15
-// INPUTS: array [grpAction, vehicleAction], array groups, array vehicles, state
-// OUTPUS: 1 based upon if a member in the groups or vehicles array detects a player
-//  grpAction = 0 - all units in the array are checked for detecting players
-//  grpAction =-1 - no units in the array are checked.
-//  grpAction = X - only units in that specific group are checked.
-private ["_data","_state","_grpDet","_vehDet","_isDetected","_searcher","_result","_groups","_vehicles"];
-_data = _this select 0;
-_result = 0;
-if (count _data == 2) then
+// 6/28/2015
+
+// Detect will not just need to go through the list of groups and vehicles in the mission and
+//  check if the 'FuMS_ISDETECTOR" is set, and if it is, then see if that unit 'sees' a player.
+
+private ["_params","_msnTag","_groups","_vehicles","_isDetected","_units","_var"];
+
+_params = _this select 0;
+_msnTag = _params select 0;
+
+// Get list of groups and vehicles
+_groups = missionNameSpace getVariable ( format ["%1_Groups",_msnTag]);
+_vehicles = missionNameSpace getVariable ( format ["%1_Vehicles",_msnTag]);
+
+_isDetected = false;
+
 {
-    _groups = _this select 1;
-    _vehicles = _this select 2;
-    _state = _this select 3;
-    _grpDet = _data select 0;
-    _vehDet = _data select 1;
-    _isDetected = false;
-    //diag_log format ["###Trigger Watch:State:%1 Detected: Group:%2, Vehicle:%3", _state, _grpDet, _vehDet];
-   // diag_log format ["###Trigger Watch: _groups:%1",_groups];
-    if (_grpDet > -1) then
-    {
-        if (_grpDet == 99) then
-        {
-            {
-             //   diag_log format ["###Trigger Watch: _units:%1", units _x];
-                {
-                    if (! isNull(_x findNearestEnemy _x)) then
-                    {
-                        _isDetected = true;  
-                    };
-                }foreach units _x;
-            }foreach _groups;
-        }
-        else
-        {
-            {
-                if (! isNull(_x findNearestEnemy _x)) then
-                {
-                    _isDetected = true;  
-                };       
-            }foreach units (_groups select _grpDet);
-        };
-    };
-    if (_vehDet > -1) then
-    {
-        if (_vehDet == 99) then
-        {
-            {
-                if (! isNull(_x findNearestEnemy _x)) then
-                {
-                    _isDetected = true;  
-                };      
-            }foreach _vehicles;
-        }
-        else
-        {
-            _searcher = _vehicles select _vehDet;
-            if (! isNull(_searcher findNearestEnemy _searcher)) then
-            {
-                _isDetected = true;  
-            };        
-        };
-    };
-    if (_isDetected) then {_result = 1;};
+	_units = units _x;
+	{
+		_var = _x GetVariable "FuMS_DETECTOR";
+		if (!isNil "_var") then
+		{
+			if (_var) then
+			{
+				if (! isNull (_x findNearestEnemy _x)) exitWith
+				{
+					_isDetected = true;
+				};
+			};
+		};
+	}foreach _units;
+	if (_isDetected) exitWith {};
+}foreach _groups;
+if (!_isDetected) then
+{
+	// Vehicles. Even if an AI originally not ON the detector should enter a vehicle that was, that unit's
+	//   detection will count for the vehicle!
+	{
+		_var = _x GetVariable "FuMS_DETECTOR";
+		if (!isNil "_var") then
+			{
+				if (_var) then
+				{	
+					_units = crew _x;
+					{
+						if (! isNull (_x findNearestEnemy _x)) exitWith
+						{
+							_isDetected = true;
+						};	
+					}foreach _units;
+				};
+			};
+		if (_isDetected) exitWith {};
+	}foreach _vehicles;
 };
-_result
+//diag_log format ["<FuMS Detected: #Groups:%1  #Vehicles:%2 status:%3",count _groups, count _vehicles, _isDetected];
+_isDetected

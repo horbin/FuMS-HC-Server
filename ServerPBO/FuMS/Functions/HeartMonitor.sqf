@@ -37,12 +37,17 @@ _hcID = owner _owner;
     missionNamespace setVariable [_pulse, false];  // set false to start.
     
     // now wait for the 1st heartbeat. This one is sent AFTER the HC finishes all of its initializations!
-    waituntil
+    _status = false;
+    while {!_status} do
     {
         uiSleep 2;
         diag_log format ["<FuMS> HeartMonitor: Waiting for HC:%1 initialization to finalize with signature %2",_ownerName, _pulse];
-        _status = missionNamespace getVariable _pulse;
-        _status
+     //   if (isNull _owner) exitWith
+     //   {
+     //       diag_log format ["<FuMS> HeartMonitor: HC:%1 disconnected prior to completing initialization. FuMS abort!",_ownerName];
+     //       _dead = true;
+     //   };
+        _status = missionNamespace getVariable _pulse;       
     };
     
     FuMS_ServerIsClean = true;   

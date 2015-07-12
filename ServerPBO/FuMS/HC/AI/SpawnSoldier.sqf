@@ -93,13 +93,14 @@ _typeFound = false;
             }
             else
             {
-                if (_type == "UGV") then
-                {
-                    _unit = _group createUnit ["I_UGV_01_rcws_F", _pos, [], 0, "FORM"];
-                }else
-                {
+            //    if (_type == "UGV") then
+            //    {
+             //       _unit = _group createUnit ["I_UAV_AI", _pos, [], 0, "FORM"];
+                
+             //   }else
+             //   {
                     _unit = _group createUnit["I_Soldier_EPOCH", _pos, [], 0, "FORM"];
-                };
+             //   };
             };
             // NOTE if I_Soldier_EPOCH type is changed, AllDeadorGone.sqf will need to be modified
             removeUniform _unit;
@@ -126,6 +127,7 @@ _typeFound = false;
                 _priweapon = _gear select 0;
                 _unit addWeapon _priweapon;
                 _mag = getArray (configFile >> "CfgWeapons" >> _priweapon >> "magazines") select 0;
+             //   diag_log format ["<FuMS> SpawnSoldier: %1 with %2 has ammo %3",_unit,_priweapon,_mag];
                 _unit addMagazines [ _mag, FuMS_SoldierMagCount_Rifle];
                 // _unit addMagazine [(_gear select 1),_numRifleMags];
             }else
@@ -245,7 +247,17 @@ _typeFound = false;
                     _unit addMagazines [_ammo2, 1];
                     _unit addWeapon _launcher;   
                 }
-            };            
+            };    
+            _isCaptured = _flags select 3;
+            if (!isNil "_isCaptured") then
+            {
+                if (_isCaptured) then
+                {
+                    _unit setCaptive true;
+                     diag_log format ["<FuMS> SpawnSoldier: Set %1 as a captive:%2",_unit,captive _unit];
+                };
+//                diag_log format ["<FuMS> SpawnSoldier: Set %1 as a captive:%2",_unit,captive _unit];
+            };
             // Set skills
             _skills = _x select 1;
             _types = ["aimingAccuracy","aimingShake","aimingSpeed","spotDistance","spotTime","courage","reloadSpeed","commanding"];

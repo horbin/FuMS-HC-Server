@@ -9,11 +9,16 @@
 private ["_buildings","_buildingData","_eCenter","_themeIndex","_curMission","_vehicles"];
 _buildingData = _this select 0;
 _eCenter = _this select 1;
-_themeIndex = _this select 2;
+_lineage = _this select 2;
 _curMission = _this select 3;
 
 _buildings = [];
 _vehicles = [];
+// establish global variable prefix
+_themeIndex = _lineage select 0;
+_generation = _lineage select 1;
+_offspringID = _lineage select 2;
+_msnTag = format ["FuMS_%1_%2_%3",_themeIndex,_generation,_offspringID];
 
 if (!isNil "_buildingData") then
 {
@@ -83,12 +88,15 @@ if (!isNil "_buildingData") then
                         if ( _type isKindOf "Air" or _type isKindOf "LandVehicle" or _type isKindOf "Ship") then
                         {                       								                     
                             _bldg = [ _type, _newPos, [], 0 , "CAN_COLLIDE"] call FuMS_fnc_HC_Util_HC_CreateVehicle;
+                            
                             _vehicles = _vehicles + [_bldg];
                         }else
                         {																		
                             _bldg = createVehicle [ _type, _newpos,[],0,"CAN_COLLIDE"];
                             _buildings = _buildings + [_bldg];
                         };
+                        _bldg setVariable ["LINEAGE",_msnTag, false];
+                        
                         if (_x select 4) then
                         {
                             _bldg setDir (_x select 2);
@@ -141,7 +149,8 @@ if (!isNil "_buildingData") then
                         _settings = _x select 3;
                     //    diag_log format ["<FuMS> SpawnBuildings: Vehicle found: pos:%1,  type:%2",_newpos, _type];
                         _data = [_newpos, "none", _type] call FuMS_fnc_HC_MsnCtrl_Util_GetSafeSpawnVehPos;	                     
-                        _veh = [ _type, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	                                                
+                        _veh = [ _type, _data select 0, [], 30 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	 
+                        _veh setVariable ["LINEAGE",_msnTag, false];
                       //  diag_log format ["<FuMS> SpawnBuildings: created:%1, _type:%2",_veh,_type];                                                                  
                         _vehicles = _vehicles + [_veh];                            
                         _veh setDir _rotation;                        
@@ -170,7 +179,7 @@ if (!isNil "_buildingData") then
                         _keep = false;
                         if (_x select 3 == 1) then {_keep = true;};
                         _bldg setVariable ["FuMS_PERSIST",_keep,false];
-                        
+                        _bldg setVariable ["LINEAGE",_msnTag, false];
                         [_bldg,_fireEffect] call FuMS_fnc_HC_Util_Effects;
                         
                         // store in HC variable.

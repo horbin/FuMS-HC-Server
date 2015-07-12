@@ -53,39 +53,35 @@
 [
                  
 ],
-// Triggers and Event control.
-[ // NOTE: side RESISTANCE for groups == side GUER for Triggers.
-    [    //WIN Triggers and Controls
-      //["LowUnitCount", "GUER", 0, 0, [0,0]], // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
-      ["ProxPlayer", [0,0], 100, 1], // 1 player is within 100 meters of encounter center.
-      ["BodyCount", 7],
-      ["Reinforce", 25, "Random"]
-    ],
-    [    //LOSE Triggers and Controls
-//      ["HighUnitCount", "GUER",10,40,[0,0]] // 10 enemies get within 40m's of encounter center
-   //   ["TIMER", 15000]   // Encounter fails after 1500 seconds (250 minutes)
-    ],   
-    [    //Phase01 Triggers and Controls
-//      ["Detected",0,0]    //Launch mission if any group or vehicle detects a player
-      
-    ],
-    [    //Phase02 Triggers and Controls
-    
-    ],
-    [    //Phase03 Triggers and Controls
-    
-    ],
-    [    // NO TRIGGERS: Uncomment the line below to simply have this mission execute. Mission triggers from a mission that
-          // launched this mission will continue to be observed.
-    // Uncommenting this line will ignore all triggers defined above, and mission will pass neither a WIN or LOSE result.
-    //   ["NO TRIGGERS"]
-    ]
-],
-
 [
-//    "TestPhase1",  //Phase01
-//    "TestPhase2", //Phase02
-//    "TestPhase3" //Phase03
+	[
+      //Define all the triggers this mission will be using
+	  // Trigger names must be unique within each mission.
+	  // NOTE: "FuMS_KillMe" is a reserved trigger word. Do not use!!!
+	  // NOTE: "OK" is a reserved trigger. Do not define it here.
+	  //  "OK" can be used in the actions section to force an action to occur at mission start!	 
+//	  ["PROX",["ProxPlayer",[0,0],80,1]  ],
+	  ["LUCNT",["LowUnitCount","GUER",1,0,[0,0]]  ]
+//	  ["HUCNT",["HighUnitCount","GUER",6,0,[0,0]] ],
+//	  ["Detect",["Detected","ALL","ALL"] ],
+//	  ["BodyCount",["BodyCount",9] ]
+//	  ["Timer",["TIMER", 1800] ],
+	  //                            offset      radius    time(s)  Name
+//	  ["Zuppa", ["ZuppaCapture",[ [ [-100,-100], 50,         90,  "Point 1" ],
+ //                               [ [100,100],   50,         90,  "Point 2" ]   ]]  ],
+//       ["VehDmg1", ["DmgVehicles", "1",0.8]  ],
+//       ["BldgDmg1",["DmgBuildings","2,3,7",1.0]  ]
+	  
+	],
+	[
+	  // Define what actions should occur when above trigger logics evaluate to true
+	   // Note: a comma between two logics is interpreted as "AND"
+	  [["WIN"],["LUCNT"     ]],  // 
+	//  [["CHILD","Help_Helo",[0,0]],["OK"      ]],  // 
+	// [["Reinforce","Help_Vehicle","Trig4"]], 
+//	  [["LOSE"],["TIMER", "OR", "VehDmg1", "BldgDmg1"]   ],
+      [["END"],["LUCNT"     ]]  
+	]      
 ]
 
 ];

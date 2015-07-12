@@ -92,6 +92,16 @@ _worldname = (toLower worldName);
         ["trinity",[7183.8403, 7067.4727],5300],
         ["utes",[3519.8037, 3703.0649],1000],
         ["zargabad",[3917.6201, 3800.0376],2000],
+        ["australia",[20947,20107],160000,
+            [
+                //Exlusion Areas
+                [[30400,6100,0],[30200,6500,0]] // Clone Lab
+            ],
+            [                        
+                //Default Areas            
+            ]    
+        ],
+        
         [
             "bornholm",
 			[10088.2,9045.73,0],  //Map Center

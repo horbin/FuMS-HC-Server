@@ -20,9 +20,15 @@
 _groupData = _this select 0;
 _eCenter = _this select 1;
 _encounterSize = _this select 2;
-_themeIndex = _this select 3;
+_lineage = _this select 3;
 _silentcheckin = _this select 4;
 _missionName = _this select 5;
+
+_themeIndex = _lineage select 0;
+_generation = _lineage select 1;
+_offspringID = _lineage select 2;
+_msnTag = format ["FuMS_%1_%2_%3",_themeIndex,_generation,_offspringID];
+
 if (isNil "_silentcheckin") then
 {
     _silentcheckin = (((FuMS_THEMEDATA select _themeIndex) select 3) select 0) select 1;
@@ -74,9 +80,11 @@ if (!isNil "_groupData") then
                 _x setVariable ["FuMS_AILOGIC", [ _patrol, _eCenter, _spawnpos, _patrolPatrolLoc, _patternOptions], false];
                 _x setVariable [ "FuMS_XFILL", [_themeIndex, _side, "TRUE"], false];      
                 _x setVariable ["FuMS_MSNTAG", [ ((FuMS_THEMEDATA select _themeIndex) select 0) select 0, _missionName], false];
+                _x setVariable ["FuMS_LINEAGE",_msnTag, false];                
                 [_x] spawn FuMS_fnc_HC_AI_Logic_AIEvac;
                 
-            }foreach units _group;    
+            }foreach units _group;   
+            _group setVariable ["LINEAGE",_msnTag, false];
            // _validOptions = [_group] call FuMS_fnc_HC_Val_Msn_ValidateAILOGIC; 
            // if (_validOptions) then
            // {
@@ -158,13 +166,17 @@ if (!isNil "_groupData") then
                             [_x, _patrolPatrolLoc] spawn FuMS_fnc_HC_Zombies_Logic_Roam;
                         }foreach units _group;                     
                     };
-                       case "TRACKROUTE":
+                    case "TRACKROUTE":
                     {                       
-						 [_group, _patrolPatrolLoc, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_TrackRoute;
+                        [_group, _patrolPatrolLoc, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_TrackRoute;
                     };
-                             case "TOWERGUARD":
+                    case "TOWERGUARD":
                     {                       
-						 [_group, _patrolPatrolLoc, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_TowerGuard;
+                        [_group, _patrolPatrolLoc, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_TowerGuard;
+                    };
+                    case "CAPTURED":
+                    {
+                        [_group, _patrolPatrolLoc, _eCenter, _patternOptions] spawn FuMS_fnc_HC_AI_Logic_Captured;
                     };
                 };
           //  };

@@ -54,7 +54,7 @@ if (toupper _mission == "RANDOM") exitWith
     {
         FuMS_Master_LIST set [ count FuMS_Master_LIST, _mission];
         FuMS_Master_CodeStrings set [count FuMS_Master_CodeStrings, _missionData];
-        // diag_log format ["##ScanMission: Master List:%1",FuMS_Master_LIST];
+        diag_log format ["##ScanMission: Master List:%1",FuMS_Master_LIST];
         {
             if (!isNil "_x") then 
             {

@@ -12,10 +12,13 @@
 //-----Mission Area Setup-----
     "TestMission",  // Mission Title NOSPACES!
     200 ,               // encounter radius
-    "LAND"// Options "LAND","WATER","NONE". Setting this will force a scan of 'encounter Radius' meters around the center of the mission to ensure the same type of water/land is present.
+    "LAND",// Options "LAND","WATER","NONE". Setting this will force a scan of 'encounter Radius' meters around the center of the mission to ensure the same type of water/land is present.
                // This setting should hopefully reduce the chance of the mission being randomly placed too near water for example.
               // this paramater is optional, but if a value is present it MUST be one of the three above values.
               // This option is only used if a mission location is not set via the Theme's 'Locations' section, or the mission loc is not specified elsewhere in the ThemeData.sqf.
+    [0,0,0],
+    "NONE",
+    "NONE"	
 ],[ 
 //------------------------------------------------------------------------------------
 //-----Notification Configuration-----
@@ -32,7 +35,7 @@
 	true,    // Notify players via Radio Message
     "ALL",   // radio channel. "ALL" = no radio required.
     0,         //range from encounter center AI radio's can be heard (0=unlimited.)
-    false,  // Notify players via global message - hint screen on right of game display -
+    true,  // Notify players via global message - hint screen on right of game display -
     true,   // Show encounter area on the map
     30,      // Win delay: Time in seconds after a WIN before mission cleanup is performed
     10       // Lose delay: Time in seconds after a lose before mission cleanup is performed
@@ -185,8 +188,10 @@
  [["RESISTANCE","COMBAT","RED","LINE"],[[1,"Sniper"],[3,"Rifleman"]],[  "TowerGuard",[0,0], [0,0],[150,"ANY"] ]],
 // if "ANY" is changed to a specific building type, ex: "Land_Cargo_Tower_V3_F", they will all spawn into this building type.
 
-[["RESISTANCE","COMBAT","RED","LINE"],[[5,"Hunter"]],["Buildings",[6,6],[0,0],[100]]]
-//[["RESISTANCE","COMBAT","RED","LINE"],[[1,"UGV"]],["BoxPatrol",[50,50],[0,0],[100]]]
+[["RESISTANCE","COMBAT","RED","LINE"],[[5,"Hunter"]],["Buildings",[6,6],[0,0],[100]]],
+[["EAST","SAFE","BLUE","WEDGE"],[[1,"Civ01"]],["Captured",[-50,-50],[-25,-25],[-1,[[100,100]]  ]] ]
+
+//[["RESISTANCE","COMBAT","RED","LINE"],[[1,"UGV"]],["BoxPatrol",[50,50],[50,50],[100]]]
 // these 5 will patrol in and out of the buildings withn 100m of encounter center.
 ],
 // NOTE: if no buildings are located within 'radius' both 'Buildings'  will locate nearest buildings to the encounter and move there!
@@ -228,119 +233,79 @@
    
      [  // Convoy #2                     
     [         // Vehicle                     Offset         Crew (only 1 type!)   Cargo
-    //       [  "B_Truck_01_transport_EPOCH",[-500,-200],[0,""],"None"      ] 
-                 // If driver-less vehicles are desired, place them at the bottom of the list. 
-				 // Troops WILL be placed into 'driver-less' vehicles if the other vehicles are full!!!
+             ["I_UGV_01_rcws_F",[100,100],[0,""],"none"],           
+             ["I_UAV_02_F",[125,100],[0,""],"none"],
+             ["I_UGV_01_F",[175,100],[0,""],"none"]
       ],
       [                 
            // Drivers                                                          # and type  |         Patrol     |    spawn   | dest       | 'Patrol' options
-    //      [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["BoxPatrol",[-600,-200],[-50,50],[0]   ]]
-          
+           [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["BoxPatrol",[100,100],[0,0],[200]   ]]          
       ],
       // Troops : These are distributed across all vehicles in this convoy.                                                         
-     [      //  Troop behaviour and side options                        # and type of Troops                               Patrol logic |  spawn     |dest |'Patrol' options
-  //      [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[4,"Rifleman"]  ],   ["BoxPatrol",[-600,-200],[20,0],[0]   ]]
- //     [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1,"Sniper"],[5,"Rifleman"]     ],   ["BoxPatrol",[-600,-200],[20,20],[0]   ]]
-            // 'dest' for troops is where they will go to perform their 'Patrol Logic' once the disembark the convoy IF their vehicle's driver group is using the 'Convoy' patrol logic.
-             // otherwise troops will remain in vehicle unless it is engaged. Once vehicle destroyed, Troops will move onto their 'Patrol Logic'.
+     [    
      ]
-   ] 
-   
-   
-   
-],
-// Triggers and Event control.
-//  There are 3 general states for a mission. Win, Lose, or Phase Change.
-// In order to establish a WIN or LOSE, all Trigger specified below must be met within their specified state.
-// Same evaluation is done with checking for Phase changes. 
-// Phase Change Detail:
-//	When a 'phase change occurs the appropriate additional mission will be launched.
-//  Win/Lose logic for this encounter will suspend when phase change is launched. 
-//  If triggers in this mission are still desired, uncomment the "NO TRIGGERS" comment IN THE MISSION being launched by this mission"
-// See the Triggers.txt file under Docs!
-[ // NOTE: side RESISTANCE for groups == side GUER for Triggers.
-    [    //WIN Triggers and Controls
-      ["LowUnitCount", "GUER", 0, 0, [0,0]], // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
-       ["ProxPlayer", [0,0], 50, 1], // 1 player is within 50 meters of encounter center.
-	   ["Reinforce", 100, "Help_Helo"] // %chance when requested, Mission to run
-//  ["BodyCount", 10] // when at least 10 AI are killed by players
-	   // Note Reinforce trigger will not impact win/loss logic.
-    ],
-    [    //LOSE Triggers and Controls
-//      ["HighUnitCount", "GUER",10,40,[0,0]] // 10 enemies get within 40m's of encounter center
-           //["Timer",180]  // mission ends after 3 minutes if not completed
-    ],   
-    [    //Phase01 Triggers and Controls
-//        ["Timer", 180]  // Mission launches in 180 seconds
-//      ["Detected",0,0]    //Launch mission if any AI group or vehicle detects a player
-       //  ["ProxPlayer", [0,0], 100, 1] // 1 player is within 100 meters of encounter center.
-    ],
-    [    //Phase02 Triggers and Controls
-       // ["Timer",120] // after 5 minutes Enemies to this AI arrive--town WAR!!!!!
-    ],
-    [    //Phase03 Triggers and Controls
-    
-    ],
-    [    // NO TRIGGERS: Uncomment the line below to simply have this mission execute. Mission triggers from a mission that
-          // launched this mission will continue to be observed.
-    // Uncommenting this line will ignore all triggers defined above, and mission will pass neither a WIN or LOSE result.
-    //   ["NO TRIGGERS"]
-    ]
-],
+   ] ,
+   [ // Convoy #3
+     [
+       ["I_UAV_02_CAS_F",[150,100],[0,""],"none"]
+     ],
+     [    
+       [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["TrackRoute",[0,0],[0,0],["COMBAT","NORMAL",["Villages","Villages","Cities","Capitals","Villages","Villages"],false,false,false,150   ]]]
+     ],
+     [
+     ]
+  ],
+   [ // Convoy #4
+     [
+                ["I_UAV_01_F",[100,150],[0,""],"none"],
+                ["I_UAV_01_F",[0,100],[0,""],"none"],
+                ["I_UAV_01_F",[50,70],[0,""],"none"],
+                ["I_UAV_01_F",[0,10],[0,""],"none"],
+         ["B_Truck_01_mover_EPOCH",[200,0],[0,""],"Truck01"],
+         ["B_Truck_01_mover_EPOCH",[205,0],[0,""],"Truck01"],
+         ["B_Truck_01_mover_EPOCH",[203,0],[0,""],"Truck01"],
+         ["B_Truck_01_mover_EPOCH",[207,0],[0,""],"Truck01"]
+     ],
+     [    
+         [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [4, "Driver"]  ],   ["BoxPatrol",[100,100],[0,0],[200]   ]]          
+     ],
+     [
+     ]
+  ]
+],  
+[
+	[
+      //Define all the triggers this mission will be using
+	  // Trigger names must be unique within each mission.
+	  // NOTE: "FuMS_KillMe" is a reserved trigger word. Do not use!!!
+	  // NOTE: "OK" is a reserved trigger. Do not define it here.
+	  //  "OK" can be used in the actions section to force an action to occur at mission start!	 
+	  ["PROX",["ProxPlayer",[0,0],10,1]  ],
+	  ["LUCNT",["LowUnitCount","GUER",3,0,[0,0]]  ],
+	  ["HUCNT",["HighUnitCount","GUER",6,0,[0,0]] ],
+	  ["Detect",["Detected","ALL","ALL"] ],
+	  ["BodyCount",["BodyCount",3] ],
+	  ["Timer",["TIMER", 1800] ],
+	  //                            offset      radius    time(s)  Name
+	  ["Zuppa", ["ZuppaCapture",[ [ [-100,-100], 50,         90,  "Point 1" ],
+                                [ [100,100],   50,         90,  "Point 2" ]   ]]  ],
+       ["VehDmg1", ["DmgVehicles", "1",0.8]  ],
+       ["BldgDmg1",["DmgBuildings","2,3,7",1.0]  ],
+       ["Captive1", ["Captive", 1]  ]
+	  
+	],
+	[
+	  // Define what actions should occur when above trigger logics evaluate to true
+	   // Note: a comma between two logics is interpreted as "AND"
+	  [["WIN"],["LUCNT","OR","DETECT","BODYCOUNT","OR","Zuppa", "OR", "Captive1"     ]],  // 
+	//  [["CHILD","Help_Helo",[0,0]],["OK"      ]],  // 
+	// [["Reinforce","Help_Vehicle","Trig4"]], 
+	  [["LOSE"],["TIMER", "OR", "VehDmg1", "BldgDmg1"]   ],
+      [["END"],["TIMER","OR","LUCNT"      ]]  
+	]
 
-// Phased Missions.
-// Chaininig of missions is unlimited.
-// Above triggers will 'suspend' when below phase starts. Phase launched will use its own triggers as specified in its mission script.
-// If it is desired to continue to use the above Triggers instead of the 'launched mission's' triggers do the following:
-//   uncomment the "NO TRIGGERS' line from the mission being launched.
-// The file needs to be located in the same folder as this mission launching them.
-[
-  //  ["NukeDevice",["Paros"]],  //Phase01 <-- as an array a 3dlocation, offset, or town name can be specified for the phase mission's center
-  //  "TestMission01Enemy", //Phase02 <-- just a file name, phased mission uses THIS mission's center!
-   // "TestPhase3" //Phase03
-],
-[
-    //Airborne Vehicle Configuration
- [  // Division #1
-   [         // Vehicle                                 Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-//     [  "O_Heli_Light_02_unarmed_EPOCH",[0,-1900],[1,"Rifleman"],        "Truck01"      ], 
-//     [  "O_Heli_Light_02_unarmed_EPOCH"           ,[0,-1800],[1,"Rifleman"],     "None"      ], 
-//     [  "O_Heli_Light_02_unarmed_EPOCH"           ,[0,-1700],[1,"Rifleman"],     "None"      ]
-    ],[  
-    // Pilots                                                          # and type  |         Patrol     |    spawn   | dest  | 'Patrol' options
-//   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [1, "Driver"]  ],   ["ParaDrop",[0,-1700],[0,0],["Normal", 200, true,true  ]   ]]
-  ],[   
-     // Troops : These are distributed across all aircraft in the division. These lines are identical to the lines in the group section.
-     //  Troop behaviour and side options                    # and type of Troops     Patrol logic |  spawn     |dest |'Patrol' options
- //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1900],[0,0],[0]]],
- //   [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1800],[50,0],[50]]],
-//    [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[0,-1700],[0,0],[150]]]
-   // 'dest' for troops is where they will go to perform their 'Patrol Logic' once they get on deck
-     ]
-   ],
-    [  // Division #2
-   [         // Vehicle                                 Offset     Crew (only 1 type!)   CargoLoot (see Loot section below for more detail!)
-     [  "O_Heli_Light_02_unarmed_EPOCH",[200,-1700],[1,"Rifleman"],        "Truck01"      ], 
-     [  "O_Heli_Light_02_unarmed_EPOCH"           ,[200,-1750],[1,"Rifleman"],     "None"      ], 
-     [  "O_Heli_Light_02_unarmed_EPOCH"           ,[200,-1800],[1,"Rifleman"],     "None"      ]
-    ],[  
-    // Pilots                                                          # and type  |         Patrol     |    spawn   | dest  | 'Patrol' options
-   [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [3, "Driver"]  ],   ["PatrolRoute",[0,-1800],[0,0],["COMBAT","NORMAL",["Pyrgos"],true, false, true,100]   ]]
-   //Patrol flys from spawn location to mission center [0,0] then  to Pyrgos, then returns to spawn location (RTB) and despawns!
-  ],[   
-  
-     // Troops : These are distributed across all aircraft in the division. These lines are identical to the lines in the group section.
-     //  Troop behaviour and side options                    # and type of Troops     Patrol logic |  spawn     |dest |'Patrol' options
-  //  [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1700],[0,0],[0]]],
-   // [["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[-70,-1750],[50,0],[50]]],
-    //[["RESISTANCE","COMBAT","RED","COLUMN"],[[1,"Sniper"],[6,"Rifleman"]],["BoxPatrol",[0,-1800],[-50,0],[50]]]
-   // 'dest' for troops is where they will go to perform their 'Patrol Logic' once they get on deck
-     ]
-   ]
-    
+      
 ]
-
-
 ];
 //*******************************************************************************
 //******* Do not change this!                                       **********************************

@@ -7,7 +7,7 @@
 // were assigned too.
 // VehStuck = true if it remains within same 2m area for 150 seconds.
 //****Spawn Stuck Vehicle Code for driver ******
-private ["_unit","_lastPos","_stationary","_dist2leader_old","_veh","_var"];
+private ["_unit","_lastPos","_stationary","_dist2leader_old","_veh"];
 _unit = _this select 0;
 _stationary = 0;
 _dist2leader_old = 25;
@@ -25,6 +25,11 @@ if (!isNil "_unit") then
         
         if ( _veh == _unit or (assignedDriver _veh != _unit) ) then
         { 
+            // if veh can't move then exit it!
+            if (! (canMove _veh) ) then
+            {
+                unassignVehicle _unit;
+            };
             sleep 60;
         }// AI is on foot or NOT the driver, so check again in 60 seconds
         else
@@ -84,8 +89,25 @@ if (!isNil "_unit") then
                                 _newPos = [getPos _veh] call FuMS_fnc_HC_Util_FindNearestWater;
                             }else
                             {
+                                private ["_oldPos"];
                                 diag_log format ["<FuMS> VehStuck: %1 being teleported to nearest road segment because it was stuck!",vehicle _unit];
                                 _newPos = [getPos _veh] call FuMS_fnc_HC_Util_FindNearestRoad;
+                                _oldPos = _veh getVariable "FuMS_VehStuck";
+                                if (!isNil "_oldPos") then
+                                {
+                                      // veh was stuck before! check that the old position is not near the newpos.
+                                    // if so, this implies bad road segment selection.
+                                    if (_newPos distance _oldPos < 20) then
+                                    {
+                                        private ["_xx"];
+                                        diag_log format ["<FuMS> VehStuck: Unable to find a usable road segment. Making course teleport of %1:%2",_veh, _oldpos];
+                                        _xx = _oldpos select 0;
+                                        _xx = _xx + 100;
+                                        _oldpos set [0, _xx];
+                                        _newpos = _oldpos;
+                                    };
+                                };
+                                _veh setVariable ["FuMS_VehStuck",_newPos];
                             };
                             _veh moveto _newPos;
                             _stationary = 0;

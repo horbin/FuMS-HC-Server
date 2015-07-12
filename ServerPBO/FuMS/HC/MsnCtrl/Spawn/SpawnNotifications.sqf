@@ -6,7 +6,7 @@
 //RadioChatter = compile preprocessFileLineNumbers "HC\Encounters\Functions\RadioChatter.sqf";
 private ["_markers","_notifications","_msnStatus","_mkr1","_mkr2","_eCenter","_notify","_showMap","_delay",
 "_msnSuccessText","_msnStartText","_msnFailureText","_ogjstr","_msnText","_options","_winDelay","_loseDelay",
-"_radionotify","_radiochannel","_radiorange","_missionNameOverride"];
+"_radionotify","_radiochannel","_radiorange","_missionNameOverride","_msnStatus_status"];
 _markers = _this select 0;
 _notifications = _this select 1;
 _msnStatus = _this select 2;
@@ -22,6 +22,8 @@ _radionotify = _options select 0;
 _delay = 0;
 _msnText = "";
 
+_msnStatus_status = _msnStatus select 0;
+
 _radiochannel = _options select 1;
 if (isNil "_radiochannel") then {_radiochannel = "ALL";};
 
@@ -32,7 +34,7 @@ _winDelay = _options select 5;
 _loseDelay = _options select 6;
 if (isNil "_winDelay") then {_winDelay = 0;};
 if (isNil "_loseDelay") then {_loseDelay = 0;};
-switch (_msnStatus) do
+switch (_msnStatus_status) do
 {
     case "STATIC":
     {
@@ -49,11 +51,6 @@ switch (_msnStatus) do
         _msnText = _msnFailureText;
         _delay = _loseDelay;  
     };        
-    case "NO TRIGGERS":
-    {
-        _msnText = [];
-        _delay = 0;
-    };
 };
 // Notify the world of the event, if desired
 if (_radionotify) then
@@ -82,9 +79,9 @@ if (_notify) then
 };  
 if (_showMap) then 
 { 
-    if (_msnStatus == "WIN" or _msnStatus == "LOSE" or _msnStatus == "KILL") then
+    if (_msnStatus_status == "WIN" or _msnStatus_status == "LOSE") then
     {  
-        if (_msnStatus == "WIN") then {_mkr1 setMarkerColor "ColorGreen";}
+        if (_msnStatus_status == "WIN") then {_mkr1 setMarkerColor "ColorGreen";}
         else {_mkr1 setMarkerColor "ColorBlack";};
             //publicVariable _mkr1;  
             //leave green circle up for 'delay' secs, then remove markers       
@@ -100,7 +97,7 @@ if (_showMap) then
         ["Markers",_mkr2] call FuMS_fnc_HC_Util_HC_RemoveObject;
            
     };       
-    if (_msnStatus == "STATIC") then
+    if (_msnStatus_status == "STATIC") then
     {
        // diag_log format ["##%1 starting at %2##", _mkr1, _eCenter];
         //AI Operational Area

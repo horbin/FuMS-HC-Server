@@ -5,7 +5,7 @@
 //OUTPUTS: true if 'numPlayers' are within range of position
 private ["_pos","_range","_numPlayers","_nearFolks","_result","_data"];
 _data = _this select 0;
-_result = 0;
+_result = false;
 if (count _data == 3) then // this trigger is defined for the current state 'i'
 {
     private ["_players","_numInRange","_xpos","_dist"];
@@ -33,14 +33,14 @@ if (count _data == 3) then // this trigger is defined for the current state 'i'
     }foreach _players;
     if ( _numInRange >= _numPlayers) then 
     {
-        _result =1;
+        _result =true;
     };
      //nearest not working well due to 3d calculation and encounter not always being at surface level!   
     _nearFolks = nearestObjects [_pos, ["Epoch_Male_F","Epoch_Female_F"], _range];
     //diag_log format ["###Trigger Watch:State:%1 ProxPlayerFound:%2", _state, _nearFolks ];
     if ( count _nearFolks >= _numPlayers) then
     { 
-        _result = 1;
+        _result = true;
     } ;
 };
 _result

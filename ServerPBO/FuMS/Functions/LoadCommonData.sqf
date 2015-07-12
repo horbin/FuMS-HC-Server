@@ -146,6 +146,7 @@ FuMS_ServerFuMSEnable = (FuMS_ServerData select 0) select 0;
 FuMS_FPSVariance = .3; // max 30% fps drop acceptable
 FuMS_GlobalLootOptions = (FuMS_ServerData select 6);
 FuMS_VehicleZeroAmmo = (FuMS_ServerData select 6) select 5;
+FuMS_UnMannedVehicles = (FuMS_ServerData select 5) select 5;
 
 
 _hold = []execVM "\FuMS\Themes\AdminData.sqf";

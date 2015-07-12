@@ -29,7 +29,7 @@ FuMS_SCANNED_LIST = [];
 FuMS_Master_LIST = [];
 FuMS_Master_CodeStrings = [];
 FuMS_Found_RANDOM = false; 
-diag_log format ["##BuildThemeMissionList: _missionList:%1",_missionList];
+//diag_log format ["##BuildThemeMissionList: _missionList:%1",_missionList];
 _foundRandom = false;
 
 {	
@@ -38,8 +38,8 @@ _foundRandom = false;
 }foreach _missionList;
 // Now have the list: in FuMS_Master_LIST
 //FuMS_ListofMissions = [];
-diag_log format ["##BuildThemeMissionList: List from Theme: %1",_missionList];
-diag_log format ["##BuildThemeMissionList:%2: List from recursion: %1",FuMS_Master_LIST, _theme];
+//diag_log format ["##BuildThemeMissionList: List from Theme: %1",_missionList];
+diag_log format ["<FuMS> BuildThemeMissionList:%2: List from recursion: %1",FuMS_Master_LIST, _theme];
 for [{_i=0},{_i < count FuMS_Master_LIST},{_i=_i+1}] do
 {
     // if it is "RANDOM" remove it.
@@ -56,6 +56,6 @@ for [{_i=0},{_i < count FuMS_Master_LIST},{_i=_i+1}] do
 
 FuMS_ListofMissions set [ _themeIndex, _formedList];
 
-diag_log format ["##BuildThemeMissionList:%2: List of AdminMissions: %1",FuMS_AdminListofMissions, _theme];
+//diag_log format ["##BuildThemeMissionList:%2: List of AdminMissions: %1",FuMS_AdminListofMissions, _theme];
 
 

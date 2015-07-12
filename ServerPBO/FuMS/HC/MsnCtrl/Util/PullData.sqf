@@ -15,4 +15,10 @@
        
        if (_mission == _indexName and TypeName _indexCode != "STRING") exitWith{_return = _x select 1; };
    }foreach _data;
+   if (count _return != 8) then
+   {
+       diag_log format ["*************************************************************************"];
+       diag_log format ["<FuMS> PullData: ERROR!! Unable to locate %1 in FuMS_ListofMissions",_mission];
+       diag_log format ["*************************************************************************"];
+   };
    _return

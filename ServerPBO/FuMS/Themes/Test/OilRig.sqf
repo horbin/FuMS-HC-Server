@@ -514,59 +514,34 @@
 [
  
 ],
-// Triggers and Event control.
-//  There are 3 general states for a mission. Win, Lose, or Phase Change.
-// In order to establish a WIN or LOSE, all Trigger specified below must be met within their specified state.
-// Same evaluation is done with checking for Phase changes. 
-// Phase Change Detail:
-//	When a 'phase change occurs the appropriate additional mission will be launched.
-//  Win/Lose logic for this encounter will suspend when phase change is launched. 
-//  If triggers in this mission are still desired, uncomment the "NO TRIGGERS" comment IN THE MISSION being launched by this mission"
-// See the Triggers.txt file under Docs!
-[ // NOTE: side RESISTANCE for groups == side GUER for Triggers.
-    [    //WIN Triggers and Controls
-      ["LowUnitCount", "GUER", 0, 0, [0,0]], // all enemies are dead:  side options "EAST","WEST","GUER","CIV","LOGIC","ANY"
-       ["ProxPlayer", [0,0], 20, 1] // 1 player is within 50 meters of encounter center.
-	//   ["Reinforce", 100, "Random"] // %chance when requested, Mission to run
-//  ["BodyCount", 10] // when at least 10 AI are killed by players
-	   // Note Reinforce trigger will not impact win/loss logic.
-    ],
-    [    //LOSE Triggers and Controls
-//      ["HighUnitCount", "GUER",10,40,[0,0]] // 10 enemies get within 40m's of encounter center
-           //["Timer",180]  // mission ends after 3 minutes if not completed
-    ],   
-    [    //Phase01 Triggers and Controls
-//        ["Timer", 180]  // Mission launches in 180 seconds
-//      ["Detected",0,0]    //Launch mission if any AI group or vehicle detects a player
-       //  ["ProxPlayer", [0,0], 100, 1] // 1 player is within 100 meters of encounter center.
-    ],
-    [    //Phase02 Triggers and Controls
-      //  ["Timer",120] // after 5 minutes Enemies to this AI arrive--town WAR!!!!!
-    ],
-    [    //Phase03 Triggers and Controls
-    
-    ],
-    [    // NO TRIGGERS: Uncomment the line below to simply have this mission execute. Mission triggers from a mission that
-          // launched this mission will continue to be observed.
-    // Uncommenting this line will ignore all triggers defined above, and mission will pass neither a WIN or LOSE result.
-    //   ["NO TRIGGERS"]
-    ]
-],
-
-// Phased Missions.
-// Chaininig of missions is unlimited.
-// Above triggers will 'suspend' when below phase starts. Phase launched will use its own triggers as specified in its mission script.
-// If it is desired to continue to use the above Triggers instead of the 'launched mission's' triggers do the following:
-//   uncomment the "NO TRIGGERS' line from the mission being launched.
-// The file needs to be located in the same folder as this mission launching them.
 [
-   // ["NukeDevice",["Paros"]],  //Phase01 <-- as an array a 3dlocation, offset, or town name can be specified for the phase mission's center
-   // "TestMission01Enemy", //Phase02 <-- just a file name, phased mission uses THIS mission's center!
-   // "TestPhase3" //Phase03
-],
-[
-    //Airborne Vehicle Configuration
-
+	[
+      //Define all the triggers this mission will be using
+	  // Trigger names must be unique within each mission.
+	  // NOTE: "FuMS_KillMe" is a reserved trigger word. Do not use!!!
+	  // NOTE: "OK" is a reserved trigger. Do not define it here.
+	  //  "OK" can be used in the actions section to force an action to occur at mission start!	 
+//	  ["PROX",["ProxPlayer",[0,0],80,1]  ],
+	  ["LUCNT",["LowUnitCount","GUER",1,0,[0,0]]  ]
+//	  ["HUCNT",["HighUnitCount","GUER",6,0,[0,0]] ],
+//	  ["Detect",["Detected","ALL","ALL"] ],
+//	  ["BodyCount",["BodyCount",9] ]
+//	  ["Timer",["TIMER", 1800] ],
+	  //                            offset      radius    time(s)  Name
+//	  ["Zuppa", ["ZuppaCapture",[ [ [-100,-100], 50,         90,  "Point 1" ],
+ //                               [ [100,100],   50,         90,  "Point 2" ]   ]]  ],
+//       ["VehDmg1", ["DmgVehicles", "1",0.8]  ],
+//       ["BldgDmg1",["DmgBuildings","2,3,7",1.0]  ]
+	  
+	],
+	[
+	  // Define what actions should occur when above trigger logics evaluate to true
+	   // Note: a comma between two logics is interpreted as "AND"
+	  [["WIN"],["LUCNT"     ]],  // 
+	//  [["CHILD","Help_Helo",[0,0]],["OK"      ]],  // 
+	// [["Reinforce","Help_Vehicle","Trig4"]], 
+//	  [["LOSE"],["TIMER", "OR", "VehDmg1", "BldgDmg1"]   ],
+      [["END"],["LUCNT"     ]]  
+	]      
 ]
-    
 ];

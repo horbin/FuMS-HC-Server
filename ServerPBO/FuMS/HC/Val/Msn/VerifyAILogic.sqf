@@ -111,8 +111,8 @@ while {true} do
         {
             if (count _aiOptions != 0 ) exitwith {_abort=true;FuMS_FileError = format ["Zombie logic should have no options. Found %1",_aiOptions];};            
         };
-        	case "TRACKROUTE":
-		{
+        case "TRACKROUTE":
+        {
             if (count _aiOptions != 7 and count _aiOptions != 6) exitWith {_abort=true;FuMS_FileError = format ["'TrackRoute' expects 6 or 7 options. Found %1",_aiOptions ];};			
             _option = _aiOptions select 0;				
             _option = toupper _option;
@@ -134,6 +134,10 @@ while {true} do
                 if (TypeName _option != "SCALAR") exitWith {_abort=true;FuMS_FileError = format ["TrackRoute' fly height needs to be a number. Found %1",_aiOptions select 6];};			
 			};        
 		};	
+        case "CAPTURED":
+        {
+            
+        };
 		default 
         {
       //      diag_log format ["##VerifyAILogic:  DEFAULT Logic option found???!!!!???"];

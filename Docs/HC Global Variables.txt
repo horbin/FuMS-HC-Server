@@ -27,10 +27,7 @@ FuMS_GlobalDataIndex	scalar	Always equals count FuMS_ActiveThemes+1-index of glo
  FuMS_CapitalList	[]
  FuMS_MarineList	[] -list of marine locations on the map.
  
- FuMS_PhaseMsnID	scalar
- FuMS_PhaseMsn	[]
- FuMS_BodyCount	[]
- FuMS_Trigger_ZupaCapture []	array of ["string",bool];
+ 
  FuMS_OkToGetData	BOOL
 FuMS_DataValidation	text string -- attached to a PVEH on server.
 FuMS_AIONLYVEHICLE	pveh variable for 'getin'
@@ -52,12 +49,35 @@ FuMS_LootSaveVehicle = false;
 FuMS_STORAGE	[]
 FuMS_AIONLYVehicles	[]  serverdata 6-4
 FuMS_VehicleZeroAmmo	bool	true = ammo zeroized 1st time player gets into vehicle.
-
+********************************************************************
 AI Global 'setvariable' values:
+FuMS_LINEAGE - string - variable prefix of mission that owns asset (FuMS_0_0_0)
 FuMS_AILOGIC [patrolType, msnCenter, spawnLoc, patrolLoc, patrolpatternoptions]
 FuMS_XFILL [themeIndex, side, "xfillstatus"]
 FuMS_MSNTAG [theme, mission]
 FuMS_PERSIST	bool	set on buildings created by FuMS.
+FuMS_DETECTOR 	bool	set on units and vehicles that are being watched by the 'Detect' trigger
+FuMS_ObjectDamage	array	[_threshold, _beencounted]
+FuMS_Loot	array [0, numItems]  // num items placed into the container at creation.
+FuMS_CaptiveAction ["action", player]
+
+
+Notes:
+********************************************************************
+Mission Variables:
+_msnTag = "FuMS_'themeIndex'_'generation'_'offspringID'"
+FuMS_0_0_0_Lineage = [themeIndex, generation, relation, offspringID, parentName]
+_buildings
+_vehicles
+_groups
+_boxes	
+_closetriggers	bool
+_Children	Array
+_MsnStatus	Array
+_4FuMS_KillMe - trigger variable
+_BodyCount
+_CaptiveCount
+
 HCTEMP	string	vehicles, set to "PLAYER" 1st time a player gets into vehicle.
 
 FuMS_RunningMissionList	list of currently running missions in following format
