@@ -26,15 +26,15 @@ in spawned missions contribute to the parent mission.
 Also see Test theme TestMission01.sqf for multiple examples.
 
 *New Triggers
-"OK" - Use of this trigger will result in the associated action occurring immediately upon mission start.
-"CAPTIVE" - Evaluates 'true' when the specified number of AI have been rescued.
+- "OK" - Use of this trigger will result in the associated action occurring immediately upon mission start.
+- "CAPTIVE" - Evaluates 'true' when the specified number of AI have been rescued.
 
 *New Mission Actions:
-"Lose" - causes 'lose' messages and loot events
-"Win" - causes 'win' messages and loot events
-"END" - terminates the mission and cleans up mission resources. Operates independent of win/lose. win/lose no longer clean up the mission.
-"CHILD",["<MissionName>",[location],Times, Frequency(seconds) ]
-"STEPCHILD",["<MissionName>",[location],Times, Frequency(seconds)]
+- "Lose" - causes 'lose' messages and loot events
+- "Win" - causes 'win' messages and loot events
+- "END" - terminates the mission and cleans up mission resources. Operates independent of win/lose. win/lose no longer clean up the mission.
+- "CHILD",["<MissionName>",[location],Times, Frequency(seconds) ]
+- "STEPCHILD",["<MissionName>",[location],Times, Frequency(seconds)]
    Child and StepChild spawn new missions that will share and inherit resources. See MissionFile.htm.
 
 * MissionFile.htm updated.
