@@ -43,15 +43,15 @@ Also see Test theme TestMission01.sqf for multiple examples.
 
 *New AI Logic:
 "CAPTIVE" - makes a unit 'neutral' with AI regardless of its 'side'.  Adds an action menu to the AI with the following options:
-	- Flee: If within 200m of a rescue spot captive will run to that location. Otherwise it selects a random rescue spot from the list provided.  Unit sets CARELESS behavior and sprints to its destination.
-	- Stay: Unit will stop at its location and assume the stance of the player issuing the order.
-	- Follow: Unit will follow the player, mimicking his stance. If the player gets more than 250m away from the unit, the unit will resort to a 'Stay' behavior using the stance of the player at the time the unit loses him.
-	- Board: Unit will board nearest non-ai controlled vehicle.
-	- Escape Point: Unit will temporarily display its 'escape point' on the map.
-	- Note: The captives are a little 'shell shocked' and will sometimes take a few seconds to respond to commands, but they will always acknowledge they heard the command via 'system chat'.
-	- Note: Captives that start a mission as 'cargo' in an AI vehicle will remain in the vehicle until it is disabled.
-	- Note: Captives assigned to follow an AI group will stop following that group when the group leader dies.
-	- Note: Captives remain 'neutral' to hostile AI until directed to Flee.
+- Flee: If within 200m of a rescue spot captive will run to that location. Otherwise it selects a random rescue spot from the list provided.  Unit sets CARELESS behavior and sprints to its destination.
+- Stay: Unit will stop at its location and assume the stance of the player issuing the order.
+- Follow: Unit will follow the player, mimicking his stance. If the player gets more than 250m away from the unit, the unit will resort to a 'Stay' behavior using the stance of the player at the time the unit loses him.
+- Board: Unit will board nearest non-ai controlled vehicle.
+- Escape Point: Unit will temporarily display its 'escape point' on the map.
+- Note: The captives are a little 'shell shocked' and will sometimes take a few seconds to respond to commands, but they will always acknowledge they heard the command via 'system chat'.
+- Note: Captives that start a mission as 'cargo' in an AI vehicle will remain in the vehicle until it is disabled.
+- Note: Captives assigned to follow an AI group will stop following that group when the group leader dies.
+- Note: Captives remain 'neutral' to hostile AI until directed to Flee.
 
 *New "CAPTIVE" Theme
 - Theme demonstrates new Captive logic. This theme creates a mission in a random location that contains 10 prisoners being guarded by a small squad of Humans, and an unarmed UGV.  The goal is to get into the camp and rescue at least 7 of the captured clone prisoners. 
