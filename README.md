@@ -1,5 +1,115 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
+------------------------------------------------------------------------------------
+v2.0
+* Documentation Update
+GitHub now contains extensive documentation on all FuMS options.
+Check the Docs folder on the github!
+
+* update VCOM Driving v.1.2
+  Improved handling of bridges and gates
+  http://forums.bistudio.com/showthread.php?187450-VCOM-AI-Driving-Mod
+
+* BodyCount now increments when an AI is killed by another AI.  No credit is given for AI killed by vehicles controlled by either players or AI.
+
+* Improvements to HC crash/network disconnect detection.
+HC will persist through temporary network outages and lag.  Only after a hard disconnect from the server will HC
+missions and AI be removed. Epoch UI check/dependency removed.
+
+* Update to Mission building placement (see MissionFile.htm for documentation)
+- M3Editor structures now support SMOKE/FIRE options (see Test Mission for example)
+- Random building selection fixed for old building format.(see Helocrash missions)
+
+* Box Smoke: Fixed bug that was causing smoke to be triggered by AI.
+
+* AI and Box positioning:
+Tweaked positioning of AI and loot boxes when spawned in missions.  
+AI and boxes should appear closer to intended positions. FuMS was originally using an offset of 10-30m when creating the
+object to help prevent collisions. Several admins have expressed a desire to have more specific control over ai and loot 
+box placement, so this version has reduced that offset to 0m.  AI and loot boxes should be appearing exactly where 
+specified.
+Note: This may cause some issues with loot not appearing for some missions where the mission location was generated randomly
+due to the terrain not supporting placement of the AI or Lootbox.
+
+*Tower Guard AI Logic:
+Tweaked spawn positioning to ensure all AI in the group are placed within nearby buildings in the event insufficient rooftops 
+are found for them to take up guard positions. 
+AI will now properly populate and 'sentry' in desired buildings (see Test/Destroyable.sqf mission)
+
+* Min/Max Player setting adding to all Themes:
+==============
+==Admin Note==
+======================================================================================
+- Ensure the following is added to the 'options' section of any custom themes.sqf developed outside of FuMS.
+		1,  // Player minimum to launch missions from this theme.
+        100   // Player maximum above which missions will not launch
+=======================================================================================
+- All FuMS themes now include these new settings. (See ThemeData.sqf's included with distro)
+- A theme will now ONLY create missions when the player count is greater than or equal too the minimum and 
+less than the maximum player count.
+- A delay of 60 seconds occurs between meeting the player requirement and the theme creating its 1st mission.
+- Missions already created will remain in play if the player requirement fails while the mission is running.
+When the mission completes the theme will then suspend further missions until the requirement is met again.
+- See ThemeData.htm documentation for details.
+
+
+     
+* Fixed bugged with 'AI only gear' sometimes not being cleaned up when an AI dies.
+
+* Two new triggers that allow mission state to be controlled by the amount of damage specific vehicles and/or buildings
+have sustained!  See MissionFile.htm for details and \test\Destroyable mission for example.
+
+** Damaged Buildings Trigger
+["DmgBuildings","INDEXER", amount]
+1.	"INDEXER"
+a.	This is a zero based index on which buildings on which damage will be watched.
+b.	Valid formats may be a single building, range of buildings, or a combination of single buildings and ranges.
+c.	Examples:
+1.	"0"  = will watch the 1st building created by the mission.
+2.	"1-5" = will watch the 2nd-6th buildings created by the mission.
+3.	"1,2,4-8" = will watch the 2nd, 3rd, and 5th-9th buildings created by the mission
+2.	amount
+a.	A value from 1.0 to 0.0
+b.	When damage value of the building reaches this amount it is 'counted' towards satisfying the trigger
+3.	Trigger will return true when ALL buildings in the "INDEXER" list are damaged to the 'amount' set in the trigger.
+
+** Damaged Vehicles Trigger
+	["DmgVehicles","INDEXER", amount]
+1.	Identical behavior to "DmgBuildings" above.
+2.	Vehicles created in BOTH the building section and vehicle section are counted when trying to determine the proper 'indexer' values.
+3.	Example:
+a.	If you have two static vehicles in the building section it will be index ref 0 and 1
+b.	Any vehicles that are then created in the 'Vehicles' section would be index referenced starting with 2
+c.	IE you have a mission with 3 static vehicles in the building section and a patrol of 4 other vehicles.
+1.	Indexer = "1,5"
+2.	This would watch the 2nd static vehicle in the building section and the 3rd vehicle (6th total) in the "Vehicles" section.
+
+* Custom Scripting:
+Supports custom scripts that can be ran at mission start and at mission end.
+Scripts to be run are defined in the \FuMS\Themes\<ThemeName>\Scripts folder.
+Scripts are 'called'. FuMS expects an array to be returned by the start script, which it then in turn passes to the mission end script.
+
+This array can be used to pass variables from the start to the end scripts.
+See MissionFile.htm and ThemeData.htm documentation for details.
+
+*Random mission positioning
+
+FuMS missions now support randomizing the location of the 'core' of the mission within the defined encounter radius.
+See MissionFile.htm and \FuMS\Themes\Test\Destroyable.sqf for details.
+
+
+
+--Known issues
+Helo patrols traveling slow.
+Scuba AI not using underwater firearms underwater.
+
+--Upcoming
+Fixing Helo and Scuba AI behaviour 
+Sound notification and environmental effects for missions
+autonomous AI UAV/UGV's
+VIP rescue/Captor theme
+
+
 
 ------------------------------------------------------------------------------------
 v1.5g
