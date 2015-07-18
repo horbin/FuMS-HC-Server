@@ -14,15 +14,15 @@ v2.1a
     (Was being caused by change in ownership of the vehicle)
 
 * New Optional Damage setting for AI controlled vehicles:Damage
-- Optional setting
-	Value 0.0 - 1.0
-	Sets the amount of 'damage' that the vehicle has already sustained.
-	1.0 = vehicle totally broken
-	0.0 = vehicle fully healthy
-- Optional Array:
-	Can be any or all of the following:
-	["engine",.5],["fuel",.5],["hull",.5], ....etc	
- See Captive.sqf and MissionFile.htm for details.
+	- Optional setting
+		Value 0.0 - 1.0
+		Sets the amount of 'damage' that the vehicle has already sustained.
+		1.0 = vehicle totally broken
+		0.0 = vehicle fully healthy
+	- Optional Array:
+		Can be any or all of the following:
+		["engine",.5],["fuel",.5],["hull",.5], ....etc	
+ 	- See Captive.sqf and MissionFile.htm for details.
 
 * New Crypto rewards for AI.
 See GlobalSoldierData.htm and BaseSoldierData.sqf for details.
