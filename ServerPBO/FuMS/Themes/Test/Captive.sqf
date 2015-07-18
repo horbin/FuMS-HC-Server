@@ -175,7 +175,8 @@
    ] ,
    [ // Convoy #4
      [        
-         ["B_Truck_01_transport_EPOCH",[50,0],[0,""],"None"]
+         ["B_Truck_01_transport_EPOCH",[50,0],[0,""],"None",[["engine",.5],["fueltank",.3],["hull",.9],["wheel_1_1",.5]]],
+		 ["B_Truck_01_transport_EPOCH",[60,0],[0,""],"None",[["engine",.5],[.5]]
      ],
      [    
  //        [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [4, "Driver"]  ],   ["BoxPatrol",[100,100],[0,0],[200]   ]]          

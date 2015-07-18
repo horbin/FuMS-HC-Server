@@ -12,7 +12,7 @@ private ["_missionTheme","_respawnDelay","_encounterLocations","_missionList","_
 "_locationAdditions","_missionNameOverride","_activeThemeIndex", "_controlledByThisHC","_themeMinPlayers","_themeMaxPlayers",
 "_themeName"];
 
-_missionTheme = _this select 0;
+_missionTheme = _this select 0; // ["<themeName>, #id ]  ex: ["Test",-1]
 _themeIndex = _this select 1;
 _spawnedByAdmin = _this select 2;
 if (isNil "_spawnedByAdmin") then {_spawnedbyAdmin=false;};
@@ -28,11 +28,15 @@ _themeMinPlayers = _themeOptions select 6;
 _themeMaxPlayers = _themeOptions select 7;
 //diag_log format ["##ControlLoop: %1 Missions Initializing##", _missionTheme];
 // Look for keyword locations. If found, add them to the provided list of _encounterLocations
-//diag_log format ["##ControlLoop: _missionTheme:%1  ActiveThemes:%2",_missionTheme, FuMS_ActiveThemes];
+diag_log format ["##ControlLoop: _missionTheme:%1  ActiveThemes:%2",_missionTheme, FuMS_ActiveThemes];
 
-_activeThemeIndex = FuMS_ActiveThemes find _missionTheme; // returns a ["theme", index] pair
+//_activeThemeIndex = FuMS_ActiveThemes find _missionTheme; // returns a ["theme", index] pair
+//{
+//    if (_x select 0 == _missionTheme) exitWith {_controlledByThisHC = _x select 1;};
+//}foreach FuMS_ActiveThemes;
 //diag_log format ["##ControlLoop: _activeThemeIndex =====%1",_activeThemeIndex];
-_controlledByThisHC =  (FuMS_ActiveThemes select _activeThemeIndex) select 1;
+//_controlledByThisHC =  (FuMS_ActiveThemes select _activeThemeIndex) select 1;
+_controlledByThisHC = _missionTheme select 1;
 if (  !(_controlledByThisHC == -1 or _controlledByThisHC == FuMS_ThemeControlID)  ) exitWith
 {
     // this theme not under control of the HC...so exit...

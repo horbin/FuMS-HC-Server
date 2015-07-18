@@ -2,6 +2,85 @@
 // Horbin
 // 2/28/15
 // Collection of Server side PVEH's.
+FuMS_GetPlayersBankBalance =
+{
+    //Author: HamBeast:
+    // http://epochmod.com/forum/index.php?/topic/33106-epoch-playercrypto/?hl=crypto#entry215811
+    private["_playerUID","_balance","_response"];
+    _playerUID = _this select 0;
+    _balance = 0;        
+    
+  //  diag_log format["getting bank balance for playeruid: %1", _playerUID];        
+    _response=["Bank",_playerUID]call EPOCH_server_hiveGET;
+  // diag_log format ["Response: %1", _response];
+    
+    if((_response select 0)==1 && typeName(_response select 1)=="ARRAY")then
+    {    
+        private ["_bankData","_bankBalance","_bankBalanceBefore"];
+        _bankData=_response select 1;
+        _bankBalance=0;
+        _bankBalanceBefore=0;
+        
+        //diag_log format["got into the if _bankData: %1", _bankData];
+        if (! (_bankData isEqualTo []) )then 
+        {
+            _balance=_bankData select 0; 
+        };             
+    };
+    _balance;
+};
+
+"FuMS_PayPlayer" addPublicVariableEventHandler
+{
+    _data =    _this select 1; // _data is an array of ["FactionName",amount] pairs.    
+    _factionPairs = _data select 0;
+     diag_log format ["<FuMS> PVEH PayPlayer: _data: %1",_data];
+    _player = _data select 1;
+    _uid = getplayerUID _player;
+    _netID = owner _player;
+    {
+        _amount = _x select 1;
+        _typepayment = _x select 0;
+        // _player = _data select 2;                     
+        switch (toupper _typepayment) do
+        {
+            case "KRYPTO":
+            {
+                _netID publicVariableClient "FuMS_PayPlayer";
+                // [["effectCrypto",
+                //  [["bankBalance",_amount], (owner _player)] call EPOCH_sendPublicVariableClient;
+                _prevtotal = [_uid] call FuMS_GetPlayersBankBalance;
+                ["Bank",_uid,EPOCH_expiresBank,[_prevtotal+_amount]] call EPOCH_server_hiveSETEX;
+                
+                // [ _plyr, _tradeArray,  (value passed to EPOCH_server_getPToken with _plyr ..that must return true) ]
+                //  _tradeArray
+                //    amountIn, amountOut, [ balance, transferobject
+            };
+            case "KRYPTOGROUP":
+            {
+                // get list of players in _player's group
+                // convert typepayment to "KRYPTO"
+                // for each send the PV.
+            };
+            default {(owner _player) publicVariableClient "FuMS_PayPlayer";};
+        };
+    }foreach _factionPairs;
+};
+
+"FuMS_Message" addPublicVariableEventHandler
+{
+    _data = _this select 1;
+    _type = _data select 0;
+    _sender = _data select 1;
+    _receiver = _data select 2;
+    _msg = _data select 3;
+    diag_log format ["<FuMS> PVEH: Msg passing: %1",_data];
+    if ( (format ["%1",_receiver select 0]) == "ALL") exitWith { publicVariable "FuMS_Message";};
+    {
+        (owner _x) publicVariableClient "FuMS_Message";
+    }foreach _receiver;    
+};
+
 FuMS_RegisterVehicle_Server =
 {
     // for use by non-FuMS addons to register vehicles to keep them from going poof.
@@ -36,7 +115,7 @@ FuMS_BuildVehicle_Server =
     private ["_vehObj"];
   _vehObj = _this select 0;
 
-    _vehObj setVariable ["HCTEMP", "AI", true]; // HCTEMP set to "PLAYER" once a player enters.
+    _vehObj setVariable ["FuMS_HCTEMP", "AI", true]; // HCTEMP set to "PLAYER" once a player enters.
 
   //  _vehObj=createVehicle[_item,_position,[],0,"NONE"];
     _vehObj call EPOCH_server_setVToken;
@@ -83,7 +162,7 @@ FuMS_BuildVehicle_Server =
             FuMS_TEMPVEHICLE = true;
             _idowner publicVariableClient "FuMS_TEMPVEHICLE";
             // If a player enters the vehicle, update the HCTEMP, so server will not delete vehicle on  an HC disconnect!
-            _value = _vehobj getVariable "HCTEMP";
+            _value = _vehobj getVariable "FuMS_HCTEMP";
             diag_log format ["<FuMS> PVEH BuildVehicle_server: _value:%1 LootOption:%2",_value, FuMS_GlobalLootOptions select 2];
 			if (_value != "PLAYER" and (FuMS_GlobalLootOptions select 2) ) then // make vehicle purchasable, and save it to the Hive!
 			{
@@ -111,7 +190,7 @@ FuMS_BuildVehicle_Server =
 				
 			};
             //diag_log format ["###EH:GetIn: HCTEMP = %1", _value];
-            _vehobj setVariable ["HCTEMP", "PLAYER", true];
+            _vehobj setVariable ["FuMS_HCTEMP", "PLAYER", true];
         };       
     }];   
 
@@ -215,7 +294,19 @@ FuMS_ZombieNoise_Server =
 "FuMS_CaptiveAction" addPublicVariableEventHandler
 {
     _data = _this select 1;
-    _hcID = owner (_data select 0);
-    _hcID publicVariableClient "FuMS_CaptiveAction";
-    diag_log format ["<FuMS> PVEH FuMS_CaptiveAction  %1 passed to HC ID:%2",FuMS_CaptiveAction,_hcID];
+    //_hcID = owner (_data select 0);
+    // _data select 0 is the object the 'addaction' menu was attached too.
+    // for vehicles the ownership will change and NOT always be the HC!
+    // need to identify the AI involved with the action and pass the info off to the HC controlling that AI!
+    //
+    {
+        if (!isplayer _x) exitWith
+        {
+            _hcID = owner _x;
+            _hcID publicVariableClient "FuMS_CaptiveAction";
+            diag_log format ["<FuMS> PVEH FuMS_CaptiveAction  %1 passed to HC ID:%2",FuMS_CaptiveAction,_hcID];
+        };
+    }foreach crew (_data select 0);
+  
+    
 };

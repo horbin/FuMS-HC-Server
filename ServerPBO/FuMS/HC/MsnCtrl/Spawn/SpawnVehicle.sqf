@@ -5,7 +5,8 @@
 // OUTPUTS list of groups and vehicles crated [_groups array, vehicle array]
 private ["_convoy","_vehdat","_driverdat","_troopdat","_driverGroup","_crewcount","_troopGroups","_masterIndex",
 "_numberTroops","_totalvehicles","_abort","_msg"];
-private ["_vehicleData","_eCenter","_encounterSize","_groups","_returnval","_themeIndex","_missionName","_totalvehicles"];
+private ["_vehicleData","_eCenter","_encounterSize","_groups","_returnval","_themeIndex","_missionName","_totalvehicles","_lineage","_msnTag",
+"_generation","_offspringID"];
 _vehicleData = _this select 0;
 _eCenter = _this select 1;
 _encounterSize = _this select 2;
@@ -28,7 +29,7 @@ if (!_abort) then
     { 
         // Being of Convoy Creation!
         private ["_numVeh","_ebk","_vehType","_vehLoc","_vehLoot","_numDriverGroups","_driverBehaviour","_driverTypes","_driverOptions","_vehCrew",
-        "_numTroopGroups","_troopBehaviour","_troopTypes","_troopOptions","_vehicles"];  
+        "_numTroopGroups","_troopBehaviour","_troopTypes","_troopOptions","_vehicles","_vehDamage"];  
         _convoy = _x;
         _vehdat = _convoy select 0; // vehicle definitions block
         _driverdat = _convoy select 1;  // driver def block
@@ -37,6 +38,7 @@ if (!_abort) then
         _vehType = [];
         _vehLoc = [];
         _vehLoot = [];
+        _vehDamage = [];
         _vehCrew = [];
         _driverBehaviour = [];
         _driverTypes = [];
@@ -52,6 +54,14 @@ if (!_abort) then
             _vehLoc set [_numVeh, _x select 1];
             _vehCrew set [_numVeh, _x select 2];
             _vehLoot set [_numVeh, _x select 3];	
+            diag_log format ["<FuMS> SpawnVehicle: %1:%2 ",count _x, _x];
+            if (count _x > 4) then
+            {
+                _vehDamage set [_numVeh, _x select 4];
+            } else
+            { 
+                _vehDamage set [_numVeh, []];
+            };
             _numVeh = _numVeh + 1;				
         }foreach _vehdat;      
         _numDriverGroups = 0;
@@ -99,7 +109,7 @@ if (!_abort) then
         };       
         for [{_i=0},{_i < _numVeh},{_i=_i+1}] do
         {
-            private ["_mode","_pos","_data","_driver","_veh","_loot"];
+            private ["_mode","_pos","_data","_driver","_veh","_loot","_damage","_var"];
             // create the vehicle
             //_overwater = surfaceIsWater _pos;
             _mode = "";
@@ -110,6 +120,7 @@ if (!_abort) then
          //   diag_log format ["<FuMS> SpawnVehicle: Creating a Vehicle: pos:%1, driver:%2, type:%3 data:%4",_pos, _driver, _vehType select _i,_data];
             _veh = [ _vehType select _i, _data select 0, [], 0 , _data select 1] call FuMS_fnc_HC_Util_HC_CreateVehicle;	
             _veh setVariable ["FuMS_LINEAGE",_msnTag, false];
+            
             if (_veh iskindof "StaticWeapon") then
             {
              //   diag_log format ["<FuMS:%1 SpawnVehicle: Setting staticWeapon %2 to face %3",FuMS_Version,_veh,(_vehCrew select _i) select 0];
@@ -120,6 +131,24 @@ if (!_abort) then
             if ( _loot != "NONE") then
             {
                 _veh = [_loot, _veh, _themeIndex] call FuMS_fnc_HC_Loot_FillLoot;
+            };
+            _damage = _vehDamage select _i;
+           // diag_log format ["<FuMS> SpawnVehicle: damage options:%1",_damage];
+            if (count _damage > 0) then
+            {                
+                _var = _damage select 0; 
+                if (TypeName _var == "SCALAR") then
+                { 
+                    _veh setDamage _var;
+                }
+                else
+                {    
+                  //  diag_log format ["<FuMS> SpawnVehicle: %1 _damage:%2",count _damage, _damage];
+                    {
+                        //diag_log format ["<FuMS> SpawnVehicle: %2 damage options:%1",_x,_veh];   
+                        _veh setHitPointDamage [format ["hit%1",_x select 0], _x select 1];
+                    }foreach _damage;
+                };
             };
             _vehicles = _vehicles + [_veh];
         };

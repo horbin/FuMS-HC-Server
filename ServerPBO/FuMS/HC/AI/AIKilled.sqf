@@ -152,6 +152,12 @@ if ((_killer == vehicle _killer)) then
                 [_msg, _channel, _range, position _victim] spawn FuMS_fnc_HC_AI_RC_RadioChatter;
             };   
         };
+        _data = _victim getVariable "FumS_Krypto";
+       // diag_log format ["<FuMS> AIKilled: %2 Krypto Msg: %1", _data, _victim];
+        if (!isNil "_data") then
+        {
+            [_data, _killer] call FuMS_fnc_HC_AI_PayPlayer;
+        };
     };
     // get info on the unit.
     private ["_var"];
@@ -164,6 +170,13 @@ if ((_killer == vehicle _killer)) then
        // diag_log format ["<FuMS> AI_Killed: BodyCount for Theme#%1 is:%2",_themeIndex, (FuMS_BodyCount select _themeIndex)];
         [_victim] spawn FuMS_fnc_HC_MsnCtrl_LogicBomb_CheckforBodyCount;
         diag_log format ["<FuMS> AI_Killed: Killer:%2  side=%1", side _killer, _killer];
+        _var = _victim getVariable "FuMS_CaptiveAction";
+        if (!isNil "_var") then
+        {
+            FuMS_Message = ["CAPTIVE", player, [_var select 1], [format ["%1: I've been hit!",_victim]]];
+            publicVariableServer "FuMS_Message";
+        };
+        
     };    
     if (side _victim == civilian) then
     { 

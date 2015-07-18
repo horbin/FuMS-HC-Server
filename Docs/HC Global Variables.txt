@@ -10,7 +10,8 @@ FuMS_MapCenter	array
 FuMS_MapRange scalar
 FuMS_BlackList	[]
 FuMS_Defaultpos	[]
-FuMS_ActiveThemes	[]	List of active themes loaded
+FuMS_ActiveThemes	[]	List of active themes loaded - based upon data in BaseServer.sqf. Consists of ["Test",-1] type pairs.
+
 FuMS_ActiveThemesHC [] HC id the theme should run on: 0=server, -1= all HC's and Not server, 1=just 1st HC, 2=just 2nd HC.
 
 FuMS_GlobalDataIndex	scalar	Always equals count FuMS_ActiveThemes+1-index of globalloot and globalsoldier data
@@ -49,6 +50,10 @@ FuMS_LootSaveVehicle = false;
 FuMS_STORAGE	[]
 FuMS_AIONLYVehicles	[]  serverdata 6-4
 FuMS_VehicleZeroAmmo	bool	true = ammo zeroized 1st time player gets into vehicle.
+
+FuMS_Mods_EPOCH = false; - epoch mod not detected
+FuMS_Mods_RupDinosaurs = false; - dino mod not detected
+
 ********************************************************************
 AI Global 'setvariable' values:
 FuMS_LINEAGE - string - variable prefix of mission that owns asset (FuMS_0_0_0)
@@ -60,8 +65,10 @@ FuMS_DETECTOR 	bool	set on units and vehicles that are being watched by the 'Det
 FuMS_ObjectDamage	array	[_threshold, _beencounted]
 FuMS_Loot	array [0, numItems]  // num items placed into the container at creation.
 FuMS_CaptiveAction ["action", player]
-
-
+FuMS_HCTemp "AI" or "PLAYER" depending on if a player has entered a FuMS created vehicle.
+FuMS_Krypto array [amount, payment type]
+     payment types -Krypto KryptoGroup FactionX FactionY FactionZ
+	 (uses PVEH FuMS_PayPlayer to pass data amoung clients, server, and HC)
 Notes:
 ********************************************************************
 Mission Variables:
@@ -79,6 +86,10 @@ _BodyCount
 _CaptiveCount
 
 HCTEMP	string	vehicles, set to "PLAYER" 1st time a player gets into vehicle.
+
+FuMS_Message = ["Type",Sender, [receiver], [Message]]
+
+
 
 FuMS_RunningMissionList	list of currently running missions in following format
 	[ "[position]", HCID running on, _eCenter, _radius]
@@ -152,6 +163,8 @@ BaseData:
   FuMS_ListofMissions
   
   FuMS_BaseListofMissions
+  
+  
 				   
    
    

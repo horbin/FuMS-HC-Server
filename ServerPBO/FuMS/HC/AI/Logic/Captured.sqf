@@ -10,16 +10,17 @@ FuMS_fnc_PlayerStance =
     if (isNil "_player") exitWith {_result};
 	_animState = animationState _player;
 	_animStateChars = toArray _animState;
+    if (count _animStateChars < 8) exitWith {_result};
 	_animP = toString [_animStateChars select 5, _animStateChars select 6, _animStateChars select 7];
 	if (_animP == "pne") then {_result = "DOWN";};
 	if (_animP == "knl") then {_result = "MIDDLE";};
 	if (_animP == "erc") then {_result = "UP";};
-	if (isNil "_result") then {_result = "UP";};
+//	if (isNil "_result") then {_result = "UP";};
     //diag_log format ["<FuMS> Captured: PlayerStance: %1",_result];
 	_result	
 };
 
-private ["_group","_actionLoc","_params","_eCenter","_params","_rescueLocs","_setRescLocs"];
+private ["_group","_actionLoc","_params","_eCenter","_params","_rescueLocs","_setRescLocs","_newparams"];
 _group = _this select 0;
 _actionLoc = _this select 1;
 _eCenter = _this select 2;
@@ -35,8 +36,12 @@ _setRescLocs = [];
 	_setRescLocs = _setRescLocs + [ _var];
 }foreach _rescueLocs;
 
-_params set [1, _setRescLocs];
+_newparams =+ _params;
+_newparams set [1, _setRescLocs];
 
+//diag_log format ["<FuMS> Captured: _params: %1",_newparams];
+//diag_log format ["<FuMS> Captured: Center:%2 ActionLoc:%3 Pre-formatted: %1",_rescueLocs, _eCenter, _actionLoc];
+//diag_log format ["<FuMS> Captured: formatted: %1",_setRescLocs];
 // Speeds
 // Sprinting 7.0 m/s
 // Running  5.0 m/s
@@ -47,7 +52,7 @@ _params set [1, _setRescLocs];
 uisleep 20;
 // sleeping 20 seconds here to permit mission to fully init, then can check 'groups' variable.
 {
-	[_x, _actionLoc, _params] spawn 
+	[_x, _actionLoc, _newparams] spawn 
 	{
         private ["_unit","_actionLoc","_params","_behaviorOption","_rescueLocs","_msnTag","_moveTo","_mimicLeader","_boardingVehicle"];
         _unit = _this select 0;
@@ -82,11 +87,10 @@ uisleep 20;
         {
             private ["_action","_stance"];			
             _action = _unit getVariable "FuMS_CaptiveAction";
-        //     diag_log format ["<FuMS> Captured: CaptiveAction = %1",_action];
+        //     diag_log format ["<FuMS> Captured: CaptiveAction = Unit:%2 Action:%1",_action, _unit];
             // 0 = action, 1 = player                                  
             private ["_order"];
-            _order = toupper (_action select 0);             
-            //diag_log format ["<FuMS> Captured: %1 not in vehicle. Performing : %2",_unit,_order];                
+            _order = toupper (_action select 0);                        
             switch (_order) do
             {
                 case "FLEE":
@@ -173,7 +177,7 @@ uisleep 20;
                                 };
                             };
                         };                          
-                    } foreach _vehList;
+                    } foreach _vehList;                    
                     if (!isNull _previousVeh) then
                     {                       
                         _boardingVehicle = _previousVeh;
@@ -187,6 +191,12 @@ uisleep 20;
                         //   diag_log format ["<FuMS> Captured: %1: Found no good vehicle within 200m",_unit];
                         _action set [0,"STAY"];
                         _unit setVariable ["FuMS_CaptureAction",_action];
+                         _rcvr = _action select 1;
+                        _msg = format ["%1: Unable to find a friendly operational vehicle to board!",_unit];
+                        diag_log format ["<FuMS> Captured: SendingMsg CAPTIVE:%1:%2:%3:%4",player, _rcvr, _msg];
+                        FuMS_Message = ["CAPTIVE", player, [_rcvr], [_msg]]; 
+                        publicVariableServer "FuMS_Message";   
+                        
                     };
                     
                 };
@@ -208,9 +218,9 @@ uisleep 20;
                             deleteMarker _evac;                                
                         };
                     } foreach _rescueLocs;
-                    _action set [0,"STAY"];
+                    _action set [0,"SIT AND WAIT"];
                     _unit setVariable ["FuMS_CaptureAction",_action];
-                    //  diag_log format ["<FuMS> Captured: %1: %2 formated. Stance=%3",_unit,_action select 0, Unitpos _unit];      
+                      diag_log format ["<FuMS> Captured: %1: %2 formated. Stance=%3 RescueLocs:%4",_unit,_action select 0, Unitpos _unit, _rescueLocs];      
                 };
                 case "EVERYONE OUT!":
                 {                        
@@ -289,12 +299,15 @@ uisleep 20;
             // Check if the Unit's position is within 25m of its rescue position.
             // If so increment the 'rescue' trigger.
             {
-                if (_unit distance _x < 25) then
-                {
-                    diag_log format ["<FuMS> Captured: %1 has escaped!",_unit];   
-                    // [_unit] call FuMS_fnc_HC_Triggers_AddCaptive;
-                    // logic handled within CheckforBodyCount.sqf
-                    [_unit] call FuMS_fnc_HC_MsnCtrl_LogicBomb_CheckforBodyCount;
+                if (_unit distance _x < 25 and _unit == vehicle _unit) then
+                {               
+                    diag_log format ["<FuMS> Captured: %1 has escaped!",_unit];                       
+                    _rcvr = _action select 1;
+                    _msg = format ["%1: I have escaped!",_unit];
+                    diag_log format ["<FuMS> Captured: SendingMsg CAPTIVE:%1:%2:%3:%4",player, _rcvr, _msg];
+                    FuMS_Message = ["CAPTIVE", player, [_rcvr], [_msg]]; 
+                    publicVariableServer "FuMS_Message";                
+                    [_unit] call FuMS_fnc_HC_MsnCtrl_LogicBomb_CheckforBodyCount;              
                     deleteVehicle _unit;
                 };
             }foreach _rescueLocs;           

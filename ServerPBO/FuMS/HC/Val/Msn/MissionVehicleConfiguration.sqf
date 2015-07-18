@@ -18,7 +18,7 @@ while {true} do
    //      diag_log format ["##MissionVehicleConfiguration: %1 check", _sec];
 		_dat2 = _x select 0;
         {
-            if ([_x,4] call FuMS_fnc_HC_Val_Util_CheckArray)exitWith {_abort=true; FuMS_FileError = format ["%1%2 should contain 4 elements [""vehicle"",[spawnloc],[#,""Rifleman""],loot type or NONE. Found %3",_prefix,_sec, _x];};
+            if ([_x,4] call FuMS_fnc_HC_Val_Util_CheckArray and [_x,5] call FuMS_fnc_HC_Val_Util_CheckArray)exitWith {_abort=true; FuMS_FileError = format ["%1%2 should contain 4 or 5 elements [""vehicle"",[spawnloc],[#,""Rifleman""],loot type or ""NONE"". Found %3",_prefix,_sec, _x];};
             if (TypeName (_x select 0) != "STRING" ) exitWith {_abort=true; FuMS_FileError = format ["%1%2 name needs to be string. found %3",_prefix,_sec,_x select 0];};
             if ([_x select 1] call FuMS_fnc_HC_Val_Util_VerifyLocation) exitWith{_abort=true; FuMS_FileError = format ["%1%2 should be 2D offset, 3D loc, or string name location. found %3",_prefix,_sec,_x select 1];};
             _dat3 = _x select 2;

@@ -4,6 +4,28 @@
 // Init file run by all players, HC's, and the server.
 diag_log format ["FuMS initializing for player:%1",player];
 
+"FuMS_PayPlayer" addPublicVariableEventHandler
+{
+    _data =    _this select 1;
+	_factionPairs = _data select 0;
+	_player = _data select 1;
+	{
+    _amount = _x select 1;
+    _typepayment = _x select 0;
+   // _player = _data select 2;
+	
+    switch (_typepayment) do
+    {
+        case "KRYPTO":
+        {
+           // EPOCH_playerCrypto = EPOCH_playerCrypto + _amount;
+		   // amount actually added SERVER Side!
+			systemchat format ["Donor Bank awards you %1 Krypto",_amount];
+        };       
+        default {};
+    };
+	}foreach _factionPairs;
+};
 FuMS_fnc_DirectCaptive =
 {
 	private ["_unit","_player","_actionID","_directive"];
@@ -14,6 +36,7 @@ FuMS_fnc_DirectCaptive =
 	
 	FuMS_CaptiveAction = [_unit, _player, _directive select 0];
 	publicVariableServer "FuMS_CaptiveAction";
+	diag_log format ["<FuMS> Player_Init: _unit:%1 _player:%2 action:%3",_unit, _player, _directive select 0];
 	systemchat format ["Following your command to %1", _directive select 0];
 };
 
@@ -68,7 +91,7 @@ FuMS_fnc_AddCaptiveMenu =
 							{
 								[_veh, ["Everyone Out!"]] call FuMS_fnc_AddCaptiveMenu; 
 								_veh setVariable ["FuMS_CaptiveMenu_AllOut",true];
-								diag_log format ["<FuMS> Player_init: Added ""Everyone Out!"" to %1",_veh];
+								diag_log format ["<FuMS> Player_init: Added action ""Everyone Out!"" to %1",_veh];
 							};		
 						};						
 					};
@@ -80,7 +103,28 @@ FuMS_fnc_AddCaptiveMenu =
 	};
 };
 
-
+"FuMS_Message" addPublicVariableEventHandler
+{
+	_data = _this select 1;
+    _type = _data select 0; // type String
+    _sender = _data select 1; // type Obj
+    _receiver = _data select 2; // type Array
+    _msg = _data select 3; // type Array
+	
+	switch (_type) do
+	{
+		case "CAPTIVE":
+		{
+			systemChat format ["%1",_msg select 0];
+		};
+		default
+		{
+			_errMsg = format ["<FuMS> Player_Init: FuMS_Message: Unidentified message : %1", _data]; 
+			diag_log _errMsg;
+			systemChat _errMsg;
+		};
+	};
+};
 
 "FuMS_GlobalHint" addPublicVariableEventHandler
 {

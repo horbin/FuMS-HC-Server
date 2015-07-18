@@ -19,7 +19,8 @@ _scripts =
                 "AIKilled.sqf",
                 "AttachMuzzle.sqf", 
                 "SpawnSoldier.sqf",
-                "TrackAI.sqf"
+                "TrackAI.sqf",
+                "PayPlayer.sqf"
             ],
             [
                 "Logic",

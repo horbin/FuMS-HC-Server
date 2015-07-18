@@ -25,7 +25,7 @@ while {true} do
        _dat2 = _x;
 		if (isNil "_dat2") exitWith {_abort=true; _msg=format ["Empty soldier definition found"];};
 		if (TypeName _dat2 != "ARRAY")exitWith {_abort=true; _msg=format ["Soldier definition should be an array of properties, found %1",_dat2];};
-		if (count _dat2 != 13)exitWith {_abort=true; _msg=format ["Soldier definition requires 13 properties (array elements), found %1", count _dat2];};
+		if (count _dat2 != 14)exitWith {_abort=true; _msg=format ["Soldier definition requires 14 properties (array elements), found %1", count _dat2];};
         if (TypeName (_dat2 select 0 )!= "STRING")exitWith {_abort=true; _msg=format ["Soldier definition name needs to be a text string, found %1", _dat2 select 0];};
 		_dat3 = _dat2 select 1;
 		if (TypeName _dat3 !="ARRAY")exitWith {_abort=true; _msg=format ["Soldier 'Skills Levels' should be an array of 8 numbers, found %1",_dat3];};
@@ -151,6 +151,15 @@ while {true} do
             if (TypeName (_dat5 select 1) != "SCALAR") exitWith {_abort=true;_msg=format ["%1 chance should be a value between 0-50. found %2",_pre,_dat5 ];};									
 		}foreach _dat3;
 		if (_abort) exitWith {};
+        _dat3 = _dat2 select 13;
+        _pre = format ["%1:Crypto and Faction",_name];
+        if (TypeName _dat3 !="ARRAY") exitWith {_abort=true; _msg=format ["%1should in an array of [""Value Name"", amount] pairs, found %2",_pre,_dat3];};
+        {
+            _dat4 = _x;
+            if (TypeName _dat4 !="ARRAY") exitWith {_abort=true; _msg=format ["%1should be a [""Value Name"", amount] pair, found %2",_pre,_dat4];};
+            if (count _dat4 != 2) exitWith {_abort=true; _msg=format ["%1should be a [""Value Name"", amount] pair , found %2",_pre,_dat4];};
+        }foreach _dat3;
+        if (_abort) exitWith {};
     }foreach _dat;   
     if (true) exitWith{};		
 };

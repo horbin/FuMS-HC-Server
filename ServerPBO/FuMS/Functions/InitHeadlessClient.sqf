@@ -6,7 +6,8 @@ FuMS_GetShortName = compile preprocessFileLineNumbers "\FuMS\HC\Util\GetShortNam
 private ["_hc","_owner","_shortName"];
 _owner = _this select 0;
 _hc = owner _owner;
-_shortName = [_owner] call FuMS_GetShortName;
+//_shortName = format ["%1", [_owner] call FuMS_GetShortName];
+_shortName = format ["%1", _owner];
 
 diag_log format ["##FuMsnInit: Global variables being handed off too HC %2 id:%1",_hc, _owner];
 _hc publicVariableClient "FuMS_FPSMinimum";
@@ -96,19 +97,19 @@ if (count FuMS_HCIDs == 1) then
             FuMS_HCIDs set [_i,_hc];
             FuMS_HCThemeControlID = _i;
             FuMS_HCNames set [_i, _shortName];
-                _oldSlotFound = true;
-            };
-        };
-        if (!_oldSlotFound) then
-        {
-            FuMS_HCThemeControlID = count FuMS_HCIDs; // index is equal to size BEFORE it is added.
-            FuMS_HCIDs pushback _hc;
-            FuMS_HCNames pushback _shortName;
+            _oldSlotFound = true;
         };
     };
-    _hc publicVariableClient "FuMS_HCThemeControlID";
-    diag_log format ["##FuMsnInit: Script Transfer complete to Headless Client <%1:%3> in %2 secs",_hc, time-_start,_owner];    
-    
+    if (!_oldSlotFound) then
+    {
+        FuMS_HCThemeControlID = count FuMS_HCIDs; // index is equal to size BEFORE it is added.
+        FuMS_HCIDs pushback _hc;
+        FuMS_HCNames pushback _shortName;
+    };
+};
+_hc publicVariableClient "FuMS_HCThemeControlID";
+diag_log format ["##FuMsnInit: Script Transfer complete to Headless Client <%1:%3> in %2 secs",_hc, time-_start,_owner];    
+
 // Push HC info to all Admin clients
 {
     _x publicVariableClient "FuMS_HCIDs";

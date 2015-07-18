@@ -14,7 +14,7 @@ _thisTag = _this select 0;
 
 private ["_buildings","_vehicles","_boxes","_groups"];
 _buildings = missionNamespace getVariable format ["%1_buildings",_thisTag];
-diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Buildings",_thisTag, count _buildings];
+diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Buildings:%3",_thisTag, count _buildings, _buildings];
 {
     private ["_keep"];
     _keep = _x getVariable "FuMS_PERSIST";    
@@ -34,16 +34,18 @@ diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Buildings",_thisTag, 
 } foreach _buildings;        
 
 _vehicles = missionNamespace getVariable format ["%1_vehicles",_thisTag];
-diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Vehicles",_thisTag, count _vehicles];
+diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Vehicles: %3",_thisTag, count _vehicles, _vehicles];
 {
+    diag_log format ["<FuMS> RemoveDecayObjects: Vehicle %1 attempting to remove.",_x];
     if (TypeName _x == "ARRAY") then
     {
-        // do nothing for now. Not sure why vehicle array is becoming an array of arrays.
+        // do nothing for now. Not sure why vehicle array is becoming an array of arrays.       
     }else
     {
         private ["_keep"];
         _keep = driver _x;
         if (! (isNull _keep) and !(isPlayer _keep) )then
+        // if there is an AI driver that is NOT a player then look to remove the vehicle.
         { 
             private ["_enemy"];
             _enemy = _keep findNearestEnemy _keep;
@@ -109,6 +111,7 @@ diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Vehicles",_thisTag, c
                     };                            
                     deleteVehicle _unit;
                 };
+                //End Spawn watch process.
             }else
             {                       
                 ["Vehicles",_x] call FuMS_fnc_HC_Util_HC_RemoveObject;
@@ -119,6 +122,19 @@ diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Vehicles",_thisTag, c
                 } foreach attachedObjects _x;      
                 deleteVehicle _x;
             };
+        }
+        else
+        {
+            // test if vehicle has been captured...if not delete it!
+            _var = _x getVariable "FuMS_HCTemp";
+            if (!isNil "_var") then
+            {
+                if (_var == "AI") then {deleteVehicle _x;};
+            }else
+            {
+               // deleteVehicle _x;
+                diag_log format ["<FuMS> RemoveDecayObjects: Non FuMS generated Vehicle (%1) found on Mission list. Leaving vehicle alone!",_x];
+            };
         };
     };
 }foreach _vehicles;        
@@ -128,7 +144,13 @@ diag_log format ["<FuMS> RemoveDecayObjects %1 deleting %2 Groups",_thisTag, cou
 {
     {
         private ["_enemy"];
-        _enemy = _x findNearestEnemy _x;
+        _var = _x getVariable "FuMS_CaptiveAction"; // if the AI has this variable set it IS a CAPTIVE type AI.
+        _enemy = objNull;
+        if (isNil "_var") then
+        {
+           // this AI is NOT a captive, so check if it sees any players/enemies around.
+            _enemy = _x findNearestEnemy _x;
+        };
         if (!isNull _enemy) then                
         {
             // start of unit spawn code.                    

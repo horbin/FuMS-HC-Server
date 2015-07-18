@@ -34,7 +34,11 @@ _soldierData =
         [ [[Food_Canned,.5],[1,1]], 
 		  [[Drink,.5],[1,2]],
 		  [["FAK",.5],[1,1]],
-		  [[Explosives,.05],[1,1]]                    ] // Personal Gear [ "item", chance] [min, max]       
+		  [[Explosives,.05],[1,1]]                    ] ,// Personal Gear [ "item", chance] [min, max]       
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "Rifleman",[.50, .75, .70, .90, .90, .85, .80, .90],
         [Outfit_AnyMilitary,1], // Uniform
@@ -47,7 +51,11 @@ _soldierData =
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, true], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]],[[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]],[[Grenades_Hand,.3],[1,1]]    ] 
+        [ [[Food_Canned,.1],[1,1]],[[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]],[[Grenades_Hand,.3],[1,1]]    ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "LMG",[.40, .80, .80, .90, .90, .85, .80, .90],
         [Outfit_AnyMilitary,1], // Uniform
@@ -60,7 +68,11 @@ _soldierData =
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, true], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]],[[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]],[[Grenades_Hand,.3],[1,1]]              ] 
+        [ [[Food_Canned,.1],[1,1]],[[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]],[[Grenades_Hand,.3],[1,1]]              ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "Hunter",[.30, .70, .80, .90, .90, .85, .80, .90],
         ["U_O_CombatUniform_ocamo",1], // Uniform
@@ -73,7 +85,11 @@ _soldierData =
         [ .3, .3, 0, .1, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]]            ] 
+        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]]            ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "Diver",[.30, .70, .80, .90, .90, .85, .80, .90],
         [Outfit_WetSuit,1], // Uniform
@@ -86,7 +102,11 @@ _soldierData =
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["20Rnd_556x45_UW_mag",1],[2,3]]             ] 
+        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["20Rnd_556x45_UW_mag",1],[2,3]]             ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "Driver",[.30, .70, .80, .90, .90, .85, .80, .90],
         [Outfit_AnyMilitary,1], // Uniform
@@ -99,7 +119,11 @@ _soldierData =
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, true], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]]                ] 
+        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]]                ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "Pilot",[.30, .70, .80, .90, .90, .85, .80, .90],
         ["U_O_PilotCoveralls",1], // Uniform
@@ -112,7 +136,11 @@ _soldierData =
         [ .3, .3, 0, .1, 9],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .5, 0, .3 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]]                ]
+        [ [[Food_Canned,.1],[1,1]], [[Drink,.1],[1,1]],[["FAK",.1],[1,1]],[[Grenades_Smoke,.8],[1,1]]                ],
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "CivCombat",[.30, .70, .80, .90, .90, .85, .80, .90],
         [Outfit_Civilian,1], // Uniform
@@ -125,7 +153,11 @@ _soldierData =
         [ .1, 0, 0, .1, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ .1, 0, 0 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.8],[1,1]], [[Drink,.8],[1,1]],[["FAK",.05],[1,1]],[[Grenades_Smoke,.3],[1,1]]                ] 
+        [ [[Food_Canned,.8],[1,1]], [[Drink,.8],[1,1]],[["FAK",.05],[1,1]],[[Grenades_Smoke,.3],[1,1]]                ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "CivNonCombat",[.30, .70, .80, .90, .90, .85, .80, .90],
         [Outfit_Civilian,1], // Uniform
@@ -138,7 +170,11 @@ _soldierData =
         [ .1, 0, 0, .1, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.05],[1,1]], [[Drink,05],[1,1]]             ] 
+        [ [[Food_Canned,.05],[1,1]], [[Drink,05],[1,1]]             ] ,
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
     ],[
         "CivNoGun",[.30, .70, .80, .90, .90, .85, .80, .90],
         [Outfit_Civilian,1], // Uniform
@@ -151,7 +187,11 @@ _soldierData =
         [ .1, 0, 0, .1, 0],  // Map, Compass, GPS, Watch, Radio(1-9)
         [ 0, 0, 0 ], // Binoculars, RangeFinders, NVG's
         [ true, true, false], // DiverOverWater, UnlimitedAmmo
-        [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]]             ]
+        [ [[Food_Canned,.05],[1,1]],[[Drink,.05],[1,1]]             ],
+          // Crypto and Faction Rewards
+        [
+            ["KRYPTO", 100]
+        ]
         
     ]
     

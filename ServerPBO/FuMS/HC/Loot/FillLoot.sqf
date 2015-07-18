@@ -152,7 +152,7 @@ if (_lootOption != "NONE") then
                 if (_typeLoot == "SCATTER" or _boxtype == "SCATTER") then
                 {
                     // pos is either 3dloc, 2d offset, or a vehicle object.
-                    [_pos, _item, _number,"WEAPON"] call FuMS_fnc_HC_Loot_Scatter;
+                    [_pos, _item, _number,"WEAPON"] spawn FuMS_fnc_HC_Loot_Scatter;
                 }
                 else
                 {
@@ -173,7 +173,7 @@ if (_lootOption != "NONE") then
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
                 if (_typeLoot == "SCATTER" or _boxtype == "SCATTER") then
                 {
-                    [_pos, _item, _number, "MAGAZINE"] call FuMS_fnc_HC_Loot_Scatter;
+                    [_pos, _item, _number, "MAGAZINE"] spawn FuMS_fnc_HC_Loot_Scatter;
                 }else
                 {
                //     diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
@@ -193,7 +193,7 @@ if (_lootOption != "NONE") then
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
                 if (_typeLoot == "SCATTER" or _boxtype=="SCATTER") then
                 {
-                    [_pos, _item, _number, "ITEM"] call FuMS_fnc_HC_Loot_Scatter;       
+                    [_pos, _item, _number, "ITEM"] spawn FuMS_fnc_HC_Loot_Scatter;       
                 }else
                 {       
              //       diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
@@ -210,7 +210,7 @@ if (_lootOption != "NONE") then
                 _number = [_x select 1] call FuMS_fnc_HC_Loot_GetQuantity;
                 if (_typeLoot == "SCATTER" or _boxtype=="SCATTER") then
                 {
-                     [_pos, _item, _number, "BACKPACK"] call FuMS_fnc_HC_Loot_Scatter;
+                     [_pos, _item, _number, "BACKPACK"] spawn FuMS_fnc_HC_Loot_Scatter;
                 }else
                 {
               //      diag_log format ["<FuMS> FillLoot: Adding %1 %2 to %3",_number, _item, _box];
@@ -261,6 +261,7 @@ if (_lootOption != "NONE") then
         };
     };
 };
+if (TypeName _box == "ARRAY") then {_box = objNull;};
 _box
 
 

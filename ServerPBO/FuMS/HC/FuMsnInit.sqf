@@ -12,13 +12,13 @@ if !(hasInterface) then
     "FuMS_CaptiveAction" addpublicVariableEventHandler 
     {
         _data = _this select 1;
-      //  diag_log format ["<FuMS> FuMsnInit: CaptiveAction: _data:%1",_data];
+        diag_log format ["<FuMS> FuMsnInit: CaptiveAction: _data:%1",_data];
         // 0 = the unit  1=the player, 2=the action    
         if (_data select 2 == "Everyone Out!") then
         {
             // action attached to the vehicle captives are in.
             _crew = crew vehicle (_data select 0);
-          //  diag_log format ["<FuMS> FuMsnInit: CaptiveAction: _crew: %1",_crew];
+            diag_log format ["<FuMS> FuMsnInit: CaptiveAction: Vehicle: %2 _crew: %1",_crew,vehicle (_data select 0)];
             {
                 private ["_var"];
                 _var = _x getVariable "FuMS_CaptiveAction";

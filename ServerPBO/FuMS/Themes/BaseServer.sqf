@@ -27,14 +27,14 @@ FuMS_ServerData =
     //   ["Admin",-1],
        ["Test",-1], //Remove this theme if on a production server.
       ["HeloPatrols",-1], // 2 sets of 3 armed helo's patrol the skys!!!      
-        ["SEM",-1], // basic old school Arma2 Epoch encounters
+       ["SEM",-1], // basic old school Arma2 Epoch encounters
      ["TownRaid",-1], // random town is raided by 4 truck loads of humans!
-      ["Small",-1],  // 6 man groups invade a random village
-      ["Aquatic",-1], // 3 coastal areas w/ boats and ai
-        ["MadScience",-1], // 10 random towns become infected with crazzed clones
+     ["Small",-1],  // 6 man groups invade a random village
+    ["Aquatic",-1], // 3 coastal areas w/ boats and ai
+       ["MadScience",-1], // 10 random towns become infected with crazzed clones
         ["Convoy",-1], // 2 random convoys of 3 vehicles move across the map.
-      ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
-        ["Jurassic",-1], // creates 3 encounters with wondering Raptors and some scattered loot.
+     ["StaticSpawns",-1], // creates 10 Dayz style Helo crashes at random locations.
+    //    ["Jurassic",-1], // creates 3 encounters with wondering Raptors and some scattered loot.
         ["Captive", -1] // Mission in which 7 hostages must be rescued from the humans within 30minutes while fending off paradropped reinforcemnets.
 
     ],
@@ -101,7 +101,7 @@ FuMS_ServerData =
             "O_UAV_02_CAS_F",
             "O_UGV_01_F"     
         ]
-        
+            
 	],
 	[ // Loot Defaults
 
@@ -119,7 +119,7 @@ FuMS_ServerData =
 		// List of vehicles prohibited to use by players. This list allows them to be on the map for AI use
 		// but will prevent players from entering the vehicle.
 		["I_UGV_01_rcws_F","B_G_Offroad_01_armed_F"],
-          true  //VehicleAmmoFlag true= sets vehicle ammo to zero when an AI vehicle is 1st occupied by a player.
+          true  //VehicleAmmoFlag true= sets vehicle ammo to zero when an AI vehicle is 1st occupied by a player.         
 	]
 
 ];

@@ -6,7 +6,9 @@ private ["_listOfMissions","_themeIndex","_themeName","_spawnedByAdmin"];
 
 _listOfMissions = _this select 0;
 _themeIndex = _this select 1;
-_themeName = _this select 2;
+//_themeName = _this select 2;
+_themeIDPair = _this select 2;
+_themeName = _themeIDPair select 0;
 _spawnedByAdmin = _this select 3;
 if (isNil "_spawnedByAdmin") then {_spawnedByAdmin = false;}
 else
@@ -27,6 +29,8 @@ else
     FuMS_LOOTDATA set [_nextIndex, FUMS_LOOTDATA select _themeIndex];
     FuMS_SOLDIERDATA set [_nextIndex, FUMS_SOLDIERDATA select _themeIndex];
     FuMS_ListofMissions set [ _nextIndex, FuMS_ListofMissions select _themeIndex];
+    
+ //   FuMS_ActiveThemes set [_nextIndex, [_themeName, FuMS_ThemeControlID]];
     
     if (FuMS_AdminControlsEnabled) then
     {       
@@ -61,7 +65,7 @@ else
   ///  diag_log format ["#######9 _nextIndex: %1",_nextIndex];
  //   diag_log format ["#######10  ThemeData at _nextIndex: %1",FuMS_THEMEDATA select _nextIndex];    
     // step through process in FuMsnInit for each mission.
-    [_themeName, _nextIndex, _spawnedByAdmin] spawn FuMS_fnc_HC_MsnCtrl_ControlLoop;
+    [_themeIDPair, _nextIndex, _spawnedByAdmin] spawn FuMS_fnc_HC_MsnCtrl_ControlLoop;
  //   diag_log format ["****** STATIC ** STATIC ** STATIC ** STATIC ** STATIC  **************"];
   //  diag_log format ["*********************************************************************"];
 //    diag_log format ["##11 StaticMissionControlLoop: FuMS control loops starting for %2/%1 at index:%3.", _x,_themeName, _nextIndex];  

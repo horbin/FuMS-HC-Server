@@ -278,6 +278,7 @@ _typeFound = false;
         
         // All AI, Zombies, and Raptors
          _unit addEventHandler ["killed",{[(_this select 0), (_this select 1)] spawn FuMS_fnc_HC_AI_AIKilled;}];
+        // Add custom variables     
         _gear = [_x select 4] call FuMS_fnc_HC_Loot_GetChoice;if (_gear != "") then {_unit addHeadgear _gear;};
         _gear = _x select 12;
         //    diag_log format ["##SpawnSoldier: Other Equipment:%1",_gear];
@@ -294,6 +295,10 @@ _typeFound = false;
                 _unit addMagazines [ _item, _numItems];
             };
         }foreach _gear;
+        
+        _faction = _x select 13;
+        _unit setVariable ["FumS_Krypto", _faction];
+      //  diag_log format ["<FuMS> SpawnSoldier: %1 Crypto/Faction data %2",_unit, _faction];
     };
 }foreach _soldierData;
 

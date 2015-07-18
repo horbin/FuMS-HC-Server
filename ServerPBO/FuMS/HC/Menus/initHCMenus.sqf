@@ -28,7 +28,9 @@ FuMS_Admin_SpawnMissionHC_Server =
     if (isNil "_loc") then {FuMS_AdminSPAWNLOC = [];}
     else {FuMS_AdminSPAWNLOC = _loc;};
     diag_log format ["##initHCMenus:  %1 %2 %3 at %4",_themeIndex, _themeName, _missionName, FuMS_AdminSPAWNLOC];
-    [[_missionName],_themeIndex,_themeName, true] spawn FuMS_fnc_HC_MsnCtrl_StaticMissionControlLoop;    
+    [[_missionName],_themeIndex,[_themeName, -1], true] spawn FuMS_fnc_HC_MsnCtrl_StaticMissionControlLoop;    
+    
+    // [_activeMission,_themeIndex,_missionTheme, true] spawn FuMS_fnc_HC_MsnCtrl_StaticMissionControlLoop;
 };
 
 

@@ -154,8 +154,9 @@
      ]
    ] ,
    [ // Convoy #4
-     [        
-         ["B_Truck_01_transport_EPOCH",[50,0],[0,""],"None"]
+     [               
+         ["B_Truck_01_transport_EPOCH",[50,0],[0,""],"None",[["engine",.9],["fuel",.9],["hull",1],["RGlass",1],["Glass1",1]]], // sets damage to specific parts.
+		 ["B_Truck_01_transport_EPOCH",[60,0],[0,""],"None",[.5]] // overall damage 50%
      ],
      [    
  //        [["RESISTANCE","COMBAT","RED","COLUMN"],   [  [4, "Driver"]  ],   ["BoxPatrol",[100,100],[0,0],[200]   ]]          

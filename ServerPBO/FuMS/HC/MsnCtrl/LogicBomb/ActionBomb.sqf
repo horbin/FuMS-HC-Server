@@ -4,7 +4,7 @@
 // Inputs:  List of action/logic pairings:
 //
 //      : _msnTag 
-private ["_actionData","_msnTag","_passData","_done","_lineage","_relation", "_stateWinLoss"];
+private ["_actionData","_msnTag","_passData","_done","_lineage","_relation", "_stateWinLoss","_missionKillIndex","_curMission","_missionTheme"];
 _actionData = _this select 0;
 //Ex:
 // [["WIN"],["Trig1"       ]],
@@ -12,24 +12,47 @@ _actionData = _this select 0;
 //	  [["END"],["Trig1","OR","Trig2"      ]]
 _msnTag = _this select 1;
 _passData = _this select 2;
+_curMission = _passData select 10;
+_missionTheme = _passData select 9;
 _lineage = missionNameSpace getVariable (format ["%1_Lineage",_msnTag]);
 diag_log format ["<FuMS> ActionBomb: %1 :Lineage: %2",_msnTag,_lineage];
 _relation = _lineage select 2;
 
-_actionData = _actionData + [ ["END",["FuMS_KillMe"]]  ];
+_actionData = _actionData + [ [["END"],["FuMS_KillMe"]]  ];
 // in the 'End' LogicBomb, just need to check status of the trigger flag.
 
 _stateWinLoss = false; // if true then a WINLOSS state has been achieved so ignore further occurances.
 // Other Actions may have different behaviour, those actions will be reset/modified by flags controlled here.
+_missionKillIndex = count FuMS_ActiveMissions;
+FuMS_ActiveMissions = FuMS_ActiveMissions + [ [_missionKillIndex, format ["%1:%2", _curMission,_missionTheme]] ];  
+missionNameSpace setVariable [format["FuMS_AdminActiveMissionList%1",FuMS_ThemeControlID],FuMS_ActiveMissions];
+FuMS_AdminUpdateData = [FuMS_ThemeControlID, "AdminActiveMissionList",FuMS_ActiveMissions];
+publicVariableServer "FuMS_AdminUpdateData";
 
 _done = false;
 while {!_done} do
 {
+    private ["_endMission"];
+        // check if admin has called for this mission to terminate. If so, set its KillMe flag!
+        FuMS_ActiveMissions = missionNameSpace getVariable format ["FuMS_AdminActiveMissionList%1",FuMS_ThemeControlID];
+        //diag_log format ["<FuMS> ActionBomb: ID:%1 Index: %3 Missions:%2",FuMS_ThemeControlID, FuMS_ActiveMissions, _missionKillIndex];
+        _endMission = (FuMS_ActiveMissions select _missionKillIndex) select 1;
+        if (!isNil "_endMission") then
+        {
+            if (_endMission == "KILL") then
+            {
+                missionNameSpace setVariable [format ["%1TGR_FuMS_KillMe",_msnTag],true];
+            };
+        };
+    
 	{
 		private ["_triggerList","_triggerList","_result","_action"];
-     //   diag_log format ["<FuMS> ActionBomb: %2 Processing %1",_x, _msnTag];
+       // diag_log format ["<FuMS> ActionBomb: %2 Processing %1",_x, _msnTag];
         _action = _x select 0; // ["WIN]  or ["CHILD","<MissionName>", location]
-		_triggerList = _x select 1;       
+		_triggerList = _x select 1;
+     
+            
+        
 		// resolve the _triggerList
 		// if it returns TRUE, then execute applicable action.
 		_result = [_triggerList, _msnTag] call FuMS_fnc_HC_MsnCtrl_LogicBomb_LogicBomb;
@@ -167,7 +190,8 @@ while {!_done} do
                     if (_state == "WIN") then {_delay = (_notifications select 0) select 5  };
                     if (_state == "LOSE") then {_delay = (_notifications select 0) select 6 };
                     uisleep _delay;
-                    
+                    deleteMarker _mkr1;
+                    deleteMarker _mkr2;
                     
                     FuMS_MissionTerritory = FuMS_MissionTerritory - [_eCenter, _encounterSize, format ["%1%2",_missionTheme,_curMission]];
                     
@@ -227,9 +251,18 @@ while {!_done} do
                     {
                         private ["_kids"];
                         _kids = missionNamespace getVariable (format ["%1_Children", _parent]);
-                        _kids = _kids - [_msnTag];
-                        missionNamespace setVariable [format ["%1_Children",_parent],_kids];
+                        if (!isNil "_kids") then
+                        {
+                            _kids = _kids - [_msnTag];
+                            missionNamespace setVariable [format ["%1_Children",_parent],_kids];
+                        };
                     };
+                    
+                    FuMS_ActiveMissions set [_missionKillIndex, "COMPLETE"];
+                    missionNameSpace setVariable [format["FuMS_AdminActiveMissionList%1",FuMS_ThemeControlID],FuMS_ActiveMissions];
+                    FuMS_AdminUpdateData = [FuMS_ThemeControlID, "AdminActiveMissionList",FuMS_ActiveMissions];
+                    publicVariableServer "FuMS_AdminUpdateData";		                                        
+                    
                     diag_log format ["<FuMS> ActionBomb: Action:%1 for %2",_actionName, _msnTag];   
                 };
             };

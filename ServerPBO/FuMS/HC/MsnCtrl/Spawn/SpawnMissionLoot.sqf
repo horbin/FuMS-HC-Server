@@ -66,6 +66,7 @@ if (!isNil "_lootConfig") then  // if no loot data then no loot for mission!
         //ASSERT it is an array of loot options!
         {
             _pos = [_eCenter, _x select 1] call FuMS_fnc_HC_MsnCtrl_Util_XPos;
+            diag_log format ["<FuMS> SpawnMissionLoot: Type:%1 Loc:%2",_x select 0, _x select 1];
             _box = [_x select 0, _pos, _themeIndex] call FuMS_fnc_HC_Loot_FillLoot;
             _box setVariable ["LINEAGE",_msnTag, false];
             _boxes = _boxes + [_box];
