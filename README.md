@@ -1,6 +1,35 @@
 #Fulcrum Mission System (FuMS)
 (like the mod? please feel free to donate.  http://conroh.com/fums/
 ------------------------------------------------------------------------------------
+v2.1a
+* Fixed bug with decaying loot and Scatter algorithm. (Loot fixed with HeloCrash missions)
+ - Scatter loot now 'holds' the loot off the server until a player gets within 50m of the loot's location.
+ - This was implemented to prevent other mods from accidentally cleaning up the 'weaponholdersimulated' used to store each item.
+
+* Fixed bug not permitting admins to terminate or start missions.
+
+* Fixed a bug with Captives that was not properly removing them upon mission end.
+* Fixed a bug with Captive Evac points. Captives must exit a vehicle before being credited with a rescue.
+* Fixed a bug with Captive not exiting a vehicle once it is driven by a player. 
+    (Was being caused by change in ownership of the vehicle)
+
+* New Optional Damage setting for AI controlled vehicles:Damage
+- Optional setting
+	Value 0.0 - 1.0
+	Sets the amount of 'damage' that the vehicle has already sustained.
+	1.0 = vehicle totally broken
+	0.0 = vehicle fully healthy
+- Optional Array:
+	Can be any or all of the following:
+	["engine",.5],["fuel",.5],["hull",.5], ....etc	
+ See Captive.sqf and MissionFile.htm for details.
+
+* New Crypto rewards for AI.
+See GlobalSoldierData.htm and BaseSoldierData.sqf for details.
+Killing FuMS AI now award crypto to players. Crypto is deposited directly into the player's bank account.
+
+
+
 v2.1
 * Fixed slow helo's. All helo's now spawn and fly at proper speeds.
 
