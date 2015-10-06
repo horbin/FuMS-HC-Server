@@ -3,12 +3,47 @@ HC Setup:
 1) add to C:\Games\ArmaA3\SC\config.cfg
  
 localClient[]={127.0.0.1};
-headlessClients[] = {"127.0.0.1"};
+headlessClients[] = {"127.0.0.1","xxx.yyy.zzz.aaa"};
 battleyeLicense=1;
 
-Note: If your HC is on a different virtual or physical machine from the server, add the HC's IP addr to both the local and headless client lists!
+Note: "xxx.yyy.zzz.aaa" = If your HC is on a different virtual or physical machine from the server, add the HC's IP addr to both the local and headless client lists!
 
 2) modify mission.sqm file.
+*** FOR EXILE MOD ****
+a. Locate:
+	class Groups
+	{
+		items = 1;
+		class Item0
+		{
+		
+b. Change 'items = 1' to 'items=2'
+c. Add the following after the closing '};' for 'class Item0'
+	class Item1
+	{
+            side="LOGIC";
+            class Vehicles
+            {
+                items=1;
+                class Item0
+                {
+                    position[]={10720.502,12.714643,11356.243};
+                    id=100;
+                    side="LOGIC";
+                    vehicle="HeadlessClient_F";
+                    player="PLAY CDG";
+                    init="this enableSimulation false; this allowDamage false";
+                    leader=1;
+                    skill=0.60000002;
+                    text="HC_HAL";
+                };
+            };
+          };
+
+
+
+
+***FOR EPOCH MOD ****
  a. Locate:
       class Groups
       {
@@ -44,8 +79,9 @@ Note: Placing the HC in the 1st slot will disable the 'slots' view on the left o
 3) Make a copy of C:\Games\Arma3\arma3server.exe and rename it to HCserver.exe
 
 4) Start your HC with the following:
-C:\Games\Arma3\HCserver.exe -client -connect=127.0.0.1 -mod="@Epoch;" -nosound
+C:\Games\Arma3\HCserver.exe -client -connect=127.0.0.1 -mod="@Exile;" -nosound
 
+Note: -connect= your server's IP addr IF the HC is on a seperate machine.
 Note: HC does not require a restart with the server, nor a restart upon updating mission files.
 
 FuMS Installation:
